@@ -132,8 +132,8 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
 
 .sidebar {
   width: 90px !important;
-  background-color: #212529;
-  min-height: calc(100vh - 56px);
+  background-color: #306EA0;
+  min-height: calc(100vh);
 }
 
 .sidebar .nav-item:last-child {
@@ -372,4 +372,11 @@ body.sidebar-toggled footer.sticky-footer {
   body.sidebar-toggled footer.sticky-footer {
     width: calc(100% - 90px);
   }
+}
+
+/* All classes written below belong to us */
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
