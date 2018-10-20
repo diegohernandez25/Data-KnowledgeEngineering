@@ -25,10 +25,11 @@ class XMLService(abc.ABC):
 	def loadfileurl(url,decode=0):
 		fl=urllib.request.urlopen(url)
 		#return '\n'.join(map(lambda x:x.decode("utf-8"),list(fl)))
-		return fl.read()
+		#return fl.read()
+		return fl.read().decode() if decode else fl.read()
 
 	def loadxmlurl(url,decode=0):
-		return etree.fromstring(XMLService.loadfileurl(url))
+		return etree.fromstring(XMLService.loadfileurl(url,decode))
 
 class SASService(XMLService):
 	def __init__(self):
@@ -98,8 +99,6 @@ class SAPService(XMLService):
 
     def _fillstruct(self):
         tmp = None
-        if not self.json: list(map(lambda x: dict(x)), self.json[1:])
-
         root,endroot = self.create_element("Estacionamentos")
         print(root)
         print(endroot)
