@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="result">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="menus" >
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="menu">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="items">
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:element name="item">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="xs:string">
+                                                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                                                    <xs:anyAttribute processContents="skip"/>
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:anyAttribute processContents="skip"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="canteen" type="xs:string" use="required"/>
+                                    <xs:attribute name="meal" type="xs:string" use="required"/>
+                                    <xs:attribute name="weekday" type="xs:string" use="required"/>
+                                    <xs:attribute name="disabled" type="xs:string" use="required"/>
+                                    <xs:anyAttribute processContents="skip"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:anyAttribute processContents="skip"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:anyAttribute processContents="skip"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

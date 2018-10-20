@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="result">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="items" type="itemsT"/>
+            </xs:sequence>
+            <xs:anyAttribute processContents="skip"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="char">
+        <xs:restriction base="xs:string">
+            <xs:length value="1" fixed="true"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="itemsT">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="item" type="itemT"/>
+        </xs:sequence>
+        <xs:attribute name="count" type="xs:integer"/>
+        <xs:anyAttribute processContents="skip"/>
+    </xs:complexType>
+    <!--FIXME: Find better way to do this down here-->
+    <xs:complexType name="itemT">
+        <xs:sequence>
+            <xs:element name="id" type="xs:integer"/>
+            <xs:element name="letter" type="char"/>
+            <xs:element name="desc" type="xs:string"/>
+            <xs:element name="latest" type="xs:integer"/>
+            <xs:element name="ast" type="xs:integer"/>
+            <xs:element name="awt" type="xs:integer"/>
+            <xs:element name="wc" type="xs:integer"/>
+            <xs:element name="post_number" type="xs:integer"/>
+            <xs:element name="date" type="xs:string"/>
+            <xs:element name="act" type="xs:integer"/>
+            <xs:element name="dtickets" type="xs:integer"/>
+            <xs:any minOccurs="0" processContents="skip"/>
+        </xs:sequence>
+        <xs:anyAttribute processContents="skip"/>
+    </xs:complexType>
+</xs:schema>

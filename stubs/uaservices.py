@@ -2,7 +2,7 @@ import urllib.request, json
 import abc
 from lxml import etree
 
-
+#TODO CHECK XML SCHEMA AFTER EVERY API CHANGE
 class XMLService(abc.ABC):
 	@abc.abstractmethod
 	def _validate(self):
@@ -41,7 +41,7 @@ class SASService(XMLService):
 		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sas/ementas')
 
 	def _validate(self):
-		return True
+		return etree.XMLSchema(etree.parse('SASServiceSchema.xsd')).validate(self.txml)
 
 	def _fillstruct(self):
 		self.lunch=dict()
@@ -72,7 +72,7 @@ class SACService(XMLService):
 		#self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas/?date=2018-10-17&count=100')
 
 	def _validate(self):
-		return True
+		return etree.XMLSchema(etree.parse('SACServiceSchema.xsd')).validate(self.txml)
 
 	def _fillstruct(self):
 		self.tickets=dict()
