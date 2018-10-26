@@ -83,49 +83,59 @@ class SACService(XMLService):
 			letter=ticket.find('./letter').text
 			if not letter in self.tickets:
 				self.tickets[letter]={'name': ticket.find('./desc').text, \
-									  'latest': ticket.find('./latest').text, \
-									  'wait_line_size': ticket.find('./wc').text}
+										'latest': ticket.find('./latest').text, \
+										'wait_line_size': ticket.find('./wc').text}
 
-class SAPService(XMLService):
-    def __init__(self):
-        self.json = None
-        self.xml = None
+class UAParking(XMLService):
+	def __init__(self):
+		self.json = None
+		self.xml = None
+		self.parking = None
 
-    def _fetch(self):
-        self.json = json.loads(XMLService.loadfileurl("http://services.web.ua.pt/parques/parques",1))
+	def _fetch(self):
+		self.json = json.loads(XMLService.loadfileurl("http://services.web.ua.pt/parques/parques",1))
+		self.JSON2XML()
 
-    def _validate(self):
-        return True
+	def _validate(self):
+		return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
 
-    def _fillstruct(self):
-        tmp = None
-        root,endroot = self.create_element("Estacionamentos")
-        print(root)
-        print(endroot)
-        tmp = self.create_element("Timestamp")
-        self.xml=root+tmp[0]+str(self.get_timestamp())+tmp[1]
+	def _fillstruct(self):
+		self.parking = dict()
+		for park in self.xml.findall('./Estacionamento'):
+			self.parking[park.find('./ID').text] = {'Nome': park.find('./Nome').text,\
+				'Latitude': park.find('./Latitude').text,\
+				'Longitude': park.find('./Longitude').text,\
+				'Capacidade':park.find('./Capacidade').text,\
+				'Ocupado': park.find('./Ocupado').text,\
+				'Livre': park.find('./Livre').text}
 
-        for e in self.get_all_parkinglots():
-            parent, endparent = self.create_element("Estacionamento")
-            self.xml+=parent
-            for k,v in e.items():
-                child,endchild = self.create_element(k if isinstance(k,str) else str(k))
-                self.xml+=child+str(v)+endchild
-            self.xml+=endparent
+	def JSON2XML(self):
+		tmp = None
+		root,endroot = self.create_element("Estacionamentos")
+		tmp = self.create_element("Timestamp")
+		self.xml=root+tmp[0]+str(self.get_timestamp())+tmp[1]
 
-        #print(self.xml+endroot)
-        self.xml+=endroot
+		for e in self.get_all_parkinglots():
+			parent, endparent = self.create_element("Estacionamento")
+			self.xml+=parent
+			for k,v in e.items():
+				child,endchild = self.create_element(k if isinstance(k,str) else str(k))
+				self.xml+=child+str(v)+endchild
+			self.xml+=endparent
 
-    def create_element(self,str):
-        elem = "<"+str+">"
-        return elem, elem[:1]+'/'+elem[1:]
+		self.xml+=endroot
+		self.xml = etree.fromstring(self.xml)
 
-    def get_timestamp(self):
-        if not self.json: self._feth()
-        return dict(self.json[0])["Timestamp"]
+	def create_element(self,str):
+		elem = "<"+str+">"
+		return elem, elem[:1]+'/'+elem[1:]
 
-    def get_all_parkinglots(self):
-        return list(map(lambda x: dict(x), self.json[1:]))
+	def get_timestamp(self):
+		if not self.json: self._feth()
+		return dict(self.json[0])["Timestamp"]
+
+	def get_all_parkinglots(self):
+		return list(map(lambda x: dict(x), self.json[1:]))
 
 
 
@@ -138,6 +148,6 @@ a=SACService()
 a.get()
 print(a.tickets)
 
-a = SAPService()
+a = UAParking()
 a.get()
-print(a.xml)
+print(a.parking)
