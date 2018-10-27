@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="channel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "title" type="xs:string"/>
+                <xs:element name = "link" type="xs:string"/>
+                <xs:element name = "description" type="xs:string"/>
+                <xs:element name = "language" type="xs:string"/>
+                <xs:element name = "copyright" type="xs:string"/>
+                <xs:element name = "lastBuildDate" type="xs:string"/>
+                <xs:element name = "ttl" type="xs:string"/>
+                <xs:element name = "image" type="imageType"/>
+                <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:anyAttribute processContents="skip"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="imageType">
+        <xs:anyAttribute processContents="skip"/>
+    </xs:complexType>
+
+    <xs:complexType name = "itemType">
+        <xs:all>
+            <xs:element name = "guid" type="xs:string"/>
+            <xs:element name = "title" type="xs:string"/>
+            <xs:element name = "link" type="xs:string"/>
+            <xs:element name = "description" type="xs:string"/>
+            <xs:element name = "pubDate" type="xs:string"/>
+        </xs:all>
+        <xs:anyAttribute processContents="skip"/>
+    </xs:complexType>
+
+</xs:schema>

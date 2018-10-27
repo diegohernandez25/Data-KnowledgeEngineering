@@ -69,7 +69,6 @@ class SACService(XMLService):
 
 	def _fetch(self):
 		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
-		#self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas/?date=2018-10-17&count=100')
 
 	def _validate(self):
 		return etree.XMLSchema(etree.parse('SACServiceSchema.xsd')).validate(self.txml)
@@ -137,7 +136,56 @@ class UAParking(XMLService):
 	def get_all_parkinglots(self):
 		return list(map(lambda x: dict(x), self.json[1:]))
 
+class UANews(XMLService):
+	def __init__(self):
+		self.xml = None
+		self.parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+		self.news = None
 
+	def _fetch(self):
+		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl('https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11',1), encoding='utf-8')))
+		print(self.xml)
+
+	def _validate(self):
+		#TODO: Figure how to validate xml with schema
+		#return etree.XMLSchema(etree.parse('UANews.xsd')).validate(self.xml)
+		return True
+
+	def _fillstruct(self):
+		self.news = dict()
+		count = 0
+		for n in self.xml.findall('./channel/item'):
+			self.news[count] = {	'guid': n.find('./guid').text,\
+									'title': n.find('./title').text,\
+									'image': self.get_image(n.find('./description').text),\
+									'description': self.get_description(n.find('./description').text),\
+									'pubDate':n.find('./pubDate').text}
+			count+=1
+			#print("Description: "+n.find('./description').text)
+	
+	def specific_fectch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
+		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
+		if(dt): url+='&dt='+str(dt)+'&'
+		if(di): url+='&dt'+di+'&'
+		if(df): url+='&dt'+df+'&'
+		if(d): url+='&dt'+str(d)+'&'
+		url+='&dt'+str(i)+'&lid'+str(lid)
+		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl(url))));
+		#TODO: Validate
+		"""if not self._validate()
+			raise Exception('XML not compliant')
+		"""
+		self._fillstruct()
+
+	def get_image(self, string ):
+		#TODO Image metadata has also valuable data that we may use if needed
+		#print("image :"+string[string.find('https'):string.find('jpg')+ len('jpg')])
+		return string[string.find('https'):string.find('jpg')+ len('jpg')]
+
+
+	def get_description(self, string ):
+		#print("Only Description: "+ string[string.find('>')+1:])
+		return string[string.find('>')+1:]
 
 a=SASService()
 a.get()
@@ -147,7 +195,11 @@ print(a.lunch)
 a=SACService()
 a.get()
 print(a.tickets)
-
 a = UAParking()
 a.get()
 print(a.parking)
+
+a = UANews()
+a.get()
+print(a.news)
+
