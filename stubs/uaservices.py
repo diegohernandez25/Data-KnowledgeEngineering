@@ -187,6 +187,40 @@ class UANews(XMLService):
 		#print("Only Description: "+ string[string.find('>')+1:])
 		return string[string.find('>')+1:]
 
+
+class WeatherService(XMLService):
+    def __init__(self):
+        self.txml=None
+        #self.lastupdate=None
+        self.weather=None
+
+    def _fetch(self):
+        self.txml=XMLService.loadxmlurl('https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2742611')
+
+    def _validate(self):
+        return True
+
+    def _fillstruct(self):
+        self.weather=[]
+
+        for item in self.txml.findall('.//item'):
+            entry = dict()
+            title = item.find('title').text.split(":")
+            entry["Weekday"] = title[0]
+            entry["Status"]= title[1].split(",")[0][1:]
+
+            description = item.find('description').text.split(",")
+            for field in description:
+                field = field.split(":")
+                tmp = field[0].split(" ")
+                if tmp[-1]=="Temperature":
+                    entry[tmp[-2] + " " + tmp[-1]] = field[1].split(" ")[1]
+                else:
+                    entry[field[0][1:]] = field[1][1:]
+
+            self.weather.append(entry)
+
+
 a=SASService()
 a.get()
 print(a.lunch)
