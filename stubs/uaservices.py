@@ -154,15 +154,21 @@ class UANews(XMLService):
 	def _fillstruct(self):
 		self.news = dict()
 		count = 0
+		flag = True
 		for n in self.xml.findall('./channel/item'):
 			self.news[count] = {	'guid': n.find('./guid').text,\
 									'title': n.find('./title').text,\
 									'image': self.get_image(n.find('./description').text),\
+									'image_thumb': self.get_image(n.find('./description').text,True),\
 									'description': self.get_description(n.find('./description').text),\
-									'pubDate':n.find('./pubDate').text}
+									'pubDate':n.find('./pubDate').text,\
+									'flag':flag}
+
+			flag = not flag
 			count+=1
+			#print(self.news)
 			#print("Description: "+n.find('./description').text)
-	
+
 	def specific_fectch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
 		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
 		if(dt): url+='&dt='+str(dt)+'&'
@@ -177,10 +183,11 @@ class UANews(XMLService):
 		"""
 		self._fillstruct()
 
-	def get_image(self, string ):
+	def get_image(self, string, thumb = False):
 		#TODO Image metadata has also valuable data that we may use if needed
 		#print("image :"+string[string.find('https'):string.find('jpg')+ len('jpg')])
-		return string[string.find('https'):string.find('jpg')+ len('jpg')]
+		return string[string.find('https'):string.find('jpg')+ len('jpg')] if thumb else\
+		string[string.find('https'): string.find('_thumb')]+'.jpg'
 
 
 	def get_description(self, string ):
@@ -221,19 +228,18 @@ class WeatherService(XMLService):
             self.weather.append(entry)
 
 
-a=SASService()
-a.get()
-print(a.lunch)
-
-
-a=SACService()
-a.get()
-print(a.tickets)
-a = UAParking()
-a.get()
-print(a.parking)
-
-a = UANews()
-a.get()
-print(a.news)
-
+# a=SASService()
+# a.get()
+# print(a.lunch)
+#
+#
+# a=SACService()
+# a.get()
+# print(a.tickets)
+# a = UAParking()
+# a.get()
+# print(a.parking)
+#
+#a = UANews()
+#a.get()
+#print(a.news)

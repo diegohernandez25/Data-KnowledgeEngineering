@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 # Create your views here.
 
-import stubs.uaservices
+import stubs.uaservices as ua
 
 def index(request):
     return render(request, 'index.html',{})
@@ -10,11 +10,18 @@ def index(request):
     request.build_absolute_uri
 
 def news(request):
-    return render(request,'news.html',{})
+    # assert isinstance(request, HttpRequest)
+    news = ua.UANews()
+    news.get()
+    tparams = {}
+    #print(news.news)
+    #for k,v in news.news:
+    tparams['all_news'] = list(news.news.values())
+    return render(request,'news.html',tparams)
     #return HttpRequest.build_absolute_uri('news.html')
 
 def meteorology(request):
-    weather = stubs.uaservices.WeatherService()
+    weather = ua.WeatherService()
     weather.get()
     tparams = {}
 
