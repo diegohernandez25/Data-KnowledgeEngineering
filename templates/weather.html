@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load staticfiles %}
+
+<!-- Right Side Bar -->
+
+<div class="container-fluid">
+    <h1>Weather</h1>
+    <br><br>
+
+        <div style="width:60%;min-width: 300px; max-width: 400px;">
+            <table class="table table-striped" style="table-layout: fixed;">
+              <tbody>
+                <tr>
+                    <th scope="row">
+                       <center><img src= {{ img1 }} alt="{{ status1 }}" style="display:block; width:70%; height:auto;"></center>
+                    </th>
+                  <td><b>{{ weekday1 }}, {{ date1 }} </b> <br>{{ status1 }} <br>Min: {{ mintemp1 }} <br>Max: {{ maxtemp1 }} <br>Humidity: {{ humidity1 }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                        <center><img src= {{ img2 }} alt="{{ status2 }}" style="display:block; width:70%; height:auto;"></center>
+                    </th>
+                  <td><b>{{ weekday2 }}, {{ date2 }} </b> <br>{{ status2 }} <br>Min:  {{ mintemp2 }} <br>Max:  {{ maxtemp2 }} <br>Humidity: {{ humidity2 }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                        <center><img src= {{ img3 }} alt="{{ status3 }}" style="display:block; width:70%; height:auto;"></center>
+                    </th>
+                  <td><b>{{ weekday3 }}, {{ date3 }}</b> <br> {{ status3 }}<br>Min:  {{ mintemp3 }} <br>Max:  {{ maxtemp3 }} <br>Humidity: {{ humidity3 }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    <p> </p>
+</div>
+{% endblock %}

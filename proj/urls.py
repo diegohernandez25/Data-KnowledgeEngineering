@@ -26,8 +26,8 @@ urlpatterns = [
     path('room/', views.room, name ='room'),
     path('cantine/', views.cantine, name ='cantine'),
     path('parkinglot/', views.parkinglot, name ='parkinglot'),
-    path('meteorology/', views.meteorology, name ='meteorology'),
-    path('', views.index),
+    path('weather/', views.weather, name ='weather'),
+    path('', views.index, name = 'index'),
 ]
-urlpatterns
+
 urlpatterns += staticfiles_urlpatterns()

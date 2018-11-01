@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpRequest
 # Create your views here.
 
 import stubs.uaservices as ua
+import datetime
 
 def index(request):
     return render(request, 'index.html',{})
@@ -20,7 +21,7 @@ def news(request):
     return render(request,'news.html',tparams)
     #return HttpRequest.build_absolute_uri('news.html')
 
-def meteorology(request):
+def weather(request):
     weather = ua.WeatherService()
     weather.get()
     tparams = {}
@@ -31,20 +32,46 @@ def meteorology(request):
         mintemp = 'mintemp' + str(i + 1)
         maxtemp = 'maxtemp' + str(i + 1)
         humidity = 'humidity' + str(i + 1)
+        date = 'date' + str(i + 1)
+        img = 'img' + str(i + 1)
 
-        print(weather.weather[i].keys())
+        current_date = datetime.date.today() + datetime.timedelta(days=i)
+        weather_img = ""
+        weather_val = weather.weather[i]['Status']
+
         if 'Minimum Temperature' in weather.weather[i].keys():
             tparams.update({mintemp: weather.weather[i]['Minimum Temperature']})
+        else:
+            tparams.update({mintemp: "--"})
         if 'Maximum Temperature' in weather.weather[i].keys():
             tparams.update({maxtemp: weather.weather[i]['Maximum Temperature']})
+        else:
+            tparams.update({maxtemp: "--"})
 
-        tparams.update( {
+        if weather_val == "Light Rain" or weather_val == "Drizzle" or weather_val == "Rainy" or weather_val == "Heavy Rain Showers" or weather_val == "Light Rain Showers":
+            weather_img = "/static/img/weather-rainy.svg"
+        elif weather_val == "Sunny" or weather_val == "Sunny Intervals" or weather_val == "Clear Sky":
+            weather_img = "/static/img/weather-sunny.svg"
+        elif weather_val == "Light Cloud" or weather_val == "Partly Cloudy":
+            weather_img = "/static/img/weather-partlycloudy.svg"
+        elif weather_val == "Thundery Showers":
+            weather_img = "/static/img/weather-lightning-rainy.svg"
+        elif weather_val == "Light Snow" or weather_val == "Light Snow Showers":
+            weather_img = "/static/img/weather-snowy.svg"
+        elif weather_val == "Sleet Showers":
+            weather_img = "/static/img/weather-hail.svg"
+        else:
+            weather_img = "/static/img/weather-cloudy.svg"
+
+        tparams.update({
+            date: current_date.strftime("%B %d"),
             weekday: weather.weather[i]['Weekday'],
-            status: weather.weather[i]['Status'],
-            humidity: weather.weather[i]['Humidity']
+            status: weather_val,
+            humidity: weather.weather[i]['Humidity'],
+            img: weather_img
         })
 
-    return render(request,'meteorology.html', tparams)
+    return render(request, 'weather.html', tparams)
 
 def schedule(request):
     return render(request,'schedule.html',{})
