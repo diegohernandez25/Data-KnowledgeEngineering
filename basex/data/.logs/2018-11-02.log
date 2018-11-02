@@ -1,0 +1,6 @@
+17:26:51.487	SERVER	admin	OK	Server was started (port: 1984).
+17:27:09.508	127.0.0.1:36320	admin	ERROR	Access denied.	4.81 ms
+17:27:12.984	SERVER	admin	OK	Server was stopped (port: 1984).
+17:37:31.234	SERVER	admin	OK	Server was started (port: 1984).
+17:37:36.260	SERVER	admin	OK	Server was stopped (port: 1984).
+18:54:10.470	SERVER	admin	OK	Server was started (port: 1984).

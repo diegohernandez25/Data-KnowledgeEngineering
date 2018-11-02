@@ -1,0 +1,2 @@
+xslt:transform(html:parse(file:read-text("/home/pinho/Work/EDC/edc-2018/stubs/horarios/Horarios_Cursos_DETI.html")),'/home/pinho/Work/EDC/edc-2018/stubs/aaa/convert.xsl')
+XQUERY xslt:transform(html:parse(file:read-text("/home/pinho/Work/EDC/edc-2018/stubs/horarios/Horarios_Cursos_DETI.html")),'/home/pinho/Work/EDC/edc-2018/stubs/aaa/convert.xsl')
