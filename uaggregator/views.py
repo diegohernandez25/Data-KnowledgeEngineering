@@ -16,6 +16,7 @@ def news(request):
     news.get()
     tparams = {}
     tparams['all_news'] = list(news.news.values())
+    print(tparams['all_news'])
     return render(request,'news.html',tparams)
     #return HttpRequest.build_absolute_uri('news.html')
 

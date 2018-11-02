@@ -28,15 +28,15 @@
 
                 <div class ="col-md-6" style="padding-top:10px" >
                     <a href={{news.guid}} style="text-decoration: none;">
-                    <div class ="container" style="height:500px; width:90%">
+                    <div class ="container" style="height: 500px; width:90%">
                         <div class ="row" style="height:60%; width:100%">
-                            <img src = {{ news.image }} class="img_news"  >
+                            <div class="img_news" style="background-image:url({{ news.image }}); width: 100%; height: auto; background-size:cover;background-position:50% 20%;"></div>
                             <!-- <p>This is an image</p> -->
                         </div>
-                        <div class ="row" style="height:10%; max-width:100%;background:#50AF82">
-                            <h1 style="text-overflow : ellipsis; white-space : nowrap; overflow : hidden;">{{news.title}}</h1>
+                        <div class ="row" style=" max-width:100%;">
+                            <h3 style="text-overflow : ellipsis;">{{news.title}}</h3>
                         </div>
-                        <div class ="row" style="max-height:30%; width:100%;background:#306EA0">
+                        <div class ="row" style="max-height:30%; width:100%;">
                             <p style="text-overflow : ellipsis;  overflow : hidden;">{{news.description}}</p>
                         </div>
                     </div>
