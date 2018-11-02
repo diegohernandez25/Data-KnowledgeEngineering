@@ -48,7 +48,7 @@ def weather(request):
         else:
             tparams.update({maxtemp: "--"})
 
-        if weather_val == "Light Rain" or weather_val == "Drizzle" or weather_val == "Rainy" or weather_val == "Heavy Rain Showers" or weather_val == "Light Rain Showers":
+        if weather_val == "Light Rain" or weather_val == "Drizzle" or weather_val == "Rainy" or weather_val == "Heavy Rain" or weather_val == "Heavy Rain Showers" or weather_val == "Light Rain Showers":
             weather_img = "/static/img/weather-rainy.svg"
         elif weather_val == "Sunny" or weather_val == "Sunny Intervals" or weather_val == "Clear Sky":
             weather_img = "/static/img/weather-sunny.svg"
@@ -79,8 +79,8 @@ def schedule(request):
 def room(request):
     return render(request,'room.html',{})
 
-def cantine(request):
-    return render(request,'cantine.html',{})
+def canteen(request):
+    return render(request,'canteen.html',{})
 
 def parkinglot(request):
     return render(request,'parkinglot.html',{})
