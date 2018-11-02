@@ -104,10 +104,14 @@ class UAParking(XMLService):
 			self.parking[park.find('./ID').text] = {'Nome': park.find('./Nome').text,\
 				'Latitude': park.find('./Latitude').text,\
 				'Longitude': park.find('./Longitude').text,\
-				'Capacidade':park.find('./Capacidade').text,\
-				'Ocupado': park.find('./Ocupado').text,\
-				'Livre': park.find('./Livre').text,\
+				'Capacidade':self.ltz(int(park.find'./Capacidade').text),\
+				'Ocupado': self.ltz(int(park.find'./Ocupado').text),\
+				'Livre': self.ltz(int(park.find'./Livre').text),\
 				'Color': self.color_status(int(park.find('./Ocupado').text),int(park.find('./Capacidade').text))}
+		print(self.parking)
+
+	def ltz(self,val):
+		return 0 if val<0 else val
 
 	def JSON2XML(self):
 		tmp = None
@@ -183,7 +187,7 @@ class UANews(XMLService):
 			#print(self.news)
 			#print("Description: "+n.find('./description').text)
 
-	def specific_fectch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
+	def specific_fetch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
 		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
 		if(dt): url+='&dt='+str(dt)+'&'
 		if(di): url+='&dt'+di+'&'
@@ -210,36 +214,35 @@ class UANews(XMLService):
 
 
 class WeatherService(XMLService):
-    def __init__(self):
-        self.txml=None
-        #self.lastupdate=None
-        self.weather=None
+	def __init__(self):
+		self.txml=None
+		#self.lastupdate=None
+		self.weather=None
 
-    def _fetch(self):
-        self.txml=XMLService.loadxmlurl('https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2742611')
+	def _fetch(self):
+		self.txml=XMLService.loadxmlurl('https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2742611')
 
-    def _validate(self):
-        return True
+	def _validate(self):
+		return True
 
-    def _fillstruct(self):
-        self.weather=[]
+	def _fillstruct(self):
+		self.weather=[]
+		self._fetch()
+		for item in self.txml.findall('.//item'):
+			entry = dict()
+			title = item.find('title').text.split(":")
+			entry["Weekday"] = title[0]
+			entry["Status"]= title[1].split(",")[0][1:]
+			description = item.find('description').text.split(",")
+			for field in description:
+			   field = field.split(":")
+			   tmp = field[0].split(" ")
+			   if tmp[-1]=="Temperature":
+			       entry[tmp[-2] + " " + tmp[-1]] = field[1].split(" ")[1]
+			   else:
+			       entry[field[0][1:]] = field[1][1:]
 
-        for item in self.txml.findall('.//item'):
-            entry = dict()
-            title = item.find('title').text.split(":")
-            entry["Weekday"] = title[0]
-            entry["Status"]= title[1].split(",")[0][1:]
-
-            description = item.find('description').text.split(",")
-            for field in description:
-                field = field.split(":")
-                tmp = field[0].split(" ")
-                if tmp[-1]=="Temperature":
-                    entry[tmp[-2] + " " + tmp[-1]] = field[1].split(" ")[1]
-                else:
-                    entry[field[0][1:]] = field[1][1:]
-
-            self.weather.append(entry)
+			self.weather.append(entry)
 
 
 # a=SASService()

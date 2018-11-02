@@ -417,3 +417,20 @@ img.img_news{
     vertical-align: middle;
     line-height: 90px;
 }
+
+p.small{
+    line-height: 0.7;
+}
+
+p.big{
+    line-height: 1.7;
+}
+
+.parking-block{
+
+    height:100px;
+    margin-bottom:20px;
+    margin-top:20px;
+    margin-left:20px;
+    cursor: pointer;
+}
