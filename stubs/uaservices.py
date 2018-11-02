@@ -108,17 +108,22 @@ class UAParking(XMLService):
 		self.JSON2XML()
 
 	def _validate(self):
-		return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
-
+		#return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
+		return True
 	def _fillstruct(self):
 		self.parking = dict()
 		for park in self.xml.findall('./Estacionamento'):
 			self.parking[park.find('./ID').text] = {'Nome': park.find('./Nome').text,\
 				'Latitude': park.find('./Latitude').text,\
 				'Longitude': park.find('./Longitude').text,\
-				'Capacidade':park.find('./Capacidade').text,\
-				'Ocupado': park.find('./Ocupado').text,\
-				'Livre': park.find('./Livre').text}
+				'Capacidade':self.ltz(int(park.find('./Capacidade').text)),\
+				'Ocupado': self.ltz(int(park.find('./Ocupado').text)),\
+				'Livre': self.ltz(int(park.find('./Livre').text)),\
+				'Color': self.color_status(int(park.find('./Ocupado').text),int(park.find('./Capacidade').text))}
+		print(self.parking)
+
+	def ltz(self,val):
+		return 0 if val<0 else val
 
 	def JSON2XML(self):
 		tmp = None
@@ -147,6 +152,19 @@ class UAParking(XMLService):
 
 	def get_all_parkinglots(self):
 		return list(map(lambda x: dict(x), self.json[1:]))
+
+	def color_status(self, occupied, capacity):
+		if occupied<0: occupied=0
+
+		_per = occupied/capacity
+		if _per>90:
+			return "#F4BC8B"
+		elif _per>75:
+			return "#D87777"
+		elif _per>50:
+			return "#F4D386"
+		else:
+			return "#86BA7A"
 
 class UANews(XMLService):
 	def __init__(self):
@@ -208,36 +226,35 @@ class UANews(XMLService):
 
 
 class WeatherService(XMLService):
-    def __init__(self):
-        self.txml=None
-        #self.lastupdate=None
-        self.weather=None
+	def __init__(self):
+		self.txml=None
+		#self.lastupdate=None
+		self.weather=None
 
-    def _fetch(self):
-        self.txml=XMLService.loadxmlurl('https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2742611')
+	def _fetch(self):
+		self.txml=XMLService.loadxmlurl('https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2742611')
 
-    def _validate(self):
-        return True
+	def _validate(self):
+		return True
 
-    def _fillstruct(self):
-        self.weather=[]
+	def _fillstruct(self):
+		self.weather=[]
+		self._fetch()
+		for item in self.txml.findall('.//item'):
+			entry = dict()
+			title = item.find('title').text.split(":")
+			entry["Weekday"] = title[0]
+			entry["Status"]= title[1].split(",")[0][1:]
+			description = item.find('description').text.split(",")
+			for field in description:
+			   field = field.split(":")
+			   tmp = field[0].split(" ")
+			   if tmp[-1]=="Temperature":
+			       entry[tmp[-2] + " " + tmp[-1]] = field[1].split(" ")[1]
+			   else:
+			       entry[field[0][1:]] = field[1][1:]
 
-        for item in self.txml.findall('.//item'):
-            entry = dict()
-            title = item.find('title').text.split(":")
-            entry["Weekday"] = title[0]
-            entry["Status"]= title[1].split(",")[0][1:]
-
-            description = item.find('description').text.split(",")
-            for field in description:
-                field = field.split(":")
-                tmp = field[0].split(" ")
-                if tmp[-1]=="Temperature":
-                    entry[tmp[-2] + " " + tmp[-1]] = field[1].split(" ")[1]
-                else:
-                    entry[field[0][1:]] = field[1][1:]
-
-            self.weather.append(entry)
+			self.weather.append(entry)
 
 
 # a=SASService()

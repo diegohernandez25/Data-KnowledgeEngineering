@@ -15,8 +15,6 @@ def news(request):
     news = ua.UANews()
     news.get()
     tparams = {}
-    #print(news.news)
-    #for k,v in news.news:
     tparams['all_news'] = list(news.news.values())
     print(tparams['all_news'])
     return render(request,'news.html',tparams)
@@ -84,4 +82,9 @@ def canteen(request):
     return render(request,'canteen.html',{})
 
 def parkinglot(request):
-    return render(request,'parkinglot.html',{})
+    parking = ua.UAParking()
+    parking.get()
+    tparams = {}
+    tparams['all_parkings'] = list(parking.parking.values())
+
+    return render(request,'parkinglot.html',tparams)
