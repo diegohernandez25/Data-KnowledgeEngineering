@@ -96,8 +96,8 @@ class UAParking(XMLService):
 		self.JSON2XML()
 
 	def _validate(self):
-		return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
-
+		#return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
+		return True
 	def _fillstruct(self):
 		self.parking = dict()
 		for park in self.xml.findall('./Estacionamento'):
@@ -106,7 +106,8 @@ class UAParking(XMLService):
 				'Longitude': park.find('./Longitude').text,\
 				'Capacidade':park.find('./Capacidade').text,\
 				'Ocupado': park.find('./Ocupado').text,\
-				'Livre': park.find('./Livre').text}
+				'Livre': park.find('./Livre').text,\
+				'Color': self.color_status(int(park.find('./Ocupado').text),int(park.find('./Capacidade').text))}
 
 	def JSON2XML(self):
 		tmp = None
@@ -135,6 +136,19 @@ class UAParking(XMLService):
 
 	def get_all_parkinglots(self):
 		return list(map(lambda x: dict(x), self.json[1:]))
+
+	def color_status(self, occupied, capacity):
+		if occupied<0: occupied=0
+
+		_per = occupied/capacity
+		if _per>90:
+			return "#F4BC8B"
+		elif _per>75:
+			return "#D87777"
+		elif _per>50:
+			return "#F4D386"
+		else:
+			return "#86BA7A"
 
 class UANews(XMLService):
 	def __init__(self):
