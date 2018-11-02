@@ -24,20 +24,13 @@
     </xs:complexType>
     <!--FIXME: Find better way to do this down here-->
     <xs:complexType name="itemT">
-        <xs:sequence>
-            <xs:element name="id" type="xs:integer"/>
+        <xs:all>
             <xs:element name="letter" type="char"/>
             <xs:element name="desc" type="xs:string"/>
             <xs:element name="latest" type="xs:integer"/>
-            <xs:element name="ast" type="xs:integer"/>
-            <xs:element name="awt" type="xs:integer"/>
             <xs:element name="wc" type="xs:integer"/>
-            <xs:element name="post_number" type="xs:integer"/>
-            <xs:element name="date" type="xs:string"/>
-            <xs:element name="act" type="xs:integer"/>
-            <xs:element name="dtickets" type="xs:integer"/>
             <xs:any minOccurs="0" processContents="skip"/>
-        </xs:sequence>
+        </xs:all>
         <xs:anyAttribute processContents="skip"/>
     </xs:complexType>
 </xs:schema>
