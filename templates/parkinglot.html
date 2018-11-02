@@ -2,16 +2,161 @@
 
 {% block content %}
 <!-- Right Side Bar -->
-<div class="w3-sidebar w3-bar-block w3-card" style="width:25%;right:0;">
+<!-- <div class="w3-sidebar w3-bar-block w3-card" style="width:25%;right:0;">
   <h3 class="w3-bar-item">Menu Parking Lot</h3>
   <a href="#" class="w3-bar-item w3-button">Link 1</a>
   <a href="#" class="w3-bar-item w3-button">Link 2</a>
   <a href="#" class="w3-bar-item w3-button">Link 3</a>
-</div>
+</div> -->
 
-<div class="container-fluid">
+<!-- <div class="container-fluid">
     <h1>Parking Lot</h1>
     <p></p>
     <p>We will use this page to show the available parking lots</p>
+</div> -->
+
+<div class="container-fluid">
+
+    <!-- <table class="table table-striped">
+      <tbody>
+        {% for park in all_parkings%}
+        <tr> <th><h1>{{park.Nome}}</h1></th></tr>
+        <tr style="background:{{ park.Color }}">
+            <th scope="row">
+                <h1>{{park.Livre}}</h1>
+            </th>
+          <td><b>Total Capacity: {{ park.Capacidade }}</b> <br>Número de Lugares Ocupados: {{ park.Capacidade }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table> -->
+    <div class="container-fluid" style="background:#D1D1D1">
+        <div class="row">
+        {% for park in all_parkings%}
+
+            <div class="col-md-2 center-block" onclick="send_coords({{park.Latitude}},{{park.Longitude}})" style="height:50%;">
+                <!-- <h1 style="text-align:center">{{park.Nome}}</h1> -->
+                <!-- <div class="row" style="background:{{ park.Color }}"> -->
+                    <p class="text-center"><font size= "5">{{park.Nome}}</font></p>
+                    <div class="container-fluid" style="background:{{ park.Color }}; margin:10px;">
+                        <div class="row">
+                            <div class="col-md-2 " style="text-align:center;">
+                                <p class="parking_available" style="text-align:center;"><font size= "5">{{park.Livre}}</font></p>
+                            </div>
+                            <div class="col-md-offset-2 col-md-8" style="margin-left:10px;margin-top:10px;">
+                                <p><font size= "2">Total Capacity: {{ park.Capacidade }}</font> </p>
+                                <p><font size= "2">Número de Lugares Ocupados: {{ park.Capacidade }} </font></p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+    <div id="map"></div>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=en_RU&amp;apikey=<your API-key>" type="text/javascript"></script>
+    <script src="icon_customImage.js" type="text/javascript"></script>
+	<style>
+        #map {
+            width: 100%; height: 50%; padding: 0; margin: 0;
+        }
+    </style>
+
+    <script>
+    var myMap
+    var myPlacemark
+    function send_coords(lat,long){
+        console.log(lat);
+        console.log(long);
+        console.log("holalong");
+        myMap.geoObjects.remove(myPlacemark)
+        myPlacemark = new ymaps.Placemark([lat, long], {
+            hintContent: 'A custom placemark icon',
+            balloonContent: 'This is a pretty placemark'
+        }, {
+            /**
+             * Options.
+             * You must specify this type of layout.
+             */
+            iconLayout: 'default#image',
+            // Custom image for the placemark icon.
+            iconImageHref: '/static/img/map_select.png',
+            // The size of the placemark.
+            iconImageSize: [42, 42],
+            /**
+             * The offset of the upper left corner of the icon relative
+             * to its "tail" (the anchor point).
+             */
+            iconImageOffset: [-5, -38]
+        }),
+
+
+        myMap.geoObjects
+                .add(myPlacemark);
+    }
+    ymaps.ready(function () {
+    myMap = new ymaps.Map('map', {
+            center: [40.63155, -8.656537],
+            zoom: 18
+        }, {
+            searchControlProvider: 'yandex#search'
+        }),
+
+        // Creating a content layout.
+        MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+            '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
+        ),
+
+        myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+            hintContent: 'A custom placemark icon',
+            balloonContent: 'This is a pretty placemark'
+        }, {
+            /**
+             * Options.
+             * You must specify this type of layout.
+             */
+            iconLayout: 'default#image',
+            // Custom image for the placemark icon.
+            iconImageHref: '/static/img/map_select.png',
+            // The size of the placemark.
+            iconImageSize: [42, 42],
+            /**
+             * The offset of the upper left corner of the icon relative
+             * to its "tail" (the anchor point).
+             */
+            iconImageOffset: [-5, -38]
+        }),
+
+        myPlacemarkWithContentResidencias = new ymaps.Placemark([40.63155, -8.656537], {
+            hintContent: 'A custom placemark icon with contents',
+            balloonContent: 'This one — for Christmas',
+            iconContent: '12'
+        }, {
+            /**
+             * Options.
+             * You must specify this type of layout.
+             */
+            iconLayout: 'default#imageWithContent',
+            // Custom image for the placemark icon.
+            iconImageHref: '../uaggregator/static/img/logo.png',
+            // The size of the placemark.
+            iconImageSize: [48, 48],
+            /**
+             * The offset of the upper left corner of the icon relative
+             * to its "tail" (the anchor point).
+             */
+            iconImageOffset: [-24, -24],
+            // Offset of the layer with content relative to the layer with the image.
+            iconContentOffset: [15, 15],
+            // Content layout.
+            iconContentLayout: MyIconContentLayout
+        });
+
+
+    // myMap.geoObjects
+    //     .add(myPlacemark)
+    //     .add(myPlacemarkWithContentResidencias);
+});</script>
 </div>
 {% endblock %}
