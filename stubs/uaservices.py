@@ -69,7 +69,6 @@ class SACService(XMLService):
 
 	def _fetch(self):
 		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
-		#self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas/?date=2018-10-17&count=100')
 
 	def _validate(self):
 		return etree.XMLSchema(etree.parse('SACServiceSchema.xsd')).validate(self.txml)
@@ -83,61 +82,164 @@ class SACService(XMLService):
 			letter=ticket.find('./letter').text
 			if not letter in self.tickets:
 				self.tickets[letter]={'name': ticket.find('./desc').text, \
-									  'latest': ticket.find('./latest').text, \
-									  'wait_line_size': ticket.find('./wc').text}
+										'latest': ticket.find('./latest').text, \
+										'wait_line_size': ticket.find('./wc').text}
 
-class SAPService(XMLService):
+class UAParking(XMLService):
+	def __init__(self):
+		self.json = None
+		self.xml = None
+		self.parking = None
+
+	def _fetch(self):
+		self.json = json.loads(XMLService.loadfileurl("http://services.web.ua.pt/parques/parques",1))
+		self.JSON2XML()
+
+	def _validate(self):
+		return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
+
+	def _fillstruct(self):
+		self.parking = dict()
+		for park in self.xml.findall('./Estacionamento'):
+			self.parking[park.find('./ID').text] = {'Nome': park.find('./Nome').text,\
+				'Latitude': park.find('./Latitude').text,\
+				'Longitude': park.find('./Longitude').text,\
+				'Capacidade':park.find('./Capacidade').text,\
+				'Ocupado': park.find('./Ocupado').text,\
+				'Livre': park.find('./Livre').text}
+
+	def JSON2XML(self):
+		tmp = None
+		root,endroot = self.create_element("Estacionamentos")
+		tmp = self.create_element("Timestamp")
+		self.xml=root+tmp[0]+str(self.get_timestamp())+tmp[1]
+
+		for e in self.get_all_parkinglots():
+			parent, endparent = self.create_element("Estacionamento")
+			self.xml+=parent
+			for k,v in e.items():
+				child,endchild = self.create_element(k if isinstance(k,str) else str(k))
+				self.xml+=child+str(v)+endchild
+			self.xml+=endparent
+
+		self.xml+=endroot
+		self.xml = etree.fromstring(self.xml)
+
+	def create_element(self,str):
+		elem = "<"+str+">"
+		return elem, elem[:1]+'/'+elem[1:]
+
+	def get_timestamp(self):
+		if not self.json: self._feth()
+		return dict(self.json[0])["Timestamp"]
+
+	def get_all_parkinglots(self):
+		return list(map(lambda x: dict(x), self.json[1:]))
+
+class UANews(XMLService):
+	def __init__(self):
+		self.xml = None
+		self.parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+		self.news = None
+
+	def _fetch(self):
+		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl('https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11',1), encoding='utf-8')))
+		print(self.xml)
+
+	def _validate(self):
+		#TODO: Figure how to validate xml with schema
+		#return etree.XMLSchema(etree.parse('UANews.xsd')).validate(self.xml)
+		return True
+
+	def _fillstruct(self):
+		self.news = dict()
+		count = 0
+		flag = True
+		for n in self.xml.findall('./channel/item'):
+			self.news[count] = {	'guid': n.find('./guid').text,\
+									'title': n.find('./title').text,\
+									'image': self.get_image(n.find('./description').text),\
+									'image_thumb': self.get_image(n.find('./description').text,True),\
+									'description': self.get_description(n.find('./description').text),\
+									'pubDate':n.find('./pubDate').text,\
+									'flag':flag}
+
+			flag = not flag
+			count+=1
+			#print(self.news)
+			#print("Description: "+n.find('./description').text)
+
+	def specific_fectch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
+		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
+		if(dt): url+='&dt='+str(dt)+'&'
+		if(di): url+='&dt'+di+'&'
+		if(df): url+='&dt'+df+'&'
+		if(d): url+='&dt'+str(d)+'&'
+		url+='&dt'+str(i)+'&lid'+str(lid)
+		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl(url))));
+		#TODO: Validate
+		"""if not self._validate()
+			raise Exception('XML not compliant')
+		"""
+		self._fillstruct()
+
+	def get_image(self, string, thumb = False):
+		#TODO Image metadata has also valuable data that we may use if needed
+		#print("image :"+string[string.find('https'):string.find('jpg')+ len('jpg')])
+		return string[string.find('https'):string.find('jpg')+ len('jpg')] if thumb else\
+		string[string.find('https'): string.find('_thumb')]+'.jpg'
+
+
+	def get_description(self, string ):
+		#print("Only Description: "+ string[string.find('>')+1:])
+		return string[string.find('>')+1:]
+
+
+class WeatherService(XMLService):
     def __init__(self):
-        self.json = None
-        self.xml = None
+        self.txml=None
+        #self.lastupdate=None
+        self.weather=None
 
     def _fetch(self):
-        self.json = json.loads(XMLService.loadfileurl("http://services.web.ua.pt/parques/parques",1))
+        self.txml=XMLService.loadxmlurl('https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2742611')
 
     def _validate(self):
         return True
 
     def _fillstruct(self):
-        tmp = None
-        root,endroot = self.create_element("Estacionamentos")
-        print(root)
-        print(endroot)
-        tmp = self.create_element("Timestamp")
-        self.xml=root+tmp[0]+str(self.get_timestamp())+tmp[1]
+        self.weather=[]
 
-        for e in self.get_all_parkinglots():
-            parent, endparent = self.create_element("Estacionamento")
-            self.xml+=parent
-            for k,v in e.items():
-                child,endchild = self.create_element(k if isinstance(k,str) else str(k))
-                self.xml+=child+str(v)+endchild
-            self.xml+=endparent
+        for item in self.txml.findall('.//item'):
+            entry = dict()
+            title = item.find('title').text.split(":")
+            entry["Weekday"] = title[0]
+            entry["Status"]= title[1].split(",")[0][1:]
 
-        #print(self.xml+endroot)
-        self.xml+=endroot
+            description = item.find('description').text.split(",")
+            for field in description:
+                field = field.split(":")
+                tmp = field[0].split(" ")
+                if tmp[-1]=="Temperature":
+                    entry[tmp[-2] + " " + tmp[-1]] = field[1].split(" ")[1]
+                else:
+                    entry[field[0][1:]] = field[1][1:]
 
-    def create_element(self,str):
-        elem = "<"+str+">"
-        return elem, elem[:1]+'/'+elem[1:]
-
-    def get_timestamp(self):
-        if not self.json: self._feth()
-        return dict(self.json[0])["Timestamp"]
-
-    def get_all_parkinglots(self):
-        return list(map(lambda x: dict(x), self.json[1:]))
+            self.weather.append(entry)
 
 
-
-a=SASService()
-a.get()
-print(a.lunch)
-
-
-a=SACService()
-a.get()
-print(a.tickets)
-
-a = SAPService()
-a.get()
-print(a.xml)
+# a=SASService()
+# a.get()
+# print(a.lunch)
+#
+#
+# a=SACService()
+# a.get()
+# print(a.tickets)
+# a = UAParking()
+# a.get()
+# print(a.parking)
+#
+#a = UANews()
+#a.get()
+#print(a.news)

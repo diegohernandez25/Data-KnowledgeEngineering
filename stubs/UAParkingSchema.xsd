@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="Estacionamentos" type="estacionamentosT">
+
+    </xs:element>
+
+    <xs:complexType name="estacionamentosT">
+        <xs:sequence >
+            <xs:element name ="Timestamp" type="xs:integer"/>
+            <xs:element name="Estacionamento" type="estacionamentoT" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:anyAttribute processContents="skip"/>
+
+    </xs:complexType>
+
+    <xs:complexType name="estacionamentoT">
+        <xs:all>
+            <xs:element name="ID" type="xs:string"/>
+            <xs:element name="Nome" type="xs:string"/>
+            <xs:element name="Latitude" type="xs:float"/>
+            <xs:element name="Longitude" type="xs:float"/>
+            <xs:element name="Capacidade" type="xs:integer"/>
+            <xs:element name="Ocupado" type="xs:integer"/>
+            <xs:element name="Livre" type="xs:integer"/>
+        </xs:all>
+        <xs:anyAttribute processContents="skip"/>
+    </xs:complexType>
+</xs:schema>
