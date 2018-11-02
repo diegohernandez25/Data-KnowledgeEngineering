@@ -1,6 +1,8 @@
 import urllib.request, json
 import abc
 from lxml import etree
+from BaseXClient import BaseXClient
+import os.path
 
 #TODO CHECK XML SCHEMA AFTER EVERY API CHANGE
 class XMLService(abc.ABC):
@@ -24,12 +26,22 @@ class XMLService(abc.ABC):
 
 	def loadfileurl(url,decode=0):
 		fl=urllib.request.urlopen(url)
-		#return '\n'.join(map(lambda x:x.decode("utf-8"),list(fl)))
-		#return fl.read()
 		return fl.read().decode() if decode else fl.read()
 
 	def loadxmlurl(url,decode=0):
 		return etree.fromstring(XMLService.loadfileurl(url,decode))
+
+	def loadfile(filepath):
+		return open(filepath, 'r').read().replace('\n', '')
+
+	#allows to validate in xsd1.1
+	def basexvalidate(inxml,style): #inxml=string, style=filepath
+		session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
+		try:
+			session.execute('xquery validate:xsd('+inxml+',"'+style+'","1.1")')
+			return True
+		except:
+			return False
 
 class SASService(XMLService):
 	def __init__(self):
@@ -71,7 +83,7 @@ class SACService(XMLService):
 		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
 
 	def _validate(self):
-		return etree.XMLSchema(etree.parse('SACServiceSchema.xsd')).validate(self.txml)
+		return XMLService.basexvalidate(etree.tostring(self.txml).decode(),os.path.abspath('SACServiceSchema.xsd'))
 
 	def _fillstruct(self):
 		self.tickets=dict()
@@ -169,7 +181,7 @@ class UANews(XMLService):
 			#print(self.news)
 			#print("Description: "+n.find('./description').text)
 
-	def specific_fectch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
+	def specific_fetch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
 		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
 		if(dt): url+='&dt='+str(dt)+'&'
 		if(di): url+='&dt'+di+'&'
@@ -233,9 +245,9 @@ class WeatherService(XMLService):
 # print(a.lunch)
 #
 #
-# a=SACService()
-# a.get()
-# print(a.tickets)
+#a=SACService()
+#a.get()
+#print(a.tickets)
 # a = UAParking()
 # a.get()
 # print(a.parking)

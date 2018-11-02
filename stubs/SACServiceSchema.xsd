@@ -29,7 +29,7 @@
             <xs:element name="desc" type="xs:string"/>
             <xs:element name="latest" type="xs:integer"/>
             <xs:element name="wc" type="xs:integer"/>
-            <xs:any minOccurs="0" processContents="skip"/>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
         </xs:all>
         <xs:anyAttribute processContents="skip"/>
     </xs:complexType>
