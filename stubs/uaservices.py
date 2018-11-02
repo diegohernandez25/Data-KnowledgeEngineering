@@ -104,9 +104,9 @@ class UAParking(XMLService):
 			self.parking[park.find('./ID').text] = {'Nome': park.find('./Nome').text,\
 				'Latitude': park.find('./Latitude').text,\
 				'Longitude': park.find('./Longitude').text,\
-				'Capacidade':self.ltz(int(park.find'./Capacidade').text),\
-				'Ocupado': self.ltz(int(park.find'./Ocupado').text),\
-				'Livre': self.ltz(int(park.find'./Livre').text),\
+				'Capacidade':self.ltz(int(park.find('./Capacidade').text)),\
+				'Ocupado': self.ltz(int(park.find('./Ocupado').text)),\
+				'Livre': self.ltz(int(park.find('./Livre').text)),\
 				'Color': self.color_status(int(park.find('./Ocupado').text),int(park.find('./Capacidade').text))}
 		print(self.parking)
 
@@ -187,7 +187,7 @@ class UANews(XMLService):
 			#print(self.news)
 			#print("Description: "+n.find('./description').text)
 
-	def specific_fetch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
+	def specific_fectch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
 		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
 		if(dt): url+='&dt='+str(dt)+'&'
 		if(di): url+='&dt'+di+'&'
