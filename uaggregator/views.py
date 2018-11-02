@@ -14,8 +14,6 @@ def news(request):
     news = ua.UANews()
     news.get()
     tparams = {}
-    #print(news.news)
-    #for k,v in news.news:
     tparams['all_news'] = list(news.news.values())
     return render(request,'news.html',tparams)
     #return HttpRequest.build_absolute_uri('news.html')
@@ -56,4 +54,9 @@ def cantine(request):
     return render(request,'cantine.html',{})
 
 def parkinglot(request):
-    return render(request,'parkinglot.html',{})
+    parking = ua.UAParking()
+    parking.get()
+    tparams = {}
+    tparams['all_parkings'] = list(parking.parking.values())
+
+    return render(request,'parkinglot.html',tparams)
