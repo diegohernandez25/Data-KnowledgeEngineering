@@ -4,6 +4,9 @@ from lxml import etree
 from BaseXClient import BaseXClient
 import os.path
 
+#Global variables
+_parentdir = os.path.dirname(os.path.abspath(__file__))
+
 #TODO CHECK XML SCHEMA AFTER EVERY API CHANGE
 class XMLService(abc.ABC):
 	@abc.abstractmethod
@@ -20,8 +23,10 @@ class XMLService(abc.ABC):
 
 	def get(self):
 		self._fetch()
-		if not self._validate():
-			raise Exception('XML not compliant')
+		self._validate()
+		#if not self._validate():
+			#raise Exception('XML not compliant')
+		print("Valido")
 		self._fillstruct()
 
 	def loadfileurl(url,decode=0):
@@ -37,11 +42,11 @@ class XMLService(abc.ABC):
 	#allows to validate in xsd1.1
 	def basexvalidate(inxml,style): #inxml=string, style=filepath
 		session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
-		try:
-			session.execute('xquery validate:xsd('+inxml+',"'+style+'","1.1")')
-			return True
-		except:
-			return False
+		#try:
+		session.execute('xquery validate:xsd('+inxml+',"'+style+'","1.1")')
+		return True
+		#except:
+		#	return False
 
 class SASService(XMLService):
 	def __init__(self):
@@ -53,7 +58,7 @@ class SASService(XMLService):
 		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sas/ementas')
 
 	def _validate(self):
-		return etree.XMLSchema(etree.parse('SASServiceSchema.xsd')).validate(self.txml)
+		return etree.XMLSchema(etree.parse(_parentdir+'/SASServiceSchema.xsd')).validate(self.txml)
 
 	def _fillstruct(self):
 		self.lunch=dict()
@@ -83,7 +88,7 @@ class SACService(XMLService):
 		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
 
 	def _validate(self):
-		return XMLService.basexvalidate(etree.tostring(self.txml).decode(),os.path.abspath('SACServiceSchema.xsd'))
+		return XMLService.basexvalidate(etree.tostring(self.txml).decode(),os.path.abspath(_parentdir+'/SACServiceSchema.xsd'))
 
 	def _fillstruct(self):
 		self.tickets=dict()
@@ -177,9 +182,8 @@ class UANews(XMLService):
 		print(self.xml)
 
 	def _validate(self):
-		#TODO: Figure how to validate xml with schema
-		#return etree.XMLSchema(etree.parse('UANews.xsd')).validate(self.xml)
-		return True
+		return etree.XMLSchema(etree.parse(_parentdir+'/UANews.xsd')).validate(self.xml)
+		#return XMLService.basexvalidate(etree.tostring(self.xml).decode(),os.path.abspath('UANews.xsd'))
 
 	def _fillstruct(self):
 		self.news = dict()
@@ -196,28 +200,31 @@ class UANews(XMLService):
 
 			flag = not flag
 			count+=1
-			#print(self.news)
-			#print("Description: "+n.find('./description').text)
 
-	def specific_fetch(self,dt = None,n = None, di = None, df = None, d=None, i =1,lid=11):
-		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11'
-		if(dt): url+='&dt='+str(dt)+'&'
-		if(di): url+='&dt'+di+'&'
-		if(df): url+='&dt'+df+'&'
-		if(d): url+='&dt'+str(d)+'&'
-		url+='&dt'+str(i)+'&lid'+str(lid)
+	def specific_fetch(self,dt = None,n = None, di = None, df = None, d=None, i =11,lid=1):
+		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?'
+		print("Num of news: "+str(n))
+		if(dt): url+='dt='+str(dt)+'&'
+		if(di): url+='di='+di+'&'
+		if(df): url+='df='+df+'&'
+		if(d): url+='d='+str(d)+'&'
+		if(n): url+='n='+str(n)+'&'
+		if(url[len(url)-1]=='&'): url=url[:len(url)-1]
+		print("Specific fetch url: "+ url)
 		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl(url))));
 		#TODO: Validate
-		"""if not self._validate()
+		if not self._validate():
 			raise Exception('XML not compliant')
-		"""
+
 		self._fillstruct()
 
 	def get_image(self, string, thumb = False):
 		#TODO Image metadata has also valuable data that we may use if needed
 		#print("image :"+string[string.find('https'):string.find('jpg')+ len('jpg')])
-		return string[string.find('https'):string.find('jpg')+ len('jpg')] if thumb else\
+		_img_url= string[string.find('https'):string.find('jpg')+ len('jpg')] if thumb else\
 		string[string.find('https'): string.find('_thumb')]+'.jpg'
+
+		return "https://innapartments.com/inn-content/uploads/2016/11/aveiro-university-universidade-3-1024x576.jpg" if _img_url == ".jpg" else _img_url 
 
 
 	def get_description(self, string ):
@@ -257,18 +264,18 @@ class WeatherService(XMLService):
 			self.weather.append(entry)
 
 
-# a=SASService()
-# a.get()
-# print(a.lunch)
-#
-#
+#a=SASService()
+#a.get()
+#print(a.lunch)
+
+
 #a=SACService()
 #a.get()
 #print(a.tickets)
-# a = UAParking()
-# a.get()
-# print(a.parking)
-#
+#a = UAParking()
+#a.get()
+#print(a.parking)
+
 #a = UANews()
 #a.get()
 #print(a.news)

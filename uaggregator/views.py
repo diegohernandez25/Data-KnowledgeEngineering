@@ -11,14 +11,34 @@ def index(request):
     request.build_absolute_uri
 
 def news(request):
-    # assert isinstance(request, HttpRequest)
-    news = ua.UANews()
-    news.get()
-    tparams = {}
-    tparams['all_news'] = list(news.news.values())
-    print(tparams['all_news'])
-    return render(request,'news.html',tparams)
-    #return HttpRequest.build_absolute_uri('news.html')
+	assert isinstance(request, HttpRequest)
+	news = ua.UANews()
+	news.get()
+	tparams = {}
+		
+	if 'init_date' in request.POST or 'final_date' in request.POST and 'num' in request.POST:
+		print("This is a POST")
+		_init_date = request.POST['init_date']
+		_final_date = request.POST['final_date']
+		_num = request.POST['num']
+		if(not validate_date(_init_date)): _init_date=None
+		if(not validate_date(_final_date)): _final_date=None
+		news.specific_fetch(None,_num,_init_date,_final_date,None,1,11)	
+			
+	tparams['all_news'] = list(news.news.values())
+	print(tparams['all_news'])
+	return render(request,'news.html',tparams)
+	#return HttpRequest.build_absolute_uri('news.html')
+
+def validate_date(date):
+	print(date)
+	try:
+		datetime.datetime.strptime(date,'%d-%m-%Y')
+	except ValueError:
+		print("Incorrect data format, should be dd-mm-yyyy")
+		#raise ValueError("Incorrect data format, should be dd-mm-yyyy")
+		return False
+	return True
 
 def weather(request):
     weather = ua.WeatherService()
