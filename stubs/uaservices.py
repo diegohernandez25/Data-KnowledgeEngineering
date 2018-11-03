@@ -24,8 +24,8 @@ class XMLService(abc.ABC):
 	def get(self):
 		self._fetch()
 		self._validate()
-		#if not self._validate():
-			#raise Exception('XML not compliant')
+		if not self._validate():
+			raise Exception('XML not compliant')
 		print("Valido")
 		self._fillstruct()
 
@@ -42,11 +42,11 @@ class XMLService(abc.ABC):
 	#allows to validate in xsd1.1
 	def basexvalidate(inxml,style): #inxml=string, style=filepath
 		session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
-		#try:
-		session.execute('xquery validate:xsd('+inxml+',"'+style+'","1.1")')
-		return True
-		#except:
-		#	return False
+		try:
+			session.execute('xquery validate:xsd('+inxml+',"'+style+'","1.1")')
+			return True
+		except:
+			return False
 
 class SASService(XMLService):
 	def __init__(self):
@@ -113,6 +113,7 @@ class UAParking(XMLService):
 		self.JSON2XML()
 
 	def _validate(self):
+		#TODO
 		#return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
 		return True
 	def _fillstruct(self):

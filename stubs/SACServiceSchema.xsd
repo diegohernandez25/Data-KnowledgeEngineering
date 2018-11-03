@@ -22,7 +22,6 @@
         <xs:attribute name="count" type="xs:integer"/>
         <xs:anyAttribute processContents="skip"/>
     </xs:complexType>
-    <!--FIXME: Find better way to do this down here-->
     <xs:complexType name="itemT">
         <xs:all>
             <xs:element name="letter" type="char"/>
