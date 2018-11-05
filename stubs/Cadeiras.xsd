@@ -1,0 +1,49 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="cadeiras">
+        <xs:complexType>
+        <xs:sequence>
+               <xs:element name="cadeira" type="cadeiraT" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="cadeiraT">
+        <xs:sequence>
+            <xs:element name="nome" type="xs:string"/>
+            <xs:element name="ano" type="xs:integer"/>
+            <xs:element name="turmas">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="turma" type="turmaT" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="codigo" type="xs:integer" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="turmaT">
+        <xs:sequence>
+            <xs:element name="horarios" type="horariosT" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="turno" type="xs:string" use="required"/>
+        <xs:attribute name="tipo" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="horariosT">
+        <xs:sequence>
+            <xs:element name="aula" type="aulaT" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="aulaT">
+        <xs:sequence>
+            <xs:element name="sala" type="xs:string"/>
+            <xs:element name="inicio" type="xs:time"/>
+            <xs:element name="fim" type="xs:time"/>
+        </xs:sequence>
+        <xs:attribute name="dia_da_semana" type="xs:string" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

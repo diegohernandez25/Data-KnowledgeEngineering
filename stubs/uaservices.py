@@ -69,12 +69,14 @@ class SASService(XMLService):
 
 			entry=dict()
 			for item in menu.findall('./items/item'):
-				entry[item.attrib['name']]=item.text
-
+				entry["".join(item.attrib['name'].split())]=item.text
+				entry['name'] = menu.attrib['canteen']
 			entry['weekday']=menu.attrib['weekday']
 			if menu.attrib['meal']=='Almoço':
+				#self.lunch[menu.attrib['canteen']]=menu.attrib['canteen']
 				self.lunch[menu.attrib['canteen']]=entry
 			elif menu.attrib['meal']=='Jantar':
+				#self.dinner[menu.attrib['canteen']]=menu.attrib['canteen']
 				self.dinner[menu.attrib['canteen']]=entry
 			else:
 				raise Exception('Unknown meal time')
@@ -85,7 +87,8 @@ class SACService(XMLService):
 		self.tickets=None
 
 	def _fetch(self):
-		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
+		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas/?date=2018-10-17&count=100')	
+		#self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
 
 	def _validate(self):
 		return XMLService.basexvalidate(etree.tostring(self.txml).decode(),os.path.abspath(_parentdir+'/SACServiceSchema.xsd'))
@@ -98,7 +101,8 @@ class SACService(XMLService):
 		for ticket in self.txml.findall('./items/item'):
 			letter=ticket.find('./letter').text
 			if not letter in self.tickets:
-				self.tickets[letter]={'name': ticket.find('./desc').text, \
+				self.tickets[letter]={	'letter': ticket.find('.letter').text,\
+										'name': ticket.find('./desc').text, \
 										'latest': ticket.find('./latest').text, \
 										'wait_line_size': ticket.find('./wc').text}
 
@@ -114,8 +118,8 @@ class UAParking(XMLService):
 
 	def _validate(self):
 		#TODO
-		#return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
-		return True
+		return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
+	
 	def _fillstruct(self):
 		self.parking = dict()
 		for park in self.xml.findall('./Estacionamento'):
@@ -184,7 +188,6 @@ class UANews(XMLService):
 
 	def _validate(self):
 		return etree.XMLSchema(etree.parse(_parentdir+'/UANews.xsd')).validate(self.xml)
-		#return XMLService.basexvalidate(etree.tostring(self.xml).decode(),os.path.abspath('UANews.xsd'))
 
 	def _fillstruct(self):
 		self.news = dict()
@@ -225,7 +228,7 @@ class UANews(XMLService):
 		_img_url= string[string.find('https'):string.find('jpg')+ len('jpg')] if thumb else\
 		string[string.find('https'): string.find('_thumb')]+'.jpg'
 
-		return "https://innapartments.com/inn-content/uploads/2016/11/aveiro-university-universidade-3-1024x576.jpg" if _img_url == ".jpg" else _img_url 
+		return "https://innapartments.com/inn-content/uploads/2016/11/aveiro-university-universidade-3-1024x576.jpg" if _img_url == ".jpg" else _img_url
 
 
 	def get_description(self, string ):
@@ -264,11 +267,97 @@ class WeatherService(XMLService):
 
 			self.weather.append(entry)
 
+class ScheduleMaker(XMLService):
+	def __init__(self):
+		self.xml = None
+		self.schedules= None
+		self.daysarray=['segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira']
+		self.dict= dict()
+	def _fetch(self):
+		self.xml = str(XMLService.loadfile(_parentdir+'/cadeiras.xml'))
+		self.xml = etree.fromstring(self.xml)
+	
+	def _validate(self):
+		return etree.XMLSchema(etree.parse(_parentdir+'/Cadeiras.xsd')).validate(self.xml)
+
+	def _fillstruct(self):
+
+		for cadeira in self.xml.findall('.//cadeira'):
+			for turma in cadeira.findall('.//turma'):
+				aula = turma.find('./horarios/aula')
+				_init_hour = float(aula.find('./inicio').text.split(':')[0]) 
+				_fim_hour = float(aula.find('./fim').text.split(':')[0])
+				_init_min = float(aula.find('./inicio').text.split(':')[1])
+				_fim_min = float(aula.find('./fim').text.split(':')[1])
+				t_init = _init_hour + (_init_min/100)
+				t_fim = _fim_hour + (_fim_min/100)
+
+				_dict={	'cadeira':cadeira.find('./nome').text,\
+						'turno':turma.attrib['turno'],\
+						'tipo':turma.attrib['tipo'],\
+						'dia':aula.attrib['dia_da_semana'],\
+						'sala':aula.find('./sala').text,\
+						'inicio':aula.find('./inicio').text,\
+						't_init':t_init,\
+						'fim':aula.find('./fim').text,\
+						't_fim':t_fim}
+			
+				if(aula.attrib['dia_da_semana'] not in self.dict.keys()): 
+					self.dict[aula.attrib['dia_da_semana']]=[]
+				self.dict[aula.attrib['dia_da_semana']].append(_dict)
+		
+		
+		for day in self.daysarray:
+			if day in self.dict.keys():
+				self.dict[day] = sorted(self.dict[day], key=lambda k: k['t_init'])
+
+		#TODO: Falta por substituir tmp_limit
+		final_dict= dict()
+		for day in self.daysarray:
+			tmp_limit = 9.0
+			tmp_end = 20.0
+			tmp_list = []
+			if day in self.dict.keys(): #Have classes on that day
+				for elem_dict in self.dict[day]:
+					_timestamp = self.calculate_timeoffset(elem_dict['t_init'],elem_dict['t_fim'])
+					if(tmp_limit != elem_dict['t_init']):
+						_off_timestamp = self.calculate_timeoffset(tmp_limit,elem_dict['t_init'])
+						tmp_list.append(self.get_emptycolumn(_off_timestamp))
+						tmp_limit=elem_dict['t_init']
+					tmp_limit=elem_dict['t_fim']
+					elem_dict['columns']=_timestamp
+					tmp_list.append(elem_dict)
+
+				##fill emptyness
+				if(tmp_list[len(tmp_list)-1]['t_fim'] != tmp_end):
+					_timestamp = self.calculate_timeoffset(tmp_list[len(tmp_list)-1]['t_fim'],tmp_end)
+					tmp_list.append(self.get_emptycolumn(_timestamp))	
+			else: #Does not have classes on that day
+				_timestamp = self.calculate_timeoffset(tmp_limit,tmp_end)
+				tmp_list.append(self.get_emptycolumn(_timestamp))
+			
+			final_dict[day] = tmp_list
+
+		print("FINAL")
+		print(final_dict)
+		
+	def calculate_timeoffset(self, start, end):
+		_tmp = end - start
+		_tmp = int(_tmp)*2 + (1 if _tmp%int(_tmp) else 0)
+		return _tmp
+	
+	def get_emptycolumn(self, n):	
+		return {'cadeira': 'NONE', 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
+
+a=ScheduleMaker()
+a.get()
+#print(a.dict)
+		
 
 #a=SASService()
 #a.get()
 #print(a.lunch)
-
+#print(a.dinner)
 
 #a=SACService()
 #a.get()
