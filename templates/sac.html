@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Right Side Bar -->
+
+
+
+<div class="container" style="padding-left: 250px">
+    <div class="row">
+    {% for sac in all_sac%}
+        <div class="col-md-6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 center-block" style="margin:auto;">
+                        <h1 class="text-center">{{sac.letter}}</h1>
+                    </div>
+                    <div class="col-md-9">
+                        <h2 class="text-center">{{sac.name}}</h2>
+                        <br>
+                        <div class="container">
+                            <p><font size="5"><b> Latest: </b>{{sac.latest}}</font></p>
+                            <p><font size="5"><b> Line size: </b>{{sac.wait_line_size}}</font></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+</div>
+{% endblock %}
