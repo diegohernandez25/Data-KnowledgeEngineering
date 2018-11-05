@@ -27,7 +27,8 @@ urlpatterns = [
     path('canteen/', views.canteen, name ='canteen'),
     path('parkinglot/', views.parkinglot, name ='parkinglot'),
     path('weather/', views.weather, name ='weather'),
-    path('', views.index, name = 'index'),
+    path('sac/',views.sac, name='sac'),
+	path('', views.index, name = 'index'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

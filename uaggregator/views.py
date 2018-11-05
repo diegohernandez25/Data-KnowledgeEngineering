@@ -99,7 +99,23 @@ def room(request):
     return render(request,'room.html',{})
 
 def canteen(request):
-    return render(request,'canteen.html',{})
+	assert isinstance(request, HttpRequest)
+	_sas = ua.SASService()
+	_sas.get()
+	tparams = {}
+	tparams['all_lunch'] = list(_sas.lunch.values())
+	tparams['all_dinner'] = list(_sas.dinner.values())
+	print(tparams)
+	return render(request,'canteen.html',tparams)
+
+
+def sac(request):
+	assert isinstance(request, HttpRequest)
+	_sac = ua.SACService()
+	_sac.get()
+	tparams = {}
+	tparams['all_sac'] = list(_sac.tickets.values())
+	return render(request,'sac.html',tparams)
 
 def parkinglot(request):
     parking = ua.UAParking()
