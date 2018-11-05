@@ -82,4 +82,4 @@ declare updating function local:append_turma($id as xs:integer, $uc as xs:intege
 (: local:append_cadeira_step2(2, 47022) :)
 (: local:append_turma(2, 47022, "P4") :)
 (: local:fits_horario(2, 47022, "P3") :)
-doc("self_horarios")
+(:doc("self_horarios"):)
