@@ -81,6 +81,11 @@ class SASService(XMLService):
 			else:
 				raise Exception('Unknown meal time')
 
+		#print("LUNCH")
+		#print(self.lunch)
+		#print("DINNER")
+		#print(self.dinner)
+
 class SACService(XMLService):
 	def __init__(self):
 		self.txml=None
@@ -118,7 +123,7 @@ class UAParking(XMLService):
 
 	def _validate(self):
 		#TODO
-		return etree.XMLSchema(etree.parse('UAParkingSchema.xsd')).validate(self.xml)
+		return etree.XMLSchema(etree.parse(_parentdir+'/UAParkingSchema.xsd')).validate(self.xml)
 	
 	def _fillstruct(self):
 		self.parking = dict()
@@ -349,15 +354,16 @@ class ScheduleMaker(XMLService):
 	def get_emptycolumn(self, n):	
 		return {'cadeira': 'NONE', 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
 
-a=ScheduleMaker()
-a.get()
+#a=ScheduleMaker()
+#a.get()
 #print(a.dict)
 		
 
-#a=SASService()
-#a.get()
-#print(a.lunch)
-#print(a.dinner)
+a=SASService()
+a.get()
+print(a.lunch)
+print("Dinner")
+print(a.dinner)
 
 #a=SACService()
 #a.get()
