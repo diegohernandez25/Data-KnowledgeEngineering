@@ -22,7 +22,6 @@ declare function functx:day-of-week-pt( $date as xs:anyAtomicType? )  as xs:stri
 };
 
 
-
 declare function local:get_salas() as item(){
   <salas>{
     for $sala in distinct-values(doc('horarios_database')//sala)
@@ -73,6 +72,8 @@ declare function local:get_salas_sem_aula($inicio as xs:time,$fim as xs:time,$di
     return <sala>{$sala}</sala>
   }</salas>
 };
+
+(: local:reservar_sala("80313","04.1.02",xs:time("01:00:00"),xs:time("02:00:00"),xs:date("2018-11-05")) :)
 
 
 (:
