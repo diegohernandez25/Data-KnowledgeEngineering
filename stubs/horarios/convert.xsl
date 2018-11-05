@@ -54,26 +54,26 @@
                                                                    <xsl:for-each select="distinct-values(($root//tr[position()>1][*[5]=$cod_cadeira and *[7]=$turno_turma]/*[8])/font/text())">
                                                                        <aula>
 
-
-                                                                           <xsl:variable name="turma_aula" select="($root//tr[*[5]=$cod_cadeira and *[7]=$turno_turma])[1]"/>
+																		   <xsl:variable name="dia" select="."/>
+                                                                           <xsl:variable name="turma_aula" select="($root//tr[*[5]=$cod_cadeira and *[7]=$turno_turma and *[8]=$dia])[1]"/>
 
                                                                            <xsl:attribute name="dia_da_semana">
-                                                                               <xsl:if test=".='0'">
+                                                                               <xsl:if test="$dia='0'">
                                                                                    <xsl:text>segunda-feira</xsl:text>
                                                                                </xsl:if>
-                                                                               <xsl:if test=".='1'">
+                                                                               <xsl:if test="$dia='1'">
                                                                                    <xsl:text>terça-feira</xsl:text>
                                                                                </xsl:if>
-                                                                               <xsl:if test=".='2'">
+                                                                               <xsl:if test="$dia='2'">
                                                                                    <xsl:text>quarta-feira</xsl:text>
                                                                                </xsl:if>
-                                                                               <xsl:if test=".='3'">
+                                                                               <xsl:if test="$dia='3'">
                                                                                    <xsl:text>quinta-feira</xsl:text>
                                                                                </xsl:if>
-                                                                               <xsl:if test=".='4'">
+                                                                               <xsl:if test="$dia='4'">
                                                                                    <xsl:text>sexta-feira</xsl:text>
                                                                                </xsl:if>
-                                                                               <xsl:if test=".='5'">
+                                                                               <xsl:if test="$dia='5'">
                                                                                    <xsl:text>sabado</xsl:text>
                                                                                </xsl:if>
                                                                            </xsl:attribute>

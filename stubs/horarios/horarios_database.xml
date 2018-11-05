@@ -488,9 +488,9 @@
                 <fim>17:30:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>ANF. IV</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:30:00.0000000</fim>
+                <sala>ANF. V</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>12:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -819,9 +819,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="sexta-feira">
-                <sala>10.1.6</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>10.1.7</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -863,9 +863,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>11.1.31</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.28</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -877,9 +877,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>23.3.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>23.3.5</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -891,9 +891,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="sexta-feira">
-                <sala>11.1.28</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>11.1.26</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -905,9 +905,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>11.1.28</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.32</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -919,9 +919,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>23.3.9</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.31</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -933,9 +933,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.14</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>23.3.10</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -947,7 +947,7 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>11.1.29</sala>
+                <sala>23.3.9</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>18:00:00.0000000</fim>
               </aula>
@@ -961,9 +961,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>11.1.26</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.28</sala>
+                <inicio>13:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1018,8 +1018,8 @@
               </aula>
               <aula dia_da_semana="segunda-feira">
                 <sala>ANF. 22.3.2</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1031,9 +1031,9 @@
                 <fim>13:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <sala>ANF. 11.1.2</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1045,7 +1045,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>23.3.9</sala>
+                <sala>23.3.14</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -1059,7 +1059,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>12.2.11</sala>
+                <sala>23.3.10</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -1073,9 +1073,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.32</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1088,8 +1088,8 @@
               </aula>
               <aula dia_da_semana="sexta-feira">
                 <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1101,9 +1101,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>12.2.9</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1115,9 +1115,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>28.02.16</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>23.3.15</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1283,9 +1283,9 @@
                 <fim>17:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>ANF. IV</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:00:00.0000000</fim>
+                <sala>ANF. V</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1607,8 +1607,8 @@
               </aula>
               <aula dia_da_semana="segunda-feira">
                 <sala>04.1.02</sala>
-                <inicio>13:30:00.0000000</inicio>
-                <fim>15:00:00.0000000</fim>
+                <inicio>17:30:00.0000000</inicio>
+                <fim>19:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1647,7 +1647,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>ANF. V</sala>
+                <sala>04.1.02</sala>
                 <inicio>14:30:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -1922,9 +1922,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>ANF. IV</sala>
-                <inicio>09:30:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>04.1.02</sala>
+                <inicio>16:00:00.0000000</inicio>
+                <fim>17:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2012,8 +2012,8 @@
               </aula>
               <aula dia_da_semana="quarta-feira">
                 <sala>ANF. V</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:30:00.0000000</fim>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>12:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2085,9 +2085,9 @@
                 <fim>17:30:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>ANF. IV</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:30:00.0000000</fim>
+                <sala>ANF. V</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>12:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2307,9 +2307,9 @@
                 <fim>12:30:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>ANF. 12.1.1</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>12:30:00.0000000</fim>
+                <sala>10.1.8</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>10:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2348,9 +2348,9 @@
                 <fim>12:30:00.0000000</fim>
               </aula>
               <aula dia_da_semana="sexta-feira">
-                <sala>ANF. 22.3.2</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>12:30:00.0000000</fim>
+                <sala>10.1.8</sala>
+                <inicio>09:30:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2525,8 +2525,8 @@
               </aula>
               <aula dia_da_semana="segunda-feira">
                 <sala>ANF. 22.3.2</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2538,9 +2538,9 @@
                 <fim>13:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <sala>ANF. 11.1.2</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2552,7 +2552,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>23.3.9</sala>
+                <sala>23.3.14</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -2566,7 +2566,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>12.2.11</sala>
+                <sala>23.3.10</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -2580,9 +2580,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.32</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2595,8 +2595,8 @@
               </aula>
               <aula dia_da_semana="sexta-feira">
                 <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2608,9 +2608,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>12.2.9</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2622,9 +2622,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>28.02.16</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>23.3.15</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2696,9 +2696,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>11.1.31</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.28</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2710,9 +2710,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>23.3.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>23.3.5</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2724,9 +2724,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="sexta-feira">
-                <sala>11.1.28</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>11.1.26</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2738,9 +2738,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>11.1.28</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.32</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2752,9 +2752,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>23.3.9</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.31</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2766,9 +2766,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.14</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>23.3.10</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2780,7 +2780,7 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>11.1.29</sala>
+                <sala>23.3.9</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>18:00:00.0000000</fim>
               </aula>
@@ -2794,9 +2794,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>11.1.26</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.28</sala>
+                <inicio>13:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2850,9 +2850,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>ANF. V</sala>
-                <inicio>14:30:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>ANF. IV</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>10:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -3149,8 +3149,8 @@
               </aula>
               <aula dia_da_semana="quarta-feira">
                 <sala>ANF. IV</sala>
-                <inicio>10:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -3241,8 +3241,8 @@
               </aula>
               <aula dia_da_semana="segunda-feira">
                 <sala>ANF. IV</sala>
-                <inicio>10:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -3263,9 +3263,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>ANF. IV</sala>
-                <inicio>15:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>ANF. V</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4032,9 +4032,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="sexta-feira">
-                <sala>11.1.29</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.30</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4062,8 +4062,8 @@
               </aula>
               <aula dia_da_semana="segunda-feira">
                 <sala>ANF. 22.3.2</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4075,9 +4075,9 @@
                 <fim>13:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <sala>ANF. 11.1.2</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4089,7 +4089,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>23.3.9</sala>
+                <sala>23.3.14</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -4103,7 +4103,7 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>12.2.11</sala>
+                <sala>23.3.10</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -4117,9 +4117,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.32</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4132,8 +4132,8 @@
               </aula>
               <aula dia_da_semana="sexta-feira">
                 <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4145,9 +4145,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>12.2.9</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4159,9 +4159,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>28.02.16</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>23.3.15</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4233,9 +4233,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>11.1.31</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.28</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4247,9 +4247,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>23.3.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>23.3.5</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4261,9 +4261,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="sexta-feira">
-                <sala>11.1.28</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>11.1.26</sala>
+                <inicio>11:00:00.0000000</inicio>
+                <fim>13:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4275,9 +4275,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>11.1.28</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>11.1.32</sala>
+                <inicio>09:00:00.0000000</inicio>
+                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4289,9 +4289,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>23.3.9</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.31</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4303,9 +4303,9 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="segunda-feira">
-                <sala>23.3.14</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
+                <sala>23.3.10</sala>
+                <inicio>14:00:00.0000000</inicio>
+                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4317,7 +4317,7 @@
                 <fim>18:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>11.1.29</sala>
+                <sala>23.3.9</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>18:00:00.0000000</fim>
               </aula>
@@ -4331,9 +4331,9 @@
                 <fim>11:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>11.1.26</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
+                <sala>11.1.28</sala>
+                <inicio>13:00:00.0000000</inicio>
+                <fim>15:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4387,9 +4387,9 @@
                 <fim>12:30:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quinta-feira">
-                <sala>ANF. 12.1.19</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>12:30:00.0000000</fim>
+                <sala>ANF. 12.1.18</sala>
+                <inicio>16:00:00.0000000</inicio>
+                <fim>17:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4593,7 +4593,7 @@
                 <fim>10:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="quarta-feira">
-                <sala>ANF. V</sala>
+                <sala>ANF. IV</sala>
                 <inicio>09:00:00.0000000</inicio>
                 <fim>10:00:00.0000000</fim>
               </aula>
@@ -4748,9 +4748,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>04.1.19</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>04.2.20</sala>
+                <inicio>16:00:00.0000000</inicio>
+                <fim>18:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4762,9 +4762,9 @@
                 <fim>16:00:00.0000000</fim>
               </aula>
               <aula dia_da_semana="terça-feira">
-                <sala>04.1.19</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
+                <sala>04.2.20</sala>
+                <inicio>18:00:00.0000000</inicio>
+                <fim>20:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
