@@ -93,7 +93,14 @@ def weather(request):
     return render(request, 'weather.html', tparams)
 
 def schedule(request):
-    return render(request,'schedule.html',{})
+	assert isinstance(request, HttpRequest)
+	_schedule = ua.ScheduleMaker()
+	_schedule.get()
+	tparams = {}
+	#tparams['all_schedules'] = list(_schedule.schedules.values())	
+	tparams['all_schedules'] = _schedule.schedules	
+		
+	return render(request,'schedule.html',tparams)
 
 def room(request):
     return render(request,'room.html',{})
