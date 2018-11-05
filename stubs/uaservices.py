@@ -316,11 +316,10 @@ class ScheduleMaker(XMLService):
 			if day in self.dict.keys():
 				self.dict[day] = sorted(self.dict[day], key=lambda k: k['t_init'])
 
-		#TODO: Falta por substituir tmp_limit
 		final_dict= dict()
 		for day in self.daysarray:
 			tmp_limit = 9.0
-			tmp_end = 20.0
+			tmp_end = 21.0
 			tmp_list = []
 			if day in self.dict.keys(): #Have classes on that day
 				for elem_dict in self.dict[day]:
@@ -342,28 +341,29 @@ class ScheduleMaker(XMLService):
 				tmp_list.append(self.get_emptycolumn(_timestamp))
 			
 			final_dict[day] = tmp_list
-
-		print("FINAL")
-		print(final_dict)
 		
+		#print("FINAL")
+		#print(final_dict)
+		self.schedules=final_dict
+	
 	def calculate_timeoffset(self, start, end):
 		_tmp = end - start
 		_tmp = int(_tmp)*2 + (1 if _tmp%int(_tmp) else 0)
 		return _tmp
 	
 	def get_emptycolumn(self, n):	
-		return {'cadeira': 'NONE', 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
+		return {'cadeira': None, 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
 
-#a=ScheduleMaker()
-#a.get()
-#print(a.dict)
+a=ScheduleMaker()
+a.get()
+print(a.schedules)
 		
 
-a=SASService()
-a.get()
-print(a.lunch)
-print("Dinner")
-print(a.dinner)
+#a=SASService()
+#a.get()
+#print(a.lunch)
+#print("Dinner")
+#print(a.dinner)
 
 #a=SACService()
 #a.get()
