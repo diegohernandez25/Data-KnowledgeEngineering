@@ -2,16 +2,77 @@
 
 {% block content %}
 <!-- Right Side Bar -->
-<div class="w3-sidebar w3-bar-block w3-card" style="width:25%;right:0;">
+<!-- <div class="w3-sidebar w3-bar-block w3-card" style="width:25%;right:0;">
   <h3 class="w3-bar-item">Menu Room</h3>
   <a href="#" class="w3-bar-item w3-button">Link 1</a>
   <a href="#" class="w3-bar-item w3-button">Link 2</a>
   <a href="#" class="w3-bar-item w3-button">Link 3</a>
-</div>
+</div> -->
 
-<div class="container-fluid" style="padding-left: 250px">
+<!-- <div class="container-fluid" style="padding-left: 250px">
     <h1>Classroom</h1>
     <p></p>
     <p>We will use this page to show the available class rooms</p>
+</div> -->
+<div class="container" style="padding-left: 250px; padding-top:20px; padding-bottom:20px;">
+    <div class="row">
+        <div class="col-sm-6" style="border-right: 1px solid black; min-height:800px;">
+            <!-- <form> -->
+                <div>
+                    <h1> Procurar Salas Disponíveis</h1>
+                    <form action= "." method ="post">
+                            {% csrf_token %}
+                            <p style="padding-top:10px">
+                                <label for="data">Data :</label>
+                                <input type="date" id="data" name="data" required>
+                            </p>
+                            <p>
+                                <label for="appt-time">Hora Inicial :</label>
+                                <input id="appt-time" type="time" name="appt-time"
+                                       pattern="[0-9]{2}:[0-9]{2}" required>
+                            </p>
+                            <p>
+                                <label for="appt-time-last">Hora Final :</label>
+                                <input id="appt-time-last" type="time" name="appt-time-last"
+                                                     pattern="[0-9]{2}:[0-9]{2}" required>
+                            </p>
+                            <input type="submit" value="Submit form">
+
+                    </form>
+
+                </div>
+                <div>
+
+                </div>
+            <!-- </form> -->
+        </div>
+        <div class="col-sm-6" style=" min-height:800px;">
+            {% if info %}
+            <h3> Salas livres para {{info.data}}, das {{info.init_date}} até as {{info.final_date}}</h3>
+            {% endif %}
+            <form action="." method="post">
+                {% csrf_token %}
+                {% for room in all_rooms%}
+
+                <input type="radio" name="choice" value="{{room}}" > {{room}}<br>
+                <!-- <input type="radio" name="choice" value={{room.0}} > {{room.1}}<br> -->
+
+                {% endfor %}
+                {% if all_rooms%}<p>Número Mecanografico: <input type="number" name="nmec" min="0"  required/></p>
+                <input type="submit" value="Submit">
+                {% endif %}
+            </form>
+
+        </div>
+    </div>
 </div>
+
+<script>
+var startTime = document.getElementById("startTime");
+var valueSpan = document.getElementById("value");
+
+startTime.addEventListener("input", function() {
+  valueSpan.innerText = startTime.value;
+}, false);
+</script>
 {% endblock %}

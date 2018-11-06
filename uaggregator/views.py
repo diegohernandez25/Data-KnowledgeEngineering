@@ -4,6 +4,17 @@ from django.http import HttpResponse, HttpRequest
 
 import stubs.uaservices as ua
 import datetime
+import sys 
+
+from os.path import join
+from django.conf import settings
+
+
+
+sys.path+=[join(settings.BASE_DIR,'stubs/horarios')]
+import stubs.horarios.horario as horario
+
+
 
 def index(request):
     return render(request, 'index.html',{})
@@ -87,14 +98,14 @@ def weather(request):
             weekday: weather.weather[i]['Weekday'],
             status: weather_val,
             humidity: weather.weather[i]['Humidity'],
-            img: weather_img
+            img: weather_img, 
         })
 
     return render(request, 'weather.html', tparams)
 
 def schedule(request):
 	assert isinstance(request, HttpRequest)
-	_schedule = ua.ScheduleMaker(open('stubs/cadeiras.xml', 'r').read())
+	_schedule = ua.ScheduleMaker(horario.gerar_horarios(8240, 3))
 	_schedule.get()
 	tparams = {}
 	#tparams['all_schedules'] = list(_schedule.schedules.values())	
@@ -104,7 +115,38 @@ def schedule(request):
 	return render(request,'schedule.html',tparams)
 
 def room(request):
-    return render(request,'room.html',{})
+	assert isinstance(request, HttpRequest)
+	tparams= dict()
+	tparams['all_rooms']=list()
+	if 'data' in request.POST and 'appt-time' in request.POST and 'appt-time-last' in request.POST:
+		_data = request.POST['data']
+		_init_date = request.POST['appt-time']
+		_final_date = request.POST['appt-time-last']
+		_salas = horario.listar_salas_livres(_init_date,_final_date,_data)
+		for a in _salas:
+			print(a)
+		#tuple_horario_list=add_index(horario.listar_salas_livres(_init_date,_final_date,_data))
+		tparams['all_rooms']+= horario.listar_salas_livres(_init_date,_final_date,_data)
+		tparams['info']={'data':_data, 'init_date':_init_date, 'final_date':_final_date}
+	elif 'nmec' in request.POST:
+		print("POST checklist")
+		_nmec=request.POST['nmec']
+		print(_nmec)
+		_sala=request.POST['choice']
+		print(request.POST.get('choice'))
+		print(_sala)
+
+		horario.reservar_sala(_nmec,_sala,_init_date,_final_date,_data)
+		 
+	return render(request,'room.html',tparams)
+"""
+def add_index(_list):
+	tmp_l=list()
+	for i in range(0,len(_list)):
+		tmp_l.append(i,_list[i])
+	print tmp_l
+	return tmp_l
+"""
 
 def canteen(request):
 	assert isinstance(request, HttpRequest)

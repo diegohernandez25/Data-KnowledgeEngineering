@@ -70,7 +70,17 @@ declare updating function local:append_cadeira_step2($id as xs:integer, $uc as x
 };
 
 declare updating function local:append_turma($id as xs:integer, $curso as xs:integer, $uc as xs:integer, $turma as xs:string) {
-    insert node local:get_turma($uc, $curso, $turma) into doc("self_horarios")//turmas[../@codigo=$uc and ../../@id=$id]
+    insert nodes local:get_turma($uc, $curso, $turma) into doc("self_horarios")//turmas[../@codigo=$uc and ../../@id=$id]
+};
+
+declare updating function local:del_option($id) {
+  for $cadeiras in doc("self_horarios")//cadeiras
+  where $cadeiras/@id=$id
+  return delete node $cadeiras
+};
+
+declare function local:count_options() {
+  count(doc("self_horarios")//cadeiras)
 };
 
 declare function local:get_current_horario() {
@@ -79,13 +89,15 @@ declare function local:get_current_horario() {
 };
 
 
-
-
+(: local:get_ucs_ano(8240, 3) :)
 (: local:delete_tmp_horario() :)
 (: local:create_tmp_horario("/home/amargs/Dropbox/deti/edc/proj/edc-2018/stubs/horarios/tmp.xml") :)
 (: local:create_option(1) :)
-(: local:append_cadeira_step1(1,8240,47022) :)
-(: local:append_cadeira_step2(1, 47022) :)
-(: local:append_turma(1, 8240, 47022, "P1") :)
+(: local:append_cadeira_step1(1,8240,42509) :)
+(: local:append_cadeira_step2(1, 42509) :)
+(: local:append_turma(1, 8240, 42509, "P1") :)
 (: local:fits_horario(1, 42566, "P1") :)
 (: doc("self_horarios") :)
+(: local:del_option(1) :)
+
+(: local:get_uc(47139, 8240) :)
