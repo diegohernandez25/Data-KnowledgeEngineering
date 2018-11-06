@@ -105,11 +105,12 @@ def weather(request):
 
 def schedule(request):
 	assert isinstance(request, HttpRequest)
-	_schedule = ua.ScheduleMaker()
+	_schedule = ua.ScheduleMaker(open('stubs/cadeiras.xml', 'r').read())
 	_schedule.get()
 	tparams = {}
 	#tparams['all_schedules'] = list(_schedule.schedules.values())	
 	tparams['all_schedules'] = _schedule.schedules	
+	print(tparams)
 		
 	return render(request,'schedule.html',tparams)
 
