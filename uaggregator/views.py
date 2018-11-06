@@ -98,7 +98,7 @@ def weather(request):
             weekday: weather.weather[i]['Weekday'],
             status: weather_val,
             humidity: weather.weather[i]['Humidity'],
-            #img: 
+            img: weather_img, 
         })
 
     return render(request, 'weather.html', tparams)
