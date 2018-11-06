@@ -6,8 +6,8 @@ declare function local:get_ucs_ano($cod as xs:integer, $ano as xs:integer) as it
   }</cadeiras>
 };
 
-declare function local:get_uc($cod as xs:integer) as item(){
-    for $cadeira in doc('horarios_database')//cadeira
+declare function local:get_uc($cod as xs:integer, $curso as xs:integer) as item(){
+    for $cadeira in doc('horarios_database')//cadeira[../../@codigo=$curso]
     where $cadeira/@codigo=xs:string($cod)
     return $cadeira 
 };
@@ -22,8 +22,8 @@ declare function local:get_turmas_by_type($cod as xs:integer, $type as xs:string
 };
 
 
-declare function local:get_turma($cod as xs:integer, $turma_val as xs:string) as item(){
-  for $turma in doc('horarios_database')//turma[../../@codigo=$cod]
+declare function local:get_turma($cod as xs:integer, $curso as xs:integer, $turma_val as xs:string) as item(){
+  for $turma in doc('horarios_database')//turma[../../@codigo=$cod and ../../../../@codigo=$curso]
     where $turma/@turno=$turma_val
     return $turma
 };
@@ -60,8 +60,8 @@ declare updating function local:create_option($id as xs:integer) {
   insert node <cadeiras id="{$id}"/> into doc("self_horarios")/options
 };
 
-declare updating function local:append_cadeira_step1($id as xs:integer, $uc as xs:integer) {
-  insert node local:get_uc($uc) into doc("self_horarios")//cadeiras[@id=$id]
+declare updating function local:append_cadeira_step1($id as xs:integer, $curso as xs:integer, $uc as xs:integer) {
+  insert node local:get_uc($uc, $curso) into doc("self_horarios")//cadeiras[@id=$id]
 };
 
 declare updating function local:append_cadeira_step2($id as xs:integer, $uc as xs:integer) {
@@ -69,17 +69,23 @@ declare updating function local:append_cadeira_step2($id as xs:integer, $uc as x
   return delete nodes $turma
 };
 
-declare updating function local:append_turma($id as xs:integer, $uc as xs:integer, $turma as xs:string) {
-    insert node local:get_turma($uc, $turma) into doc("self_horarios")//turmas[../@codigo=$uc and ../../@id=$id]
+declare updating function local:append_turma($id as xs:integer, $curso as xs:integer, $uc as xs:integer, $turma as xs:string) {
+    insert node local:get_turma($uc, $curso, $turma) into doc("self_horarios")//turmas[../@codigo=$uc and ../../@id=$id]
 };
+
+declare function local:get_current_horario() {
+  let $doc := doc("self_horarios")
+  return $doc
+};
+
 
 
 
 (: local:delete_tmp_horario() :)
 (: local:create_tmp_horario("/home/amargs/Dropbox/deti/edc/proj/edc-2018/stubs/horarios/tmp.xml") :)
 (: local:create_option(1) :)
-(: local:append_cadeira_step1(2, 47022) :)
-(: local:append_cadeira_step2(2, 47022) :)
-(: local:append_turma(2, 47022, "P4") :)
-(: local:fits_horario(2, 47022, "P3") :)
-(:doc("self_horarios"):)
+(: local:append_cadeira_step1(1,8240,47022) :)
+(: local:append_cadeira_step2(1, 47022) :)
+(: local:append_turma(1, 8240, 47022, "P1") :)
+(: local:fits_horario(1, 42566, "P1") :)
+(: doc("self_horarios") :)
