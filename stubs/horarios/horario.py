@@ -1,6 +1,7 @@
 from lxml import etree
 from BaseXClient import BaseXClient
 import os.path
+from time import strptime,strftime
 session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
 
 def call_gerar_horarios(func):
@@ -9,22 +10,24 @@ def call_gerar_horarios(func):
 def call_gerar_reservas(func):
 	return session.execute('xquery \n'+open(os.path.join(os.path.dirname(__file__), 'horariofunc.xq'), 'r').read()+'\n'+func)
 
+def _reg_time(time):
+	return strftime("%H:%M:%S",strptime(time,"%H:%M"))
 
 #returns a list of strings
 def listar_salas_livres(inicio,fim,dia):
-	xml=etree.fromstring(call_gerar_reservas('local:get_salas_livres(xs:time("'+inicio+':00"),xs:time("'+fim+':00"),xs:date("'+dia+'"))'))
+	xml=etree.fromstring(call_gerar_reservas('local:get_salas_livres(xs:time("'+_reg_time(inicio)+'"),xs:time("'+_reg_time(fim)+'"),xs:date("'+dia+'"))'))
 	ret=list()
 	for el in xml.findall('.//sala'):
 		ret.append(el.text)
 	return ret
 
 def sala_reservada(sala,inicio,fim,dia):
-	return call_gerar_reservas('local:sala_reservada("'+sala+'",xs:time("'+inicio+':00"),xs:time("'+fim+':00"),xs:date("'+dia+'"))')=="true"
+	return call_gerar_reservas('local:sala_reservada("'+sala+'",xs:time("'+_reg_time(inicio)+'"),xs:time("'+_reg_time(fim)+'"),xs:date("'+dia+'"))')=="true"
 
 #returns true on success
 def reservar_sala(nmec,sala,inicio,fim,dia):
 	before=sala_reservada(sala,inicio,fim,dia)
-	call_gerar_reservas('local:reservar_sala('+str(nmec)+',"'+sala+'",xs:time("'+inicio+':00"),xs:time("'+fim+':00"),xs:date("'+dia+'"))')
+	call_gerar_reservas('local:reservar_sala('+str(nmec)+',"'+sala+'",xs:time("'+_reg_time(inicio)+'"),xs:time("'+_reg_time(fim)+'"),xs:date("'+dia+'"))')
 	return not before and sala_reservada(sala,inicio,fim,dia)
 
 #returns list of (sala,inicio,fim)
@@ -37,5 +40,5 @@ def get_reservas(nmec,dia):
 	return ret
 
 #print(get_reservas(12345,"2018-11-05"))
-#print(listar_salas_livres("17:00:00","20:00:00","2018-11-05"))
+print(listar_salas_livres("07:00","20:00","2018-11-05"))
 #print(reservar_sala(12345,"04.1.02","23:00:00","23:30:00","2018-11-05"))
