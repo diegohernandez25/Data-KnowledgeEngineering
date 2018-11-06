@@ -275,13 +275,13 @@ class WeatherService(XMLService):
 
 class ScheduleMaker(XMLService):
 	def __init__(self,in_xml):
-		self.xml = None
+		self.xml = in_xml
 		self.schedules= list()
 		self.daysarray=['segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira']
 		self.dict= dict()
-		self.in_xml=in_xml
 	def _fetch(self):
-		self.xml = etree.fromstring(self.in_xml)
+		pass
+		#self.xml = etree.fromstring(self.in_xml)
 	
 	def _validate(self):
 		return etree.XMLSchema(etree.parse(_parentdir+'/Cadeiras.xsd')).validate(self.xml)

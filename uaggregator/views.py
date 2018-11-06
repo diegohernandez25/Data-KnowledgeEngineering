@@ -12,7 +12,7 @@ from django.conf import settings
 
 
 sys.path+=[join(settings.BASE_DIR,'stubs/horarios')]
-import horario 
+import stubs.horarios.horario as horario
 
 
 
@@ -105,7 +105,7 @@ def weather(request):
 
 def schedule(request):
 	assert isinstance(request, HttpRequest)
-	_schedule = ua.ScheduleMaker(open('stubs/cadeiras.xml', 'r').read())
+	_schedule = ua.ScheduleMaker(horario.gerar_horarios(8240, 3))
 	_schedule.get()
 	tparams = {}
 	#tparams['all_schedules'] = list(_schedule.schedules.values())	

@@ -22,6 +22,7 @@ def gerar_horarios(curso, ano):
     tipos_ucs = dict()
     mandatory_classes = []
     codes = []
+    escolhas = dict()
 
     for uc in xml.findall('.//cadeira'):
         code = uc.attrib['codigo']
@@ -34,27 +35,40 @@ def gerar_horarios(curso, ano):
 
     call_gerar_horarios('local:create_tmp_horario("tmp.xml")')
 
-    for i in range (1, 2):
-        call_gerar_horarios('local:create_option(' + str(i) + ')')
 
+    for i in range (0, len(codes)):
+        call_gerar_horarios('local:create_option(' + str(i) + ')')
         for uc in codes:
+            print("DEBG: i:" + str(i) + " curso:" + str(curso)+ " uc:" + str(uc))
             call_gerar_horarios('local:append_cadeira_step1(' + str(i) + ', ' + str(curso) + ', ' + str(uc) + ')')
             call_gerar_horarios('local:append_cadeira_step2(' + str(i) + ', ' + str(uc) + ')')
 
         for (uc, tipo, turno) in mandatory_classes:
             call_gerar_horarios('local:append_turma(' + str(i) + ', ' + str(curso) + ', ' + str(uc) + ', "' + str(turno) + '")')
-            tipos_ucs[uc].remove(tipo)
+            if i==0:
+                tipos_ucs[uc].remove(tipo)
 
+        tmp = codes.pop(0)
+        codes.append(tmp)
+        print(codes)
         for uc in codes:
+            print(uc)
             for tipo in tipos_ucs[uc]:
-                turmas = xml.findall('.//turma[@tipo=\''+str(tipo)+'\']')
+                tmp = etree.fromstring(call_gerar_horarios('local:get_uc(' + str(uc) + ', ' + str(curso) + ')'))
+                turmas = tmp.findall('.//turma[@tipo=\''+str(tipo)+'\']')
                 for t in turmas:
-                    current = etree.fromstring(call_gerar_horarios('local:get_current_horario()'))
                     flag = call_gerar_horarios('local:fits_horario(' + str(i) + ', ' + str(uc) + ', "' + str(t.attrib['turno']) + '")')
                     if flag == "true":
+
+
+                        print("attempt: uc:" + str(uc) + " turno:" +  str(t.attrib['turno']))
                         call_gerar_horarios(
                             'local:append_turma(' + str(i) + ', ' + str(curso) + ', ' + str(uc) + ', "' + str(t.attrib['turno']) + '")')
                         break
+
+    gerados = etree.fromstring(call_gerar_horarios('local:get_current_horario()'))
+    print(etree.tostring(gerados).decode())
+    return gerados
 
 def tipo_aulas_uc(uc):
     tipo = []
@@ -66,10 +80,10 @@ def count_available_turmas(uc, uc_type):
     turnos = uc.findall('.//turma[@tipo=\''+str(uc_type)+'\']')
     return len(turnos)
 
-'''
-gerar_horarios(8240, 4)
-call_gerar_horarios('local:delete_tmp_horario()')
-'''
+
+#print(etree.tostring(gerar_horarios(8295, 1)).decode())
+#call_gerar_horarios('local:delete_tmp_horario()')
+
 
 def _reg_time(time):
 	return strftime("%H:%M:%S",strptime(time,"%H:%M"))
