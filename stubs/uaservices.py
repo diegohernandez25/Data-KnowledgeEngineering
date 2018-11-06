@@ -341,11 +341,13 @@ class ScheduleMaker(XMLService):
 					tmp_list.append(self.get_emptycolumn(_timestamp))
 				
 				final_dict[day] = tmp_list
-			
+				#print(final_dict[day])	
 			#print("FINAL")
 			#print(final_dict)
 			self.schedules.append(final_dict)
-	
+			self.dict=dict()
+		print(self.schedules[0])	
+		print(self.schedules[1])	
 	def calculate_timeoffset(self, start, end):
 		_tmp = end - start
 		_tmp = int(_tmp)*2 + (1 if _tmp%int(_tmp) else 0)
@@ -354,7 +356,7 @@ class ScheduleMaker(XMLService):
 	def get_emptycolumn(self, n):	
 		return {'cadeira': None, 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
 
-#a=ScheduleMaker()
+#a=ScheduleMaker(open('cadeiras.xml', 'r').read())
 #a.get()
 #print(a.schedules)
 		
