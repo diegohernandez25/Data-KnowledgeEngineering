@@ -1,11 +1,18 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="cadeiras">
-        <xs:complexType>
-        <xs:sequence>
-               <xs:element name="cadeira" type="cadeiraT" minOccurs="1" maxOccurs="unbounded"/>
-        </xs:sequence>
-        </xs:complexType>
+	<xs:element name="options">
+		<xs:complexType>
+		<xs:sequence>
+			<xs:element name="cadeiras" type="cadeirasT" minOccurs="1" maxOccurs="unbounded"/>	
+		</xs:sequence>
+		</xs:complexType>
     </xs:element>
+
+	<xs:complexType name="cadeirasT">
+	<xs:sequence>
+		   <xs:element name="cadeira" type="cadeiraT" minOccurs="1" maxOccurs="unbounded"/>
+	</xs:sequence>
+    <xs:attribute name="id" type="xs:integer" use="required"/>
+	</xs:complexType>
 
 
     <xs:complexType name="cadeiraT">

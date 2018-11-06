@@ -273,78 +273,78 @@ class WeatherService(XMLService):
 			self.weather.append(entry)
 
 class ScheduleMaker(XMLService):
-	def __init__(self):
+	def __init__(self,in_xml):
 		self.xml = None
-		self.schedules= None
+		self.schedules= list()
 		self.daysarray=['segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira']
 		self.dict= dict()
+		self.in_xml=in_xml
 	def _fetch(self):
-		self.xml = str(XMLService.loadfile(_parentdir+'/cadeiras.xml'))
-		self.xml = etree.fromstring(self.xml)
+		self.xml = etree.fromstring(self.in_xml)
 	
 	def _validate(self):
 		return etree.XMLSchema(etree.parse(_parentdir+'/Cadeiras.xsd')).validate(self.xml)
 
 	def _fillstruct(self):
+		for opcao in self.xml.findall('.//cadeiras'):
+			for cadeira in opcao.findall('.//cadeira'):
+				for turma in cadeira.findall('.//turma'):
+					aula = turma.find('./horarios/aula')
+					_init_hour = float(aula.find('./inicio').text.split(':')[0]) 
+					_fim_hour = float(aula.find('./fim').text.split(':')[0])
+					_init_min = float(aula.find('./inicio').text.split(':')[1])
+					_fim_min = float(aula.find('./fim').text.split(':')[1])
+					t_init = _init_hour + (_init_min/100)
+					t_fim = _fim_hour + (_fim_min/100)
 
-		for cadeira in self.xml.findall('.//cadeira'):
-			for turma in cadeira.findall('.//turma'):
-				aula = turma.find('./horarios/aula')
-				_init_hour = float(aula.find('./inicio').text.split(':')[0]) 
-				_fim_hour = float(aula.find('./fim').text.split(':')[0])
-				_init_min = float(aula.find('./inicio').text.split(':')[1])
-				_fim_min = float(aula.find('./fim').text.split(':')[1])
-				t_init = _init_hour + (_init_min/100)
-				t_fim = _fim_hour + (_fim_min/100)
-
-				_dict={	'cadeira':cadeira.find('./nome').text,\
-						'turno':turma.attrib['turno'],\
-						'tipo':turma.attrib['tipo'],\
-						'dia':aula.attrib['dia_da_semana'],\
-						'sala':aula.find('./sala').text,\
-						'inicio':aula.find('./inicio').text,\
-						't_init':t_init,\
-						'fim':aula.find('./fim').text,\
-						't_fim':t_fim}
+					_dict={	'cadeira':cadeira.find('./nome').text,\
+							'turno':turma.attrib['turno'],\
+							'tipo':turma.attrib['tipo'],\
+							'dia':aula.attrib['dia_da_semana'],\
+							'sala':aula.find('./sala').text,\
+							'inicio':aula.find('./inicio').text,\
+							't_init':t_init,\
+							'fim':aula.find('./fim').text,\
+							't_fim':t_fim}
+				
+					if(aula.attrib['dia_da_semana'] not in self.dict.keys()): 
+						self.dict[aula.attrib['dia_da_semana']]=[]
+					self.dict[aula.attrib['dia_da_semana']].append(_dict)
 			
-				if(aula.attrib['dia_da_semana'] not in self.dict.keys()): 
-					self.dict[aula.attrib['dia_da_semana']]=[]
-				self.dict[aula.attrib['dia_da_semana']].append(_dict)
-		
-		
-		for day in self.daysarray:
-			if day in self.dict.keys():
-				self.dict[day] = sorted(self.dict[day], key=lambda k: k['t_init'])
-
-		final_dict= dict()
-		for day in self.daysarray:
-			tmp_limit = 9.0
-			tmp_end = 21.0
-			tmp_list = []
-			if day in self.dict.keys(): #Have classes on that day
-				for elem_dict in self.dict[day]:
-					_timestamp = self.calculate_timeoffset(elem_dict['t_init'],elem_dict['t_fim'])
-					if(tmp_limit != elem_dict['t_init']):
-						_off_timestamp = self.calculate_timeoffset(tmp_limit,elem_dict['t_init'])
-						tmp_list.append(self.get_emptycolumn(_off_timestamp))
-						tmp_limit=elem_dict['t_init']
-					tmp_limit=elem_dict['t_fim']
-					elem_dict['columns']=_timestamp
-					tmp_list.append(elem_dict)
-
-				##fill emptyness
-				if(tmp_list[len(tmp_list)-1]['t_fim'] != tmp_end):
-					_timestamp = self.calculate_timeoffset(tmp_list[len(tmp_list)-1]['t_fim'],tmp_end)
-					tmp_list.append(self.get_emptycolumn(_timestamp))	
-			else: #Does not have classes on that day
-				_timestamp = self.calculate_timeoffset(tmp_limit,tmp_end)
-				tmp_list.append(self.get_emptycolumn(_timestamp))
 			
-			final_dict[day] = tmp_list
-		
-		#print("FINAL")
-		#print(final_dict)
-		self.schedules=final_dict
+			for day in self.daysarray:
+				if day in self.dict.keys():
+					self.dict[day] = sorted(self.dict[day], key=lambda k: k['t_init'])
+
+			final_dict= dict()
+			for day in self.daysarray:
+				tmp_limit = 9.0
+				tmp_end = 21.0
+				tmp_list = []
+				if day in self.dict.keys(): #Have classes on that day
+					for elem_dict in self.dict[day]:
+						_timestamp = self.calculate_timeoffset(elem_dict['t_init'],elem_dict['t_fim'])
+						if(tmp_limit != elem_dict['t_init']):
+							_off_timestamp = self.calculate_timeoffset(tmp_limit,elem_dict['t_init'])
+							tmp_list.append(self.get_emptycolumn(_off_timestamp))
+							tmp_limit=elem_dict['t_init']
+						tmp_limit=elem_dict['t_fim']
+						elem_dict['columns']=_timestamp
+						tmp_list.append(elem_dict)
+
+					##fill emptyness
+					if(tmp_list[len(tmp_list)-1]['t_fim'] != tmp_end):
+						_timestamp = self.calculate_timeoffset(tmp_list[len(tmp_list)-1]['t_fim'],tmp_end)
+						tmp_list.append(self.get_emptycolumn(_timestamp))	
+				else: #Does not have classes on that day
+					_timestamp = self.calculate_timeoffset(tmp_limit,tmp_end)
+					tmp_list.append(self.get_emptycolumn(_timestamp))
+				
+				final_dict[day] = tmp_list
+			
+			#print("FINAL")
+			#print(final_dict)
+			self.schedules.append(final_dict)
 	
 	def calculate_timeoffset(self, start, end):
 		_tmp = end - start
@@ -354,9 +354,9 @@ class ScheduleMaker(XMLService):
 	def get_emptycolumn(self, n):	
 		return {'cadeira': None, 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
 
-a=ScheduleMaker()
-a.get()
-print(a.schedules)
+#a=ScheduleMaker()
+#a.get()
+#print(a.schedules)
 		
 
 #a=SASService()

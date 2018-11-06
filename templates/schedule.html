@@ -4,54 +4,55 @@
 
 
 <div class="container" style="padding-left: 150px;padding-top:10px; ">
+	{% for opcao in all_schedules %}
+		<table>
+			<thead>
+				<col width="200">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
 
-    <table>
-        <thead>
-            <col width="200">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-            <col width="100">
-
-            <tr>
-                <th> Dias da Semana</th>
-                <th colspan="2">9h</th>
-                <th colspan="2">10h</th>
-                <th colspan="2">11h</th>
-                <th colspan="2">12h</th>
-                <th colspan="2">13h</th>
-                <th colspan="2">14h</th>
-                <th colspan="2">15h</th>
-                <th colspan="2">16h</th>
-                <th colspan="2">17h</th>
-                <th colspan="2">18h</th>
-                <th colspan="2">19h</th>
-                <th colspan="2">20h</th>
-            </tr>
-            <tbody>
-                {% for k in all_schedules.items %}
-                    <tr>
-                        <th>{{k.0}}</th>
-                        {% for v in k.1 %}
-                        <th colspan="{{v.columns}}">
-                        {% if v.cadeira != None %}
-                            <p>{{v.cadeira}}</p>
-                            <p>[{{v.turno}}] {{v.sala}}
-                            {% endif %}</th>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </thead>
-    </table>
+				<tr>
+					<th> Dias da Semana</th>
+					<th colspan="2">9h</th>
+					<th colspan="2">10h</th>
+					<th colspan="2">11h</th>
+					<th colspan="2">12h</th>
+					<th colspan="2">13h</th>
+					<th colspan="2">14h</th>
+					<th colspan="2">15h</th>
+					<th colspan="2">16h</th>
+					<th colspan="2">17h</th>
+					<th colspan="2">18h</th>
+					<th colspan="2">19h</th>
+					<th colspan="2">20h</th>
+				</tr>
+				<tbody>
+					{% for k in opcao.items %}
+						<tr>
+							<th>{{k.0}}</th>
+							{% for v in k.1 %}
+							<th colspan="{{v.columns}}">
+							{% if v.cadeira != None %}
+								<p>{{v.cadeira}}</p>
+								<p>[{{v.turno}}] {{v.sala}}
+								{% endif %}</th>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</thead>
+		</table>
+    {% endfor %}
 
 </div>
 {% endblock %}
