@@ -3,6 +3,7 @@ import abc
 from lxml import etree
 from BaseXClient import BaseXClient
 import os.path
+import time
 
 #Global variables
 _parentdir = os.path.dirname(os.path.abspath(__file__))
@@ -350,6 +351,7 @@ class ScheduleMaker(XMLService):
 		print(self.schedules[1])	
 	def calculate_timeoffset(self, start, end):
 		_tmp = end - start
+		if(_tmp==0.30) return 1
 		_tmp = int(_tmp)*2 + (1 if _tmp%int(_tmp) else 0)
 		return _tmp
 	
