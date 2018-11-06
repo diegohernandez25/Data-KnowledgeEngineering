@@ -25,7 +25,7 @@
                                         <xsl:value-of select="$cod_cadeira"/>
                                     </xsl:attribute>
 
-                                    <xsl:variable name="cadeira" select="$root//tr[*[5]/font/text()=$cod_cadeira][1]"/>
+                                    <xsl:variable name="cadeira" select="$root//tr[*[5]/font/text()=$cod_cadeira and *[12]/font/text()=$cod_curso][1]"/>
 
                                     <xsl:element name="nome">
                                         <xsl:value-of select="$cadeira/*[6]"/>
@@ -36,7 +36,7 @@
                                     </xsl:element>
 
                                     <turmas>
-                                        <xsl:for-each select="distinct-values($root//tr[position()>1][*[5]/font/text()=$cod_cadeira]/*[7]/font/text())">
+                                        <xsl:for-each select="distinct-values($root//tr[position()>1][*[5]/font/text()=$cod_cadeira and *[12]/font/text()=$cod_curso]/*[7]/font/text())">
                                            <turma>
 
                                                <xsl:variable name="turno_turma" select="."/>

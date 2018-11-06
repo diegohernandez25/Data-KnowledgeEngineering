@@ -453,15 +453,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="P3" tipo="P">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>04.1.04</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="P4" tipo="P">
             <horarios>
               <aula dia_da_semana="quinta-feira">
@@ -477,38 +468,6 @@
                 <sala>04.2.25</sala>
                 <inicio>09:00:00.0000000</inicio>
                 <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP2" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>ANF. IV</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:30:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>ANF. V</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>12:30:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P6" tipo="P">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>04.2.25</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P5" tipo="P">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>04.1.04</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -532,15 +491,6 @@
                 <sala>04.1.02</sala>
                 <inicio>17:30:00.0000000</inicio>
                 <fim>18:30:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT2" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>ANF. V</sala>
-                <inicio>18:30:00.0000000</inicio>
-                <fim>19:30:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -855,48 +805,6 @@
         <nome>ÁLGEBRA LINEAR E GEOMETRIA ANALÍTICA</nome>
         <ano>1</ano>
         <turmas>
-          <turma turno="TP4-2" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>11.1.31</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-3" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.5</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-5" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="sexta-feira">
-                <sala>11.1.26</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-7" tipo="TP">
             <horarios>
               <aula dia_da_semana="segunda-feira">
@@ -925,61 +833,10 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-6" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.14</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-1" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.29</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.9</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-4" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.26</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.1.28</sala>
-                <inicio>13:00:00.0000000</inicio>
-                <fim>15:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="OT4-1" tipo="OT">
             <horarios>
               <aula dia_da_semana="segunda-feira">
                 <sala>11.1.28</sala>
-                <inicio>18:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-2" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.9</sala>
                 <inicio>18:00:00.0000000</inicio>
                 <fim>19:00:00.0000000</fim>
               </aula>
@@ -994,63 +851,12 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="OT4-4" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.14</sala>
-                <inicio>18:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
         </turmas>
       </cadeira>
       <cadeira codigo="42728">
         <nome>CÁLCULO I</nome>
         <ano>1</ano>
         <turmas>
-          <turma turno="TP4-1" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>ANF. 22.3.2</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>ANF. 22.3.2</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-4" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>ANF. 11.1.2</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-6" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.3.9</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.14</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-7" tipo="TP">
             <horarios>
               <aula dia_da_semana="quinta-feira">
@@ -1062,34 +868,6 @@
                 <sala>23.3.10</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-2" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.15</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.32</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-5" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.3.15</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1107,71 +885,12 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-3" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>28.02.16</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-1" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.2.25</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>15:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-5" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>23.3.14</sala>
-                <inicio>10:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-3" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.1.29</sala>
-                <inicio>12:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-6" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.3.11</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="OT4-7" tipo="OT">
             <horarios>
               <aula dia_da_semana="quinta-feira">
                 <sala>11.2.25</sala>
                 <inicio>18:00:00.0000000</inicio>
                 <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-4" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>16.2.8</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>12:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -1755,51 +1474,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="P6" tipo="P">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.2.11</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P7" tipo="P">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.2.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P8" tipo="P">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.2.11</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P10" tipo="P">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.2.11</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P11" tipo="P">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>23.2.11</sala>
-                <inicio>10:00:00.0000000</inicio>
-                <fim>12:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP1" tipo="TP">
             <horarios>
               <aula dia_da_semana="terça-feira">
@@ -1818,15 +1492,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="P12" tipo="P">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.2.10</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="P13" tipo="P">
             <horarios>
               <aula dia_da_semana="terça-feira">
@@ -1836,28 +1501,10 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="P9" tipo="P">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.2.11</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="P5" tipo="P">
             <horarios>
               <aula dia_da_semana="sexta-feira">
                 <sala>23.2.10</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP3" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>ANF. 23.1.7</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
               </aula>
@@ -2041,30 +1688,12 @@
         <nome>MÉTODOS PROBABÍLISTICOS PARA ENGENHARIA INFORMÁTICA</nome>
         <ano>2</ano>
         <turmas>
-          <turma turno="P2" tipo="P">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>04.2.25</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="P3" tipo="P">
             <horarios>
               <aula dia_da_semana="terça-feira">
                 <sala>04.1.04</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P4" tipo="P">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>04.1.06</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2490,17 +2119,8 @@
       </cadeira>
       <cadeira codigo="45587">
         <nome>EXPLORAÇÃO DE DADOS</nome>
-        <ano>1</ano>
+        <ano>5</ano>
         <turmas>
-          <turma turno="TP1" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>04.2.16</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP2" tipo="TP">
             <horarios>
               <aula dia_da_semana="quinta-feira">
@@ -2516,20 +2136,6 @@
         <nome>CÁLCULO I</nome>
         <ano>1</ano>
         <turmas>
-          <turma turno="TP4-1" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>ANF. 22.3.2</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>ANF. 22.3.2</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-4" tipo="TP">
             <horarios>
               <aula dia_da_semana="sexta-feira">
@@ -2558,34 +2164,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-7" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>12.2.11</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.3.10</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-2" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.15</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.32</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-5" tipo="TP">
             <horarios>
               <aula dia_da_semana="quarta-feira">
@@ -2600,43 +2178,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-8" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>12.2.9</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-3" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>28.02.16</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.3.15</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-1" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.2.25</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>15:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="OT4-5" tipo="OT">
             <horarios>
               <aula dia_da_semana="quarta-feira">
@@ -2646,30 +2187,12 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="OT4-3" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.1.29</sala>
-                <inicio>12:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="OT4-6" tipo="OT">
             <horarios>
               <aula dia_da_semana="terça-feira">
                 <sala>23.3.11</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>17:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-7" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>11.2.25</sala>
-                <inicio>18:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2688,34 +2211,6 @@
         <nome>ÁLGEBRA LINEAR E GEOMETRIA ANALÍTICA</nome>
         <ano>1</ano>
         <turmas>
-          <turma turno="TP4-2" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>11.1.31</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-3" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.5</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-5" tipo="TP">
             <horarios>
               <aula dia_da_semana="segunda-feira">
@@ -2730,34 +2225,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-7" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.1.32</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-8" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.3.9</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="terça-feira">
-                <sala>11.1.31</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-6" tipo="TP">
             <horarios>
               <aula dia_da_semana="quinta-feira">
@@ -2769,20 +2236,6 @@
                 <sala>23.3.10</sala>
                 <inicio>14:00:00.0000000</inicio>
                 <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-1" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.29</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.9</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -2815,15 +2268,6 @@
                 <sala>23.3.9</sala>
                 <inicio>18:00:00.0000000</inicio>
                 <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-3" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>11.2.23</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -3344,42 +2788,6 @@
         <nome>INTRODUÇÃO AOS SISTEMAS DIGITAIS</nome>
         <ano>1</ano>
         <turmas>
-          <turma turno="P1" tipo="P">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.2.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P2" tipo="P">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.2.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P3" tipo="P">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.2.10</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P4" tipo="P">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.2.11</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="P6" tipo="P">
             <horarios>
               <aula dia_da_semana="sexta-feira">
@@ -3425,15 +2833,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP1" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>ANF. 23.1.6</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP2" tipo="TP">
             <horarios>
               <aula dia_da_semana="terça-feira">
@@ -3467,15 +2866,6 @@
                 <sala>23.2.11</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P5" tipo="P">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.2.10</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4067,48 +3457,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-4" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>ANF. 11.1.2</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-6" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.3.9</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.14</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-7" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>12.2.11</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.3.10</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-2" tipo="TP">
             <horarios>
               <aula dia_da_semana="quinta-feira">
@@ -4120,34 +3468,6 @@
                 <sala>11.1.32</sala>
                 <inicio>09:00:00.0000000</inicio>
                 <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-5" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>23.3.15</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.3.15</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-8" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.10</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>12.2.9</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4174,48 +3494,12 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="OT4-5" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quarta-feira">
-                <sala>23.3.14</sala>
-                <inicio>10:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="OT4-3" tipo="OT">
             <horarios>
               <aula dia_da_semana="quarta-feira">
                 <sala>11.1.29</sala>
                 <inicio>12:00:00.0000000</inicio>
                 <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-6" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>23.3.11</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-7" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>11.2.25</sala>
-                <inicio>18:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-4" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>16.2.8</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>12:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4253,62 +3537,6 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-5" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="sexta-feira">
-                <sala>11.1.26</sala>
-                <inicio>11:00:00.0000000</inicio>
-                <fim>13:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-7" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.1.32</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-8" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>23.3.9</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="terça-feira">
-                <sala>11.1.31</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="TP4-6" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>23.3.14</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="segunda-feira">
-                <sala>23.3.10</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="TP4-1" tipo="TP">
             <horarios>
               <aula dia_da_semana="segunda-feira">
@@ -4323,44 +3551,12 @@
               </aula>
             </horarios>
           </turma>
-          <turma turno="TP4-4" tipo="TP">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.26</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
-              </aula>
-              <aula dia_da_semana="quarta-feira">
-                <sala>11.1.28</sala>
-                <inicio>13:00:00.0000000</inicio>
-                <fim>15:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-1" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>11.1.28</sala>
-                <inicio>18:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="OT4-2" tipo="OT">
             <horarios>
               <aula dia_da_semana="quinta-feira">
                 <sala>23.3.9</sala>
                 <inicio>18:00:00.0000000</inicio>
                 <fim>19:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT4-3" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="terça-feira">
-                <sala>11.2.23</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>17:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4777,32 +3973,14 @@
     <cadeiras>
       <cadeira codigo="47232">
         <nome>SEGURANÇA</nome>
-        <ano>4</ano>
+        <ano>2</ano>
         <turmas>
-          <turma turno="P1" tipo="P">
-            <horarios>
-              <aula dia_da_semana="quinta-feira">
-                <sala>04.2.03</sala>
-                <inicio>14:00:00.0000000</inicio>
-                <fim>16:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="P2" tipo="P">
             <horarios>
               <aula dia_da_semana="quinta-feira">
                 <sala>04.2.03</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="P3" tipo="P">
-            <horarios>
-              <aula dia_da_semana="sexta-feira">
-                <sala>04.2.03</sala>
-                <inicio>09:00:00.0000000</inicio>
-                <fim>11:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
@@ -4819,17 +3997,8 @@
       </cadeira>
       <cadeira codigo="47053">
         <nome>COMPUTAÇÃO VISUAL</nome>
-        <ano>4</ano>
+        <ano>2</ano>
         <turmas>
-          <turma turno="P1" tipo="P">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>04.1.04</sala>
-                <inicio>16:00:00.0000000</inicio>
-                <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
           <turma turno="T1" tipo="T">
             <horarios>
               <aula dia_da_semana="segunda-feira">
@@ -4876,7 +4045,7 @@
       </cadeira>
       <cadeira codigo="47975">
         <nome>REDES E SERVIÇOS EM IMAGIOLOGIA</nome>
-        <ano>5</ano>
+        <ano>2</ano>
         <turmas>
           <turma turno="TP1" tipo="TP">
             <horarios>
@@ -4891,7 +4060,7 @@
       </cadeira>
       <cadeira codigo="41231">
         <nome>INTERAÇÃO MULTIMODAL</nome>
-        <ano>5</ano>
+        <ano>2</ano>
         <turmas>
           <turma turno="TP1" tipo="TP">
             <horarios>
@@ -4906,7 +4075,7 @@
       </cadeira>
       <cadeira codigo="41226">
         <nome>ROBÓTICA MÓVEL E INTELIGENTE</nome>
-        <ano>5</ano>
+        <ano>2</ano>
         <turmas>
           <turma turno="TP1" tipo="TP">
             <horarios>
@@ -5008,7 +4177,7 @@
       </cadeira>
       <cadeira codigo="42578">
         <nome>ENGENHARIA DE SERVIÇOS</nome>
-        <ano>5</ano>
+        <ano>2</ano>
         <turmas>
           <turma turno="TP1" tipo="TP">
             <horarios>
@@ -5023,7 +4192,7 @@
       </cadeira>
       <cadeira codigo="42593">
         <nome>PROGRAMAÇÃO CONCORRENTE ORIENTADA POR OBJECTOS</nome>
-        <ano>5</ano>
+        <ano>2</ano>
         <turmas>
           <turma turno="TP" tipo="TP">
             <horarios>
@@ -5062,7 +4231,7 @@
       </cadeira>
       <cadeira codigo="42596">
         <nome>RECUPERAÇÃO DE INFORMAÇÃO</nome>
-        <ano>5</ano>
+        <ano>1</ano>
         <turmas>
           <turma turno="TP1" tipo="TP">
             <horarios>
@@ -5077,7 +4246,7 @@
       </cadeira>
       <cadeira codigo="43948">
         <nome>EMPREENDEDORISMO</nome>
-        <ano>3</ano>
+        <ano>2</ano>
         <turmas>
           <turma turno="TP2" tipo="TP">
             <horarios>
@@ -5090,15 +4259,6 @@
                 <sala>10.1.11</sala>
                 <inicio>16:00:00.0000000</inicio>
                 <fim>18:00:00.0000000</fim>
-              </aula>
-            </horarios>
-          </turma>
-          <turma turno="OT" tipo="OT">
-            <horarios>
-              <aula dia_da_semana="segunda-feira">
-                <sala>10.1.11</sala>
-                <inicio>18:00:00.0000000</inicio>
-                <fim>19:00:00.0000000</fim>
               </aula>
             </horarios>
           </turma>
