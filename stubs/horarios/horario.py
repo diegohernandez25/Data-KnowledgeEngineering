@@ -12,19 +12,19 @@ def call_gerar_reservas(func):
 
 #returns a list of strings
 def listar_salas_livres(inicio,fim,dia):
-	xml=etree.fromstring(call_gerar_reservas('local:get_salas_livres(xs:time("'+inicio+'"),xs:time("'+fim+'"),xs:date("'+dia+'"))'))
+	xml=etree.fromstring(call_gerar_reservas('local:get_salas_livres(xs:time("'+inicio+':00"),xs:time("'+fim+':00"),xs:date("'+dia+'"))'))
 	ret=list()
 	for el in xml.findall('.//sala'):
 		ret.append(el.text)
 	return ret
 
 def sala_reservada(sala,inicio,fim,dia):
-	return call_gerar_reservas('local:sala_reservada("'+sala+'",xs:time("'+inicio+'"),xs:time("'+fim+'"),xs:date("'+dia+'"))')=="true"
+	return call_gerar_reservas('local:sala_reservada("'+sala+'",xs:time("'+inicio+':00"),xs:time("'+fim+':00"),xs:date("'+dia+'"))')=="true"
 
 #returns true on success
 def reservar_sala(nmec,sala,inicio,fim,dia):
 	before=sala_reservada(sala,inicio,fim,dia)
-	call_gerar_reservas('local:reservar_sala('+str(nmec)+',"'+sala+'",xs:time("'+inicio+'"),xs:time("'+fim+'"),xs:date("'+dia+'"))')
+	call_gerar_reservas('local:reservar_sala('+str(nmec)+',"'+sala+'",xs:time("'+inicio+':00"),xs:time("'+fim+':00"),xs:date("'+dia+'"))')
 	return not before and sala_reservada(sala,inicio,fim,dia)
 
 #returns list of (sala,inicio,fim)
