@@ -51,45 +51,36 @@ declare function local:sala_reservada($sala as xs:string,$inicio as xs:time,$fim
   return $cnt!=0
 };
 
-declare updating function local:reservar_sala($nmec as xs:string,$sala as xs:string,$inicio as xs:time,$fim as xs:time,$dia as xs:date){
+declare updating function local:reservar_sala($nmec as xs:integer,$sala as xs:string,$inicio as xs:time,$fim as xs:time,$dia as xs:date){
   
   if(local:is_sala_sem_aula($sala,$inicio,$fim,functx:day-of-week-pt($dia)) and local:sala_reservada($sala,$inicio,$fim,$dia)=(0=1))
   then(
     (:free spot:)
-    (:check for day:)
-    if(boolean(doc('reservas_database')//dia[@data=$dia])=(0=1))
-    then( (:add day:)
-      insert node <entrada nmec="{$nmec}" sala="{$sala}" dia="{$dia}" inicio="{$inicio}" fim="{$fim}"/> into doc('reservas_database')/reserva
-      
-    )  
+    insert node <entrada nmec="{$nmec}" sala="{$sala}" dia="{$dia}" inicio="{$inicio}" fim="{$fim}"/> into doc('reservas_database')/reserva
   )
 };
 
-declare function local:get_salas_sem_aula($inicio as xs:time,$fim as xs:time,$diadasemana as xs:string) as item(){
+declare function local:get_salas_livres($inicio as xs:time,$fim as xs:time,$dia as xs:date) as item(){
   <salas>{
     for $sala in local:get_salas()/sala/text()
-    where local:is_sala_sem_aula($sala,$inicio,$fim,$diadasemana)
+    where local:is_sala_sem_aula($sala,$inicio,$fim,functx:day-of-week-pt($dia)) and local:sala_reservada($sala,$inicio,$fim,$dia)=(0=1)
     return <sala>{$sala}</sala>
   }</salas>
 };
 
-(: local:reservar_sala("80313","04.1.02",xs:time("01:00:00"),xs:time("02:00:00"),xs:date("2018-11-05")) :)
+declare function local:get_reservas($nmec as xs:integer,$dia as xs:date) as item(){
+  <reservas>{
+    for $reserva in doc('reservas_database')//entrada[@nmec=$nmec and @dia=$dia]
+    return $reserva
+  }</reservas>
+};
 
-
-(:
-
-local:reservar_sala("80313","04.1.02",xs:time("11:00:00"),xs:time("12:00:00"),xs:date("2018-11-05"))
-
-local:sala_reservada("04.1.02",xs:time("12:00:00"),xs:time("13:00:00"),xs:date("2018-11-05"))
-
-local:get_salas_sem_aula(xs:time("17:00:00"),xs:time("20:00:00"),"segunda-feira")
-
-
-
-functx:day-of-week-pt(xs:date("2018-11-05"))
-
-local:sala_reservada("04.1.06",xs:time("13:00:00"),xs:time("14:00:00"),xs:date("2018-11-04"))
-
-local:get_salas_livres(xs:time("09:00:00"),xs:time("10:00:00"),"segunda-feira")
-local:is_sala_livre("04.1.06",xs:time("13:00:00"),xs:time("14:00:00"),"segunda-feira")
-local:get_salas():)
+(: local:get_salas_sem_aula(xs:time("17:00:00"),xs:time("20:00:00"),xs:date("2018-11-05")) :)
+(: local:reservar_sala(80313,"04.1.02",xs:time("01:00:00"),xs:time("02:00:00"),xs:date("2018-11-05")) :)
+(:local:reservar_sala("80313","04.1.02",xs:time("11:00:00"),xs:time("12:00:00"),xs:date("2018-11-05")):)
+(: local:sala_reservada("04.1.02",xs:time("12:00:00"),xs:time("13:00:00"),xs:date("2018-11-05")) :)
+(: functx:day-of-week-pt(xs:date("2018-11-05")) :)
+(: local:sala_reservada("04.1.06",xs:time("13:00:00"),xs:time("14:00:00"),xs:date("2018-11-04")) :)
+(: local:get_salas_livres(xs:time("09:00:00"),xs:time("10:00:00"),"segunda-feira") :)
+(: local:is_sala_livre("04.1.06",xs:time("13:00:00"),xs:time("14:00:00"),"segunda-feira") :)
+(: local:get_salas():) 
