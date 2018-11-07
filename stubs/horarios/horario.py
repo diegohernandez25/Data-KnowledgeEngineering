@@ -1,7 +1,7 @@
 from lxml import etree
 from BaseXClient import BaseXClient
 import os.path
-
+import itertools
 from lxml import etree
 from time import strptime,strftime
 session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
@@ -17,73 +17,141 @@ def call_gerar_reservas(func):
 
 
 def gerar_horarios(curso, ano):
+    call_gerar_horarios('local:create_tmp_horario("tmp.xml")')
     ucs = call_gerar_horarios('local:get_ucs_ano(' + str(curso) + ', ' + str(ano) + ')')
     xml = etree.fromstring(ucs)
-    tipos_ucs = dict()
-    mandatory_classes = []
-    codes = []
-    escolhas = dict()
 
-    for uc in xml.findall('.//cadeira'):
-        code = uc.attrib['codigo']
-        codes.append(code)
-        tipos_ucs[code] = tipo_aulas_uc(uc)
-        for tipo in tipos_ucs[code]:
-            if count_available_turmas(uc, tipo) == 1:
-                turno = uc.find('.//turma[@tipo=\''+str(tipo)+'\']').attrib['turno']
-                mandatory_classes.append((code, tipo, turno))
-
-    call_gerar_horarios('local:create_tmp_horario("tmp.xml")')
-
-
-    for i in range (0, len(codes)):
-        call_gerar_horarios('local:create_option(' + str(i) + ')')
-        for uc in codes:
-            print("DEBG: i:" + str(i) + " curso:" + str(curso)+ " uc:" + str(uc))
-            call_gerar_horarios('local:append_cadeira_step1(' + str(i) + ', ' + str(curso) + ', ' + str(uc) + ')')
-            call_gerar_horarios('local:append_cadeira_step2(' + str(i) + ', ' + str(uc) + ')')
-
-        for (uc, tipo, turno) in mandatory_classes:
-            call_gerar_horarios('local:append_turma(' + str(i) + ', ' + str(curso) + ', ' + str(uc) + ', "' + str(turno) + '")')
-            if i==0:
-                tipos_ucs[uc].remove(tipo)
-
-        tmp = codes.pop(0)
-        codes.append(tmp)
-        print(codes)
-        for uc in codes:
-            print(uc)
-            for tipo in tipos_ucs[uc]:
-                tmp = etree.fromstring(call_gerar_horarios('local:get_uc(' + str(uc) + ', ' + str(curso) + ')'))
-                turmas = tmp.findall('.//turma[@tipo=\''+str(tipo)+'\']')
-                for t in turmas:
-                    flag = call_gerar_horarios('local:fits_horario(' + str(i) + ', ' + str(uc) + ', "' + str(t.attrib['turno']) + '")')
-                    if flag == "true":
-
-
-                        print("attempt: uc:" + str(uc) + " turno:" +  str(t.attrib['turno']))
-                        call_gerar_horarios(
-                            'local:append_turma(' + str(i) + ', ' + str(curso) + ', ' + str(uc) + ', "' + str(t.attrib['turno']) + '")')
-                        break
+    pipelin = courses_to_xml(combine_courses(xml_to_courses(xml)), curso)
 
     gerados = etree.fromstring(call_gerar_horarios('local:get_current_horario()'))
-    print(etree.tostring(gerados).decode())
+
+    call_gerar_horarios('local:delete_tmp_horario()')
+
+    f = open("filetest.xml", "w")
+    f.write(etree.tostring(gerados).decode())
     return gerados
+
 
 def tipo_aulas_uc(uc):
     tipo = []
     for n in uc.findall('.//turma'):
         tipo.append(n.attrib['tipo'])
-    return set(tipo)
-
-def count_available_turmas(uc, uc_type):
-    turnos = uc.findall('.//turma[@tipo=\''+str(uc_type)+'\']')
-    return len(turnos)
+    return list(set(tipo))
 
 
-#print(etree.tostring(gerar_horarios(8295, 1)).decode())
-#call_gerar_horarios('local:delete_tmp_horario()')
 
+def xml_to_courses(ucs):
+    courses = ucs.findall(".//cadeira")
+    entries = dict()
+    for c in courses:
+        code = c.attrib['codigo']
+        entries[code] = xml_to_course(c)
+
+    return entries
+
+def xml_to_course(course):
+    tipos = tipo_aulas_uc(course)
+    turmas = course.findall(".//turma")
+    struct = dict()
+
+    for t in tipos:
+        if t != "OT":
+            struct[t] = []
+
+    for t in turmas:
+        if t.attrib["tipo"] != "OT":
+            if len(struct[t.attrib["tipo"]]) < 4 :
+                struct[t.attrib["tipo"]].append(t.attrib["turno"])
+
+    ret = []
+    for e in struct:
+        ret.append(struct[e])
+    return ret
+
+def courses_to_xml(courses, curso_id):
+    i = 0
+    count = 0
+    for c in courses:
+        call_gerar_horarios('local:create_option(' + str(i) + ')')
+
+        possible = course_to_xml(c, i, curso_id)
+        if possible:
+            count+=1
+        if count > 7:
+            break;
+        i+=1
+
+def course_to_xml(course, i, curso_id):
+    del_option = False
+    for c in course:
+        uc = c[0]
+
+        call_gerar_horarios('local:append_cadeira_step1(' + str(i) + ', ' + str(curso_id) + ', ' + str(uc) + ')')
+        call_gerar_horarios('local:append_cadeira_step2(' + str(i) + ', ' + str(uc) + ')')
+
+        for e in c[1]:
+            turma_val = e
+            turma_xml = call_gerar_horarios('local:get_turma(' + str(uc) + ', ' + str(curso_id) + ', \'' + str(turma_val) + '\')')
+            flag = call_gerar_horarios('local:fits_horario(' + str(i) + ', ' + str(uc) + ', "' + str(etree.fromstring(turma_xml).attrib['turno']) + '")')
+            if flag == "true":
+                call_gerar_horarios('local:append_turma(' + str(i) + ', ' + str(curso_id) + ', ' + str(uc) + ', "' + str(etree.fromstring(turma_xml).attrib['turno']) + '")')
+            else:
+                del_option = True
+                break;
+        if del_option:
+            call_gerar_horarios('local:del_option(' + str(i) + ')')
+            break
+    return not del_option
+
+def combine_courses(courses):
+    entries = []
+    options = []
+    for c in courses:
+        comb = list(itertools.product(*courses[c]))
+        local = []
+        for e in comb:
+            local.append([c, e])
+        options.append(local)
+
+    for i in range (0, len(options)):
+        for course in options[i]:
+            tmp = []
+            for o in options:
+                tmp.append(o.copy())
+            rmv = []
+
+            for e in tmp[i]:
+                if course[0] == e[0] and course != e:
+                    rmv.append(e)
+
+            for r in rmv:
+                tmp[i].remove(r)
+
+            if len(courses) == 2:
+                entries.append(list(itertools.product(tmp[0], tmp[1])))
+            elif len(courses) == 3:
+                entries.append(list(itertools.product(tmp[0], tmp[1], tmp[2])))
+            elif len(courses) == 4:
+                entries.append(list(itertools.product(tmp[0], tmp[1], tmp[2], tmp[3])))
+            elif len(courses) == 5:
+                entries.append(list(itertools.product(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4])))
+            elif len(courses) == 6:
+                entries.append(list(itertools.product(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5])))
+            elif len(courses) == 7:
+                entries.append(list(itertools.product(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6])))
+            elif len(courses) == 5:
+                entries.append(list(itertools.product(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7])))
+
+    timetable = []
+    i=0
+
+    for e in entries:
+        i+=1
+        for entry in e:
+            if entry not in timetable:
+                timetable.append(entry)
+
+    return timetable
 
 def _reg_time(time):
 	return strftime("%H:%M:%S",strptime(time,"%H:%M"))
