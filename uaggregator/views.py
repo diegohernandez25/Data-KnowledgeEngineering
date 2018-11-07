@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 # Create your views here.
 
@@ -118,26 +118,31 @@ def room(request):
 	assert isinstance(request, HttpRequest)
 	tparams= dict()
 	tparams['all_rooms']=list()
+	tparams['reserved']=False
 	if 'data' in request.POST and 'appt-time' in request.POST and 'appt-time-last' in request.POST:
 		_data = request.POST['data']
 		_init_date = request.POST['appt-time']
 		_final_date = request.POST['appt-time-last']
 		_salas = horario.listar_salas_livres(_init_date,_final_date,_data)
-		for a in _salas:
-			print(a)
-		#tuple_horario_list=add_index(horario.listar_salas_livres(_init_date,_final_date,_data))
+		
+		request.session['data'] = _data
+		request.session['init_date'] = _init_date
+		request.session['final_date'] = _final_date
+		
 		tparams['all_rooms']+= horario.listar_salas_livres(_init_date,_final_date,_data)
 		tparams['info']={'data':_data, 'init_date':_init_date, 'final_date':_final_date}
+	
 	elif 'nmec' in request.POST:
-		print("POST checklist")
 		_nmec=request.POST['nmec']
-		print(_nmec)
-		_sala=request.POST['choice']
-		print(request.POST.get('choice'))
-		print(_sala)
-
-		horario.reservar_sala(_nmec,_sala,_init_date,_final_date,_data)
-		 
+		_choice=request.POST['choice']
+		print(request.session['final_date'])
+			
+		if(horario.reservar_sala(_nmec,_choice,request.session['init_date'],request.session['final_date'],request.session['data'])):
+			tparams['reserved']=True
+			#if request.session['all_reservas']==None:
+			#	request.session['all_reservas'])=list()
+			#request.session['all_reservas'].append({'sala':request.session['init_date']})
+		
 	return render(request,'room.html',tparams)
 """
 def add_index(_list):

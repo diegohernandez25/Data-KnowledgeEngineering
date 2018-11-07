@@ -14,42 +14,47 @@
     <p></p>
     <p>We will use this page to show the available class rooms</p>
 </div> -->
-<div class="container" style="padding-left: 250px; padding-top:20px; padding-bottom:20px;">
+<div onload="snackBar()" class="container" style="padding-left: 250px; padding-top:20px; padding-bottom:20px;">
     <div class="row">
         <div class="col-sm-6" style="border-right: 1px solid black; min-height:800px;">
-            <!-- <form> -->
-                <div>
-                    <h1> Procurar Salas Disponíveis</h1>
-                    <form action= "." method ="post">
-                            {% csrf_token %}
-                            <p style="padding-top:10px">
-                                <label for="data">Data :</label>
-                                <input type="date" id="data" name="data" required>
-                            </p>
-                            <p>
-                                <label for="appt-time">Hora Inicial :</label>
-                                <input id="appt-time" type="time" name="appt-time"
-                                       pattern="[0-9]{2}:[0-9]{2}" required>
-                            </p>
-                            <p>
-                                <label for="appt-time-last">Hora Final :</label>
-                                <input id="appt-time-last" type="time" name="appt-time-last"
-                                                     pattern="[0-9]{2}:[0-9]{2}" required>
-                            </p>
-                            <input type="submit" value="Submit form">
+            <div>
+                <h1> Procurar Salas Disponíveis</h1>
+                <form action= "." method ="post">
+                        {% csrf_token %}
+                        <p style="padding-top:10px">
+                            <label for="data">Data :</label>
+                            <input type="date" id="data" name="data" required>
+                        </p>
+                        <p>
+                            <label for="appt-time">Hora Inicial :</label>
+                            <input id="appt-time" type="time" name="appt-time"
+                                   pattern="[0-9]{2}:[0-9]{2}" required>
+                        </p>
+                        <p>
+                            <label for="appt-time-last">Hora Final :</label>
+                            <input id="appt-time-last" type="time" name="appt-time-last"
+                                                 pattern="[0-9]{2}:[0-9]{2}" required>
+                        </p>
+                        <input type="submit" value="Submit form">
 
-                    </form>
+                </form>
+            </div>
 
-                </div>
-                <div>
-
-                </div>
-            <!-- </form> -->
+            <!-- <div class="container">
+                {%for i in all_reservas%}
+                <p>{{i.sala}}</p>
+                <p>{{i.date}}</p>
+                <p>{{i.ihora}}</p>
+                <p>{{i.fhora}}</p>
+                {%endfor%}
+            </div> -->
         </div>
         <div class="col-sm-6" style=" min-height:800px;">
+
             {% if info %}
-            <h3> Salas livres para {{info.data}}, das {{info.init_date}} até as {{info.final_date}}</h3>
+            <h3> Salas livres para {{info.data}}</span>, das {{info.init_date}} até as {{info.final_date}}</h3>
             {% endif %}
+
             <form action="." method="post">
                 {% csrf_token %}
                 {% for room in all_rooms%}
@@ -74,5 +79,6 @@ var valueSpan = document.getElementById("value");
 startTime.addEventListener("input", function() {
   valueSpan.innerText = startTime.value;
 }, false);
+
 </script>
 {% endblock %}

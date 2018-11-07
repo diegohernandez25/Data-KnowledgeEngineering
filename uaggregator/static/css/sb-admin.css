@@ -428,7 +428,7 @@ p.big{
 
 .parking-block{
 
-    height:80px;
+    height:100px;
     margin-bottom:20px;
     margin-top:20px;
     margin-left:20px;
@@ -480,3 +480,5 @@ p.big{
         tfoot {
           font-weight: bold;
         }
+
+        
