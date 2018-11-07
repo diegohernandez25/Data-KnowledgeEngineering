@@ -110,7 +110,7 @@ def schedule(request):
 	tparams = {}
 	#tparams['all_schedules'] = list(_schedule.schedules.values())	
 	tparams['all_schedules'] = _schedule.schedules	
-	print(tparams)
+	#print(tparams)
 		
 	return render(request,'schedule.html',tparams)
 
