@@ -4,6 +4,28 @@
 
 
 <div class="container" style="padding-left: 150px;padding-top:10px; ">
+	<div>
+  	 <h1> Gerar horarios</h1>
+		<form action= "." method ="post">
+			{% csrf_token %}
+			Curso: <select name='curso'>
+				<option value='9263'>MEI</option>
+				<option value='8295'>LEI</option>
+				<option value='8240'>MIECT</option>
+				<option value='8309'>MIEET</option>
+			</select>
+			Ano: <select name='ano'>
+				<option value='1'>1º</option>
+				<option value='2'>2º</option>
+				<option value='3'>3º</option>
+				<option value='4'>4º</option>
+				<option value='5'>5º</option>
+			</select>
+			<input type="submit" value="Gerar">
+
+		</form>
+	</div>
+
 	{% for opcao in all_schedules %}
 		<table>
 			<thead>

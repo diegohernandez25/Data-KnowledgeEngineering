@@ -105,12 +105,13 @@ def weather(request):
 
 def schedule(request):
 	assert isinstance(request, HttpRequest)
-	_schedule = ua.ScheduleMaker(horario.gerar_horarios(8240, 3))
-	_schedule.get()
 	tparams = {}
-	#tparams['all_schedules'] = list(_schedule.schedules.values())	
-	tparams['all_schedules'] = _schedule.schedules	
-	#print(tparams)
+	if 'curso' in request.POST and 'ano' in request.POST:
+		_ano=int(request.POST['ano'])
+		_curso=int(request.POST['curso'])
+		_schedule = ua.ScheduleMaker(horario.gerar_horarios(_curso,_ano))
+		_schedule.get()
+		tparams['all_schedules'] = _schedule.schedules	
 		
 	return render(request,'schedule.html',tparams)
 
