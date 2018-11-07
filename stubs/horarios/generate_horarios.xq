@@ -38,8 +38,9 @@ declare function local:get_turma_hours($cod as xs:integer, $turno as xs:string) 
 };
 
 declare function local:fits_horario($id as xs:integer, $uc as xs:integer, $turma as xs:string) as item() {
-  let $new := local:get_turma_hours($uc, $turma)
+  let $new_hours := local:get_turma_hours($uc, $turma)
   let $cnt:=count(
+  for $new in $new_hours//aula
   for $aula in doc('self_horarios')//aula[../../../../../@id=$id]
   where $aula/@dia_da_semana=$new//aula/@dia_da_semana and
   ($new//aula/inicio<=$aula/inicio and $new//aula/fim>$aula/inicio or
@@ -88,7 +89,7 @@ declare function local:get_current_horario() {
   return $doc
 };
 
-
+(: local:get_turma_hours(42509,"T1") :)
 (: local:get_ucs_ano(8240, 3) :)
 (: local:delete_tmp_horario() :)
 (: local:create_tmp_horario("/home/amargs/Dropbox/deti/edc/proj/edc-2018/stubs/horarios/tmp.xml") :)
