@@ -40,13 +40,14 @@ declare function local:get_turma_hours($cod as xs:integer, $turno as xs:string) 
 declare function local:fits_horario($id as xs:integer, $uc as xs:integer, $turma as xs:string) as item() {
   let $new_hours := local:get_turma_hours($uc, $turma)
   let $cnt:=count(
-  for $new in $new_hours//aula
-  for $aula in doc('self_horarios')//aula[../../../../../@id=$id]
-  where $aula/@dia_da_semana=$new//aula/@dia_da_semana and
-  ($new//aula/inicio<=$aula/inicio and $new//aula/fim>$aula/inicio or
-          $new//aula/inicio>$aula/inicio and $new//aula/inicio<$aula/fim)
-  return <unmatch/>)
-    return $cnt=0
+    for $new in $new_hours//aula
+    return(
+      for $aula in doc('self_horarios')//aula[../../../../../@id=$id]
+      where $aula/@dia_da_semana=$new/@dia_da_semana and
+      ($new/inicio<=$aula/inicio and $new/fim>$aula/inicio or
+              $new/inicio>$aula/inicio and $new/inicio<$aula/fim)
+      return <unmatch/>))
+  return $cnt=0
 };
 
 declare updating function local:create_tmp_horario($file as xs:string) {
