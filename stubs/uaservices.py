@@ -93,8 +93,8 @@ class SACService(XMLService):
 		self.tickets=None
 
 	def _fetch(self):
-		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas/?date=2018-10-17&count=100')	
-		#self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
+		#self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas/?date=2018-10-17&count=100')	
+		self.txml=XMLService.loadxmlurl('http://services.web.ua.pt/sac/senhas')
 
 	def _validate(self):
 		return XMLService.basexvalidate(etree.tostring(self.txml).decode(),os.path.abspath(_parentdir+'/SACServiceSchema.xsd'))
@@ -172,11 +172,12 @@ class UAParking(XMLService):
 	def color_status(self, occupied, capacity):
 		if occupied<0: occupied=0
 
-		_per = occupied/capacity
+		_per = (float(occupied)/capacity)*100.0
+		print(_per)
 		if _per>90:
-			return "#F4BC8B"
-		elif _per>75:
 			return "#D87777"
+		elif _per>75:
+			return "#F4BC8B"
 		elif _per>50:
 			return "#F4D386"
 		else:
