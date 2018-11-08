@@ -34,7 +34,10 @@ def news(request):
 		_num = request.POST['num']
 		if(not validate_date(_init_date)): _init_date=None
 		if(not validate_date(_final_date)): _final_date=None
-		news.specific_fetch(None,_num,_init_date,_final_date,None,1,11)	
+		try:
+			news.specific_fetch(None,_num,_init_date,_final_date,None,1,11)	
+		except:
+			news.get()
 			
 	tparams['all_news'] = list(news.news.values())
 	print(tparams['all_news'])
