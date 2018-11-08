@@ -13,9 +13,9 @@
 
     <div class="container">
         <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
-        <p><b>Initial date: </b> Specify the most recent date a the new</p>
-        <p><b>Final date: </b> Specify the most later date of a new</p>
-        <p><b>Note: </b> News must be on the format <b>DD-MM-YYYY</b>, (Ex: 25-03-2018)</p>
+        <p><b>Initial date: </b> Most recent date.</p>
+        <p><b>Final date: </b> Least recent date.</p>
+        <p><b>Note: </b> News date must be on format <b>DD-MM-YYYY</b>, (Ex: 25-03-2018)</p>
         <form action: "." method ="post">
             {% csrf_token %}
             <p>Initial Date: <input type="text" name="init_date"/></p>
@@ -63,7 +63,7 @@
 
 </div>
 
-<button class="w3-button  w3-xlarge" onclick="w3_open()" style=" background:#00577A;height: auto;200px;"><b style="color: white;"><<</b></button>
+<button class="w3-button  w3-xlarge" onclick="w3_open()" style=" background:#00577A;height: auto;200px;"><b style="color: white;"><span style="color:#00577A"><<</span></b></button>
 <script>
 function w3_open() {
     document.getElementById("mySidebar").style.display = "block";

@@ -137,7 +137,7 @@ def room(request):
 		_nmec=request.POST['nmec']
 		_choice=request.POST['choice']
 		print(request.session['final_date'])
-			
+		print(request.session['data'])
 		if(horario.reservar_sala(_nmec,_choice,request.session['init_date'],request.session['final_date'],request.session['data'])):
 			tparams['reserved']=True
 			#if request.session['all_reservas']==None:
