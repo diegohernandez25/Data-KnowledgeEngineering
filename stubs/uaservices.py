@@ -229,7 +229,6 @@ class UANews(XMLService):
 class WeatherService(XMLService):
 	def __init__(self):
 		self.txml=None
-		#self.lastupdate=None
 		self.weather=None
 
 	def _fetch(self):
@@ -265,7 +264,6 @@ class ScheduleMaker(XMLService):
 		self.dict= dict()
 	def _fetch(self):
 		pass
-		#self.xml = etree.fromstring(self.in_xml)
 	
 	def _validate(self):
 		return etree.XMLSchema(etree.parse(_parentdir+'/Cadeiras.xsd')).validate(self.xml)

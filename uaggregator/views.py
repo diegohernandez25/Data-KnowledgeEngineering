@@ -112,8 +112,12 @@ def schedule(request):
 		schedule_already_running=True
 		_ano=int(request.POST['ano'])
 		_curso=int(request.POST['curso'])
-		_schedule = ua.ScheduleMaker(horario.gerar_horarios(_curso,_ano))
-		_schedule.get()
+		try:
+			_schedule = ua.ScheduleMaker(horario.gerar_horarios(_curso,_ano))
+			_schedule.get()
+		except:
+			schedule_already_running=False
+			raise
 		schedule_already_running=False
 		tparams['all_schedules'] = _schedule.schedules	
 		
