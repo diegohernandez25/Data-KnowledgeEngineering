@@ -28,7 +28,6 @@ def news(request):
 	tparams = {}
 		
 	if 'init_date' in request.POST or 'final_date' in request.POST and 'num' in request.POST:
-		print("This is a POST")
 		_init_date = request.POST['init_date']
 		_final_date = request.POST['final_date']
 		_num = request.POST['num']
@@ -40,12 +39,10 @@ def news(request):
 			news.get()
 			
 	tparams['all_news'] = list(news.news.values())
-	print(tparams['all_news'])
 	return render(request,'news.html',tparams)
 	#return HttpRequest.build_absolute_uri('news.html')
 
 def validate_date(date):
-	print(date)
 	try:
 		datetime.datetime.strptime(date,'%d-%m-%Y')
 	except ValueError:
@@ -139,8 +136,6 @@ def room(request):
 	elif 'nmec' in request.POST:
 		_nmec=request.POST['nmec']
 		_choice=request.POST['choice']
-		print(request.session['final_date'])
-		print(request.session['data'])
 		if(horario.reservar_sala(_nmec,_choice,request.session['init_date'],request.session['final_date'],request.session['data'])):
 			tparams['reserved']=True
 			#if request.session['all_reservas']==None:
@@ -148,14 +143,6 @@ def room(request):
 			#request.session['all_reservas'].append({'sala':request.session['init_date']})
 		
 	return render(request,'room.html',tparams)
-"""
-def add_index(_list):
-	tmp_l=list()
-	for i in range(0,len(_list)):
-		tmp_l.append(i,_list[i])
-	print tmp_l
-	return tmp_l
-"""
 
 def canteen(request):
 	assert isinstance(request, HttpRequest)
@@ -164,7 +151,6 @@ def canteen(request):
 	tparams = {}
 	tparams['all_lunch'] = list(_sas.lunch.values())
 	tparams['all_dinner'] = list(_sas.dinner.values())
-	print(tparams)
 	return render(request,'canteen.html',tparams)
 
 
