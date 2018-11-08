@@ -103,14 +103,18 @@ def weather(request):
 
     return render(request, 'weather.html', tparams)
 
+schedule_already_running=False
 def schedule(request):
 	assert isinstance(request, HttpRequest)
+	global schedule_already_running
 	tparams = {}
-	if 'curso' in request.POST and 'ano' in request.POST:
+	if 'curso' in request.POST and 'ano' in request.POST and not schedule_already_running:
+		schedule_already_running=True
 		_ano=int(request.POST['ano'])
 		_curso=int(request.POST['curso'])
 		_schedule = ua.ScheduleMaker(horario.gerar_horarios(_curso,_ano))
 		_schedule.get()
+		schedule_already_running=False
 		tparams['all_schedules'] = _schedule.schedules	
 		
 	return render(request,'schedule.html',tparams)

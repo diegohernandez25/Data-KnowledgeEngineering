@@ -8,7 +8,6 @@ import time
 #Global variables
 _parentdir = os.path.dirname(os.path.abspath(__file__))
 
-#TODO CHECK XML SCHEMA AFTER EVERY API CHANGE
 class XMLService(abc.ABC):
 	@abc.abstractmethod
 	def _validate(self):
@@ -27,7 +26,6 @@ class XMLService(abc.ABC):
 		self._validate()
 		if not self._validate():
 			raise Exception('XML not compliant')
-		print("Valido")
 		self._fillstruct()
 
 	def loadfileurl(url,decode=0):
@@ -82,11 +80,6 @@ class SASService(XMLService):
 			else:
 				raise Exception('Unknown meal time')
 
-		#print("LUNCH")
-		#print(self.lunch)
-		#print("DINNER")
-		#print(self.dinner)
-
 class SACService(XMLService):
 	def __init__(self):
 		self.txml=None
@@ -123,7 +116,6 @@ class UAParking(XMLService):
 		self.JSON2XML()
 
 	def _validate(self):
-		#TODO
 		return etree.XMLSchema(etree.parse(_parentdir+'/UAParkingSchema.xsd')).validate(self.xml)
 	
 	def _fillstruct(self):
@@ -136,7 +128,6 @@ class UAParking(XMLService):
 				'Ocupado': self.ltz(int(park.find('./Ocupado').text)),\
 				'Livre': self.ltz(int(park.find('./Livre').text)),\
 				'Color': self.color_status(int(park.find('./Ocupado').text),int(park.find('./Capacidade').text))}
-		print(self.parking)
 
 	def ltz(self,val):
 		return 0 if val<0 else val
@@ -173,7 +164,6 @@ class UAParking(XMLService):
 		if occupied<0: occupied=0
 
 		_per = (float(occupied)/capacity)*100.0
-		print(_per)
 		if _per>90:
 			return "#D87777"
 		elif _per>75:
@@ -191,7 +181,6 @@ class UANews(XMLService):
 
 	def _fetch(self):
 		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl('https://uaonline.ua.pt/xml/contents_xml.asp?&lid=1&i=11',1), encoding='utf-8')))
-		print(self.xml)
 
 	def _validate(self):
 		return etree.XMLSchema(etree.parse(_parentdir+'/UANews.xsd')).validate(self.xml)
@@ -214,24 +203,19 @@ class UANews(XMLService):
 
 	def specific_fetch(self,dt = None,n = None, di = None, df = None, d=None, i =11,lid=1):
 		url = 'https://uaonline.ua.pt/xml/contents_xml.asp?'
-		print("Num of news: "+str(n))
 		if(dt): url+='dt='+str(dt)+'&'
 		if(di): url+='di='+di+'&'
 		if(df): url+='df='+df+'&'
 		if(d): url+='d='+str(d)+'&'
 		if(n): url+='n='+str(n)+'&'
 		if(url[len(url)-1]=='&'): url=url[:len(url)-1]
-		print("Specific fetch url: "+ url)
 		self.xml = etree.fromstring(bytes(bytearray(XMLService.loadfileurl(url))));
-		#TODO: Validate
 		if not self._validate():
 			raise Exception('XML not compliant')
 
 		self._fillstruct()
 
 	def get_image(self, string, thumb = False):
-		#TODO Image metadata has also valuable data that we may use if needed
-		#print("image :"+string[string.find('https'):string.find('jpg')+ len('jpg')])
 		_img_url= string[string.find('https'):string.find('jpg')+ len('jpg')] if thumb else\
 		string[string.find('https'): string.find('_thumb')]+'.jpg'
 
@@ -239,7 +223,6 @@ class UANews(XMLService):
 
 
 	def get_description(self, string ):
-		#print("Only Description: "+ string[string.find('>')+1:])
 		return string[string.find('>')+1:]
 
 
@@ -343,13 +326,8 @@ class ScheduleMaker(XMLService):
 					tmp_list.append(self.get_emptycolumn(_timestamp))
 				
 				final_dict[day] = tmp_list
-				#print(final_dict[day])	
-			#print("FINAL")
-			#print(final_dict)
 			self.schedules.append(final_dict)
 			self.dict=dict()
-		print(self.schedules[0])	
-		print(self.schedules[1])	
 	def calculate_timeoffset(self, start, end):
 		_tmp = end - start
 		if(int(_tmp*100)==30): 
@@ -359,25 +337,3 @@ class ScheduleMaker(XMLService):
 	
 	def get_emptycolumn(self, n):	
 		return {'cadeira': None, 'turno': None, 'tipo': None, 'dia': None, 'sala': None, 'inicio': None, 't_init': None, 'fim': None, 't_fim': None, 'columns': n}
-
-#a=ScheduleMaker(open('cadeiras.xml', 'r').read())
-#a.get()
-#print(a.schedules)
-		
-
-#a=SASService()
-#a.get()
-#print(a.lunch)
-#print("Dinner")
-#print(a.dinner)
-
-#a=SACService()
-#a.get()
-#print(a.tickets)
-#a = UAParking()
-#a.get()
-#print(a.parking)
-
-#a = UANews()
-#a.get()
-#print(a.news)
