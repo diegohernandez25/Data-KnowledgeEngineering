@@ -1,0 +1,978 @@
+<options>
+  <cadeiras id="3">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.03</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.08</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="8">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.03</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.08</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P4" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="15">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.03</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.08</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="16">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.03</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.07</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P4" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="19">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.03</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.07</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="20">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.03</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.08</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P4" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="27">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="sexta-feira">
+              <sala>04.2.03</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P2" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.08</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+  <cadeiras id="28">
+    <cadeira codigo="47053">
+      <nome>COMPUTA&#199;&#195;O VISUAL</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.04</sala>
+              <inicio>16:00:00.0000000</inicio>
+              <fim>18:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47022">
+      <nome>ARQUITECTURA DE COMPUTADORES AVAN&#199;ADA</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P1" tipo="P">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>04.1.01</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47232">
+      <nome>SEGURAN&#199;A</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="quarta-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="sexta-feira">
+              <sala>04.2.03</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="47092">
+      <nome>ENGENHARIA DE DADOS E CONHECIMENTO</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="ter&#231;a-feira">
+              <sala>ANF. V</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P3" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.07</sala>
+              <inicio>14:00:00.0000000</inicio>
+              <fim>16:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+    <cadeira codigo="42566">
+      <nome>ARQUITECTURA DE REDES AVAN&#199;ADAS</nome>
+      <ano>4</ano>
+      <turmas>
+        <turma turno="T1" tipo="T">
+          <horarios>
+            <aula dia_da_semana="segunda-feira">
+              <sala>ANF. V</sala>
+              <inicio>09:00:00.0000000</inicio>
+              <fim>11:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+        <turma turno="P4" tipo="P">
+          <horarios>
+            <aula dia_da_semana="quinta-feira">
+              <sala>04.2.20</sala>
+              <inicio>11:00:00.0000000</inicio>
+              <fim>13:00:00.0000000</fim>
+            </aula>
+          </horarios>
+        </turma>
+      </turmas>
+    </cadeira>
+  </cadeiras>
+</options>
