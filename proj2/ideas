@@ -1,0 +1,32 @@
+ra company TAP
+##ra type normal/scale #verificar se cached
+ra src LAX
+ra dst LIS
+ra cost 123
+ra start 20:23 seg
+ra duration 2h
+
+OPTIONAL
+ra firstclass 
+ra allows dogs
+ra allows llamas 
+ra allows handbags
+ra allows school shooting
+ra has TV
+ra has food
+ra has freerealestate
+ra nextroute rb #INFERENCIA
+
+https://openflights.org/data.html
+http://graphdb.ontotext.com/free/devhub/map.html
+
+
+IDEAS
+SPARQL INSERT/DELETE cache direct calculations with TTL one day
+duration with random speed 740-930 kph
+A* procura de rotas
+calculo de pre√os de forma quadratica com distancia? (nao linear, por causa das escalas)
+random tipo de classes (primeira classe, etc.. com scalars)
+allows aleatorios
+has aleatorios
+dar 2 cidades sem aeroporto e ele calcular!!!
