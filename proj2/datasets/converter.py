@@ -2,6 +2,7 @@ import rdflib
 from rdflib.namespace import RDF
 import random
 import math
+from datetime import datetime
 
 base_uri='http://www.airlinesdot.com/resource/'
 
@@ -54,7 +55,7 @@ def genairlinedata(graph):
 	for airline in getuniqueIDs(graph):
 		airline_dict[airline[0]]=dict()
 
-	for key in airline_dict: #TODO GET MORE ACCURATE DATA, AVISAR DIEGO
+	for key in airline_dict: #TODO GET MORE ACCURATE DATA, AVISAR DIEGO POR CAUSA DA HEURISTICA
 		airline_dict[key]['costperdistance']=random.randint(10,20) #euro/hundredKm
 		airline_dict[key]['basecost']=random.randint(10,50) #euro
 		
@@ -137,59 +138,110 @@ def distancecoord(coorA,coorB): #in kilometers
 
 
 def getroutesdata(routes,airports,airlines_data):
+	dowlist=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+	rip_count=0
+	hits=0
 	srcAirportPred=rdflib.URIRef('http://openflights.org/resource/route/sourceId')
 	dstAirportPred=rdflib.URIRef('http://openflights.org/resource/route/destinationId')
 	airlinePred=rdflib.URIRef('http://openflights.org/resource/route/airlineId')
-	print()
+	routes_data=dict()
 	for route in getuniqueIDs(routes):
-		print(route[0])
-		randTime=(random.randint(0,23),random.randint(0,59))
-		randdow=random.choice(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])
+		routes_data[route[0]]=dict()
+		routed=routes_data[route[0]]
+
+		time=(random.randint(0,23),random.randint(0,59))
+		dow=random.randint(0,6)
 		tmpSpeed=random.randint(740,930) #average airplane airspeed
 
-
-		print('src:',list(routes.objects(route[0],srcAirportPred)))
-		print('dst:',list(routes.objects(route[0],dstAirportPred)))
-		srcCoord=airportCoord(airports,list(routes.objects(route[0],srcAirportPred))[0])
-		dstCoord=airportCoord(airports,list(routes.objects(route[0],dstAirportPred))[0])
+		try:
+			srcCoord=airportCoord(airports,list(routes.objects(route[0],srcAirportPred))[0])
+			dstCoord=airportCoord(airports,list(routes.objects(route[0],dstAirportPred))[0])
+		except Exception as a:
+			rip_count+=1
+			print(a)
+			continue
 
 		distance=distancecoord(srcCoord,dstCoord)
-		duration=distance/tmpSpeed
-		#duration=(duration/60 #TODO CALC DURATION
+		tmpdur=distance/tmpSpeed
+		duration=list()
+		duration.append(int(tmpdur))
+		duration.append(int((tmpdur-duration[0])*60))
 
-		print('air:',list(routes.objects(route[0],airlinePred)))
-		airline_data=airlines_data[list(routes.objects(route[0],airlinePred))[0]]
+		toa=duration[:] #time of arrival
+		toa[1]+=time[1]
+		toa[0]+=int(toa[1]/60)+time[0]
+		toa[1]=toa[1]%60
+		doa=(dow+int(toa[0]/24))%7 #day of arrival
+		toa[0]=toa[0]%24
+
+
+		try:
+			airline_data=airlines_data[list(routes.objects(route[0],airlinePred))[0]]
+		except Exception as a:
+			rip_count+=1
+			print(a)
+			continue
 		cost=airline_data['basecost']+airline_data['costperdistance']*distance/100
+	
+		duration=tuple(duration)
+		toa=tuple(toa)
+		distance=int(distance+0.5)
+		cost=int(cost+0.5)
 
-		print('randTime:',randTime)
-		print('randdow:',randdow)
-		print('tmpSpeed:',tmpSpeed)
-		print('distance:',distance)
-		print('duration:',duration)
-		print('cost:',cost)
-		print()
-		
+		routed['timeofdeparture']=datetime.strptime(str(time[0])+':'+str(time[1]),'%H:%M').time()
+		routed['dayofdeparture']=dowlist[dow]
+		routed['timeofarrival']=datetime.strptime(str(toa[0])+':'+str(toa[1]),'%H:%M').time()
+		routed['dayofarrival']=dowlist[doa]
+		routed['duration']=datetime.strptime(str(duration[0])+':'+str(duration[1]),'%H:%M').time()
+		routed['distance']=distance
+		routed['cost']=cost
 
-		
+		hits+=1
+
+	print('rip_count:',rip_count)	
+	print('hits:',hits)	
+	return routes_data
+
+def generateroutesdatardf(routes_data):
+	routesbaseuri=base_uri+'route/'
+	retRDF=rdflib.ConjunctiveGraph()
+	for route in routes_data:
+		for p in routes_data[route]:
+			pred=rdflib.URIRef(routesbaseuri+p)
+			obj=routes_data[route][p]
+			retRDF.add((route,pred,rdflib.Literal(obj)))
+	return retRDF	
 
 def main():
 	finalRDF=rdflib.ConjunctiveGraph()
 	print('Parsing airroutes.ttl, it might take while...')
 	graph=parse()
-	print('Parse done')
 
+	print('Splitting airlines...')
 	airlines=getairlines(graph)
-	finalRDF+=airlines
+	print('Generating extra airlines data...')
 	airlines_data=genairlinedata(airlines)
   
+	print('Splitting airports...')
 	airport=getairports(graph)
-	finalRDF+=airport	
 
+	print('Splitting routes...')
 	route=getroutes(graph)
-	finalRDF+=route
 
+	print('Generating extra routes data...')
 	routes_data=getroutesdata(route,airport,airlines_data)
 
+	print('Merging graphs...')
+	finalRDF+=airlines
+	finalRDF+=airport	
+	finalRDF+=route
+	finalRDF+=generateroutesdatardf(routes_data)
+
+	print('Writting to file...')
+	finalRDF.serialize(destination='airlinesdot.n3',format='n3')	
+	
 	#for f in finalRDF:
 	#	print(f)
-main()
+
+if __name__ == '__main__':
+	main()
