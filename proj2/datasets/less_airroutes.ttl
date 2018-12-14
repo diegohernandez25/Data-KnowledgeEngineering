@@ -1,0 +1,53 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sesame: <http://www.openrdf.org/schema/sesame#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix fn: <http://www.w3.org/2005/xpath-functions#> .
+
+<http://openflights.org/resource/route/id/1061> <http://openflights.org/resource/route/airline> "4M" ;
+	<http://openflights.org/resource/route/airlineId> <http://openflights.org/resource/airline/id/3201> ;
+	<http://openflights.org/resource/route/codeshare> "Y" ;
+	<http://openflights.org/resource/route/destination> "DFW" ;
+	<http://openflights.org/resource/route/destinationId> <http://openflights.org/resource/airport/id/3670> ;
+	<http://openflights.org/resource/route/plane> "777" ;
+	<http://openflights.org/resource/route/source> "EZE" ;
+	<http://openflights.org/resource/route/sourceId> <http://openflights.org/resource/airport/id/3988> ;
+	<http://openflights.org/resource/route/stops> "0" ;
+	a <http://openflights.org/resource/Route> .
+
+<http://openflights.org/resource/airline/id/3201> <http://openflights.org/resource/airline/active> "Y" ;
+	<http://openflights.org/resource/airline/callsign> "LAN AR" ;
+	<http://openflights.org/resource/airline/country> "Argentina" ;
+	<http://openflights.org/resource/airline/iata> "4M" ;
+	<http://openflights.org/resource/airline/icao> "DSM" ;
+	a <http://openflights.org/resource/Airline> ;
+	rdfs:label "LAN Argentina" .
+
+
+<http://openflights.org/resource/airport/id/3670> <http://openflights.org/resource/airport/altitude> "607" ;
+	<http://openflights.org/resource/airport/city> "Dallas-Fort Worth" ;
+	<http://openflights.org/resource/airport/country> "United States" ;
+	<http://openflights.org/resource/airport/dst> "A" ;
+	<http://openflights.org/resource/airport/iata> "DFW" ;
+	<http://openflights.org/resource/airport/latitide> "32.896828"^^xsd:float ;
+	<http://openflights.org/resource/airport/longtitude> "-97.037997"^^xsd:float ;
+	<http://openflights.org/resource/airport/timezone> "-6"^^xsd:float ;
+	<http://openflights.org/resource/airport/tz> "America/Chicago" ;
+	a <http://openflights.org/resource/Airport> ;
+	rdfs:label "Dallas Fort Worth Intl" .
+
+<http://openflights.org/resource/airport/id/3988> <http://openflights.org/resource/airport/altitude> "67" ;
+	<http://openflights.org/resource/airport/city> "Buenos Aires" ;
+	<http://openflights.org/resource/airport/country> "Argentina" ;
+	<http://openflights.org/resource/airport/dst> "N" ;
+	<http://openflights.org/resource/airport/iata> "EZE" ;
+	<http://openflights.org/resource/airport/latitide> "-34.822222"^^xsd:float ;
+	<http://openflights.org/resource/airport/longtitude> "-58.535833"^^xsd:float ;
+	<http://openflights.org/resource/airport/timezone> "-3"^^xsd:float ;
+	<http://openflights.org/resource/airport/tz> "America/Cordoba" ;
+	a <http://openflights.org/resource/Airport> ;
+	rdfs:label "Ministro Pistarini" .
+
+
+
