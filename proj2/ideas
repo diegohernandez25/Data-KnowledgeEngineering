@@ -17,6 +17,26 @@ ra has food
 ra has freerealestate
 ra nextroute rb #INFERENCIA
 
+
+
+CACHE:
+
+<http://www.airlinesdot.com/resources/pseudoroutes/id/AAA>
+	<http://www.airlinesdot.com/resources/pseudoroutes/validuntil/> "asdsdsd"^^xsd:date
+	<http://openflights.org/resource/route/sourceId> <http://openflights.org/resource/airport/id/BBB>;
+	<http://openflights.org/resource/route/destinationId> <http://openflights.org/resource/airport/id/CCC>;
+    <http://openflights.org/resource/route/cost> 155 ;
+    <http://openflights.org/resource/route/dayofarrival> "Saturday" ;
+    <http://openflights.org/resource/route/dayofdeparture> "Saturday" ;
+	<http://openflights.org/resource/route/timeofarrival> "09:50:00"^^xsd:time ;
+    <http://openflights.org/resource/route/timeofdeparture> "23:01:00"^^xsd:time 
+    <http://openflights.org/resource/route/distance> 655 ;
+
+	<http://www.airlinesdot.com/resources/pseudoroutes/id/AAA/jump/0> <http://openflights.org/resource/route/id/DDD>;
+	<http://www.airlinesdot.com/resources/pseudoroutes/id/AAA/jump/1> <http://openflights.org/resource/route/id/EEE>;
+	...
+	
+
 https://openflights.org/data.html
 http://graphdb.ontotext.com/free/devhub/map.html
 
