@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Airlines</title>
+
+    {% load staticfiles %}
+
+
+    <!-- Bootstrap core CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"/>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontawesome-free/css/all.min.css' %}"/>
+
+    <!-- Page level plugin CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}"/>
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sb-admin.css' %}"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  </head>
+
+  <body id="page-top">
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+
+      <ul class="sidebar navbar-nav" style="position: fixed; ">
+        <li style="padding-top: 20%; ">
+            <img src={% static "assets/paper-plane-regular.svg" %} alt="logo" width="30%" class="center">
+            <img src={% static "assets/airlines.svg" %} alt="logo" width="60%" class="center">
+
+        </li>
+
+      <br><br>
+
+        <li class="nav-item">
+          <a class="nav-link" onclick=togglePage("page0")>
+            <i class="fas fa-fw fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <!-- <a class="nav-link" href="index/schedule/"> -->
+          <a class="nav-link" onclick=togglePage("page1")>
+            <i class="fas fa-fw fa-calendar"></i>
+            <span>Schedules</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <!-- <a class="nav-link" href="charts.html"> -->
+          <a class="nav-link" onclick=togglePage("page2")>
+            <i class="fa fa-fw fa-cutlery"></i>
+            <span>Canteen</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick=togglePage("page3")>
+            <i class="fas fa-fw fa-car"></i>
+            <span>Parking Lot</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick=togglePage("page4")>
+            <i class="fa fa-fw fa-thermometer"></i>
+            <span>Weather</span></a>
+        </li>
+	  </ul>
+      <!-- Sidebar -->
+
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% block content %}
+    {% endblock %}
+
+    <script>
+        var prev = "page0";
+        function togglePage(page) {
+            document.getElementById(prev).style.visibility = "hidden";
+            document.getElementById(page).style.visibility = "visible";
+            prev = page;
+        }
+    </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+
+  </body>
+
+</html>
