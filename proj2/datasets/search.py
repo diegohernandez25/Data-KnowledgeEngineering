@@ -100,6 +100,6 @@ class SearchTree:
 		if self.strategy=='a_star':
 			self.open_nodes[0:0]=lnewnodes
 			self.open_nodes.sort(key=lambda node:node.heur+node.cost)
-			self.open_nodes=list(set(self.open_nodes))##Just to make sure there are no double choices
+			#self.open_nodes=list(set(self.open_nodes))##Just to make sure there are no double choices
 		else:
 			print("strategy not implemented")
