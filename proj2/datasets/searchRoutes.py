@@ -195,8 +195,8 @@ def search_path():
 	
 	_limit = int(input("Max. number of flights>> "))
 	my_prob = SearchProblem(route,_orig,_dest)
-	my_tree = SearchTree(my_prob,strategy="a_star",limit=_limit)
-	my_tree.strategy = "a_star"
+	my_tree = SearchTree(my_prob,strategy="greedy",limit=_limit)
+	my_tree.strategy = "greedy"
 	time.sleep(2)
 	repr(my_tree.search())
 	sys.exit(1)
