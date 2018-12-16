@@ -19,14 +19,15 @@ class AirportRoutes(SearchDomain):
 	def actions(self,node):
 		actlist = []
 		#print("Inside Actions Method:",repr(node))
-		query = getRoutesAirport(node) #TODO: check that node is an URI
+		query = getRoutesAirport(node[0]) #TODO: check that node is an URI
 		#print(query)
 		res = queryGraphDB(query,self.accessor,self.repo_name)
 		for e in res['results']['bindings']:
 			dist =0
-			actlist.append((node,e['airportend']['value'],e['dist']['value'])) #TODO dist
-			#actlist.append((node,e['airportend']['value'],e['cost']['value'])) #TODO cost
+			actlist.append((node,e['airportend']['value'],e['dist']['value'],(e['airlat']['value'],e['airlon']['value']),e['route']['value'])) #TODO dist
+			#actlist.append((node,e['airportend']['value'],e['cost']['value'],(e['airlat']['value'],e['airlon']['value']))) #TODO cost
 		#print("actlist: ",repr(actlist))
+		print('AAAAAAAAAAAAAAAAAAAAA',len(actlist))
 		return actlist
 
 	#Do I need this?? Ans: Probably not
@@ -36,6 +37,15 @@ class AirportRoutes(SearchDomain):
 			return n2
 
 	def heuristic(self,node,destnode):
+		#return 0
+		src=(float(node[1][0]),float(node[1][1]))
+		dest=(float(destnode[1][0]),float(destnode[1][1]))
+		return distancecoord(src,dest)
+		#return 10+10*distancecoord(src,dest)
+
+
+
+		#OLD CODE
 		query = getAirportCoord(node) #TODO: check that node is an URI
 		res = queryGraphDB(query,self.accessor,self.repo_name)
 		if(not len(res['results']['bindings'])==1):
@@ -67,10 +77,12 @@ def getAirportCity(city):
 	PREFIX ns3: <http://openflights.org/resource/airport/> 
 	PREFIX ns4: <http://openflights.org/resource/airline/> 
 	
-	SELECT ?airport
+	SELECT ?airport ?airlat ?airlon
 	WHERE{
 		?airport ns3:city """+"\""+str(city)+"\""+""".
 		?airport a of:Airport.
+		?airport ns3:latitude ?airlat.
+		?airport ns3:longitude ?airlon.
 	}
 	"""
 
@@ -85,13 +97,16 @@ def getAirportURI(name):
 	PREFIX ns3: <http://openflights.org/resource/airport/> 
 	PREFIX ns4: <http://openflights.org/resource/airline/> 
 	
-	SELECT ?airport
+	SELECT ?airport ?airlat ?airlon
 	WHERE{
 		?airport rdfs:label """+"\""+str(name)+"\""+""".
 		?airport a of:Airport.
+		?airport ns3:latitude ?airlat.
+		?airport ns3:longitude ?airlon.
 	}
 	"""
 def getAirportCoord(uri):
+	print('NOOOOOOOOO')
 	return """
 	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
     PREFIX of: <http://openflights.org/resource/> 
@@ -120,18 +135,21 @@ def getRoutesAirport(uri):
 		PREFIX ns3: <http://openflights.org/resource/airport/> 
 		PREFIX ns4: <http://openflights.org/resource/airline/> 
 		
-		SELECT ?airportend ?dist ?cost
+		SELECT ?airportend ?dist ?cost ?airlat ?airlon ?route
 		WHERE{
 			<"""+str(uri)+"""> a of:Airport.
 			?route ns1:sourceId <"""+str(uri)+""">.
 			?route ns1:destinationId ?airportend.
 			?route ns2:cost ?cost.
 			?route ns2:distance ?dist.
+
+			?airportend ns3:latitude ?airlat.
+			?airportend ns3:longitude ?airlon.
 		}
 	"""
 def connectGraphDB():
-	endpoint = "http://localhost:7201"
-	#endpoint = "http://localhost:7200"
+	#endpoint = "http://localhost:7201"
+	endpoint = "http://localhost:7200"
 	repo_name = "airlinesdot"
 	client = ApiClient(endpoint = endpoint)
 	accessor = GraphDBApi(client)
@@ -178,7 +196,7 @@ def search_path():
 	if(len(res['results']['bindings'])!=1):
 		#TODO: manage
 		print("Zero or more than one Airport named after. Handle this later") #TODO
-	_orig = res['results']['bindings'][0]['airport']['value']
+	_orig = (res['results']['bindings'][0]['airport']['value'],(res['results']['bindings'][0]['airlat']['value'],res['results']['bindings'][0]['airlon']['value']),None)
 	print("Source Airport Node: ",_orig)
 	_dest= input("dest>>")
 	#query= getAirportURI(_dest)
@@ -188,16 +206,18 @@ def search_path():
 	if(len(res['results']['bindings'])!=1):
 		#TODO: manage
 		print("Zero or more than one Airport named after. Handle this later") #TODO
-	_dest = res['results']['bindings'][0]['airport']['value']
+	_dest = (res['results']['bindings'][0]['airport']['value'],(res['results']['bindings'][0]['airlat']['value'],res['results']['bindings'][0]['airlon']['value']),None) 
 	print("Destiny Airport Node: ",_dest)
 	
 	route=AirportRoutes(endpoint,repo_name,client,accessor) 
 	
 	_limit = int(input("Max. number of flights>> "))
 	my_prob = SearchProblem(route,_orig,_dest)
-	my_tree = SearchTree(my_prob,strategy="greedy",limit=_limit)
-	my_tree.strategy = "greedy"
-	time.sleep(2)
+	#my_tree = SearchTree(my_prob,strategy="greedy",limit=_limit)
+	#my_tree.strategy = "greedy"
+	my_tree = SearchTree(my_prob,strategy="a_star",limit=_limit)
+	my_tree.strategy = "a_star"
+	#time.sleep(2) #TODO remove me
 	repr(my_tree.search())
 	sys.exit(1)
 

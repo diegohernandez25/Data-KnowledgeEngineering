@@ -1,4 +1,5 @@
 #TODO: custo = 10+Kilometer/10
+from functools import reduce
 
 class SearchDomain:
 	# construtor
@@ -33,11 +34,6 @@ class SearchNode:
 		self.cost=cost
 		self.prof=prof
 		self.heur=heur
-	#def __str__(self):
-		#pass
-		#return "no(" + str(self.state) + "," + str(self.parent) + ","+str(self.cost)+","+str(self.prof)")"
-	#def __repr__(self):
-		#return str(self)
 	def get_parents(self):
 		if(self.parent==None):
 			return []
@@ -68,39 +64,61 @@ class SearchTree:
 		path += [node.state]
 		return(path)
 
- # procurar a solucao
+	# procurar a solucao
 	def search(self):
-		print("Hey")
+		visited_nodes=[]
 		while self.open_nodes != []:
-			node = self.open_nodes.pop(0)
+			node=self.open_nodes.pop(0)
 			print("Node: ",node.state)
-			if self.problem.goal_test(node.state):
-				print("Path",self.get_path(node))
-				print("Found it")
-				return self.get_path(node), node.cost, node.prof
-			#Restrict Dept
-			if(node.prof>=self.limit):
-				print("Number of flights were exceeded.")
-				continue
+			print("len(visited_nodes)=",len(visited_nodes))
+			print("len(open_nodes)=",len(self.open_nodes))
+			print("intersection=",list(set(visited_nodes) & set(map(lambda x: (x.state),self.open_nodes))))
+			#print(self.open_nodes)
+			#print(visited_nodes)
+			input()
+			if self.problem.goal[0]==node.state[0]:
+				self.solution=node
+				print(self.get_path(node))
+				return self.get_path(node)
+			visited_nodes.append(node.state)
 			lnewnodes = []
+
+			if node.prof==self.limit:
+				continue
+				
 			for a in self.problem.domain.actions(node.state):
-				#print("Analysing childs of node:",a[0])
-				#print("Path: :",repr(self.get_path(node)))	
-				#print("Cost: ",a[2])
-				newstate = a[1]
-				if newstate not in node.get_parents():
-				    lnewnodes += [SearchNode(newstate,node,node.cost+int(a[2]),node.prof+1, self.problem.domain.heuristic(node.state,newstate))]
-			#	else:
-			#		print("Nodes remaining")
-			self.add_to_open(lnewnodes)
+				newstate = (a[1],a[3],a[4])
+				#print(newstate)
+				newstatecost = node.cost+int(a[2]) 
+				if reduce(lambda x,y: x and (y[0]!=newstate[0]),visited_nodes,True):
+					lnewnodes += [SearchNode(newstate,node,newstatecost,node.prof+1,self.problem.domain.heuristic(node.state,self.problem.goal))]
+				#else:
+				#	print('NO')
+
+			final=list()
+			for new in lnewnodes:
+				dup=list(filter(lambda x:x.state[0]==new.state[0],final))
+				if len(dup)>1:
+					print('YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET')
+				if len(dup)!=0:
+					if dup[0].cost>new.cost:
+						final.remove(dup[0])
+						final.append(new)
+				else:
+					final.append(new)
+
+			self.add_to_open(final)
+
+		self.solution=None
 		return None
+
 
 	# juntar novos nos a lista de nos abertos de acordo com a estrategia
 	def add_to_open(self,lnewnodes):
 		if self.strategy=='a_star':
 			self.open_nodes[0:0]=lnewnodes
-			self.open_nodes.sort(key=lambda node:node.heur+node.cost)
 			#self.open_nodes=list(set(self.open_nodes))##Just to make sure there are no double choices
+			self.open_nodes.sort(key=lambda node:node.heur+node.cost)
 		elif self.strategy=='greedy':
 			self.open_nodes.extend(lnewnodes)
 			self.open_nodes.sort(key=lambda node: node.heur)
