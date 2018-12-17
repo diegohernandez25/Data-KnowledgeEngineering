@@ -1,42 +1,94 @@
 {% extends "map.html" %}
 
 
- {% block contentbar %}
+{% block contentbar %}
 
-         <div id="page0" style="visibility: visible; height: 0px">
+    <div id="page0" style="visibility: visible; height: 0px">
+        <center>
             <h1>Welcome to Airlines.</h1>
-             <br>
-             <center>
-                <button type="button" class="btn btn-default" onclick=recenter()>Reset map focus</button>
-                 <br><br>
-                 Filter
-             </center>
-         </div>
+            <br>
 
-         <div id="page1" style="visibility: hidden; height: 0px; margin-top: -10px">
-             <h1>Second page</h1>
-         </div>
+            <button type="button" class="btn btn-default" onclick=recenter()>Reset map focus</button>
+            <br><br>
+            <h3>Filter shown routes</h3>
+            <p></p>
+            <h4>Source</h4>
+            <b>Continent:</b> <select id="f-src-continent">
+            <option value="europe">Europe</option>
+        </select> <br><br>
+            <b>Country:</b> <select id="f-src-country">
+            <option value="portugal">Portugal</option>
+        </select> <br><br>
+            <b>City:</b> <select id="f-src-city">
+            <option value="lisbon">Lisbon</option>
+        </select>
+            <br>
+            <br>
+            <h4>Destination</h4>
+            <b>Continent:</b> <select id="f-dst-continent">
+            <option value="europe">Europe</option>
+        </select> <br><br>
+            <b>Country:</b> <select id="f-dst-country">
+            <option value="portugal">Portugal</option>
+        </select> <br><br>
+            <b>City:</b> <select id="f-dst-city">
+            <option value="lisbon">Lisbon</option>
+        </select>
+            <br>
+            <br>
+            <button id="filter" type="button" class="btn btn-default">Apply filter</button>
+            <br><br>
+        </center>
+    </div>
 
-         <div id="page2" style="visibility: hidden; height: 0px; margin-top: -10px">
-             <h1>Third page</h1>
-         </div>
+    <div id="page1" style="visibility: hidden; height: 0px; margin-top: -10px">
+        <center>
+            <h1>Search flights</h1>
+            <p></p>
+            <h4>Source</h4>
+            <b>Continent:</b> <select id="s-src-continent">
+            <option value="europe">Europe</option>
+        </select> <br><br>
+            <b>Country:</b> <select id="s-src-country">
+            <option value="portugal">Portugal</option>
+        </select> <br><br>
+            <b>City:</b> <select id="s-src-city">
+            <option value="lisbon">Lisbon</option>
+        </select>
+            <br>
+            <br>
+            <h4>Destination</h4>
+            <b>Continent:</b> <select id="s-dst-continent">
+            <option value="europe">Europe</option>
+        </select> <br><br>
+            <b>Country:</b> <select id="s-dst-country">
+            <option value="portugal">Portugal</option>
+        </select> <br><br>
+            <b>City:</b> <select id="s-dst-city">
+            <option value="lisbon">Lisbon</option>
+        </select>
+            <br>
+            <br>
+            <button id="search" type="button" class="btn btn-default">Search</button>
+            <br><br>
+            <h3>Available routes:</h3>
 
-         <div id="page3" style="visibility: hidden; height: 0px; margin-top: -10px">
-             <h1>Fourth page</h1>
-         </div>
+        </center>
 
-         <div id="page4" style="visibility: hidden; height: 0px; margin-top: -10px">
-             <h1>Fifth page</h1>
-         </div>
-        
-        <script>
-            function place() {
-                {% for route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info in route %}
-                    drawRoutes({{ route }}, "{{ src_name }}", "{{ dst_name }}", {{src_lat}}, {{src_long}}, {{dst_lat}}, {{dst_long}});
-                    addPlacemark({{src_lat}}, {{src_long}}, {{src_iata}}, "{{ src_name }}", "{{ src_info }}");
-                    addPlacemark({{dst_lat}}, {{dst_long}}, {{dst_iata}}, "{{ dst_name }}", "{{ dst_info }}");
-                {% endfor %}
-            }
-        </script>
- {% endblock %}
+    </div>
+
+    <div id="page2" style="visibility: hidden; height: 0px; margin-top: -10px">
+        <h1>Points of interest</h1>
+    </div>
+
+    <script>
+        function place() {
+            {% for route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info in route %}
+                drawRoutes({{ route }}, "{{ src_name }}", "{{ dst_name }}", {{src_lat}}, {{src_long}}, {{dst_lat}}, {{dst_long}}, true);
+                addPlacemark({{src_lat}}, {{src_long}}, {{src_iata}}, "{{ src_name }}", "{{ src_info }}", true);
+                addPlacemark({{dst_lat}}, {{dst_long}}, {{dst_iata}}, "{{ dst_name }}", "{{ dst_info }}", true);
+            {% endfor %}
+        }
+    </script>
+{% endblock %}
 
