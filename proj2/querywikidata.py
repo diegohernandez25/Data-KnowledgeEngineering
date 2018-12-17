@@ -9,6 +9,7 @@ def printMenu():
 	print("4. Is a city")
 	print("5. Airport of a country")
 	print("6. Country of a Continent")
+	print("7. Cities with airport")
 	print("0. Exit")
 
 
@@ -114,9 +115,25 @@ def countriesOfContinent(continent):
 		SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }}
 	
 	"""
-
 #cidades dum pais com aeroporto
-
+def citysWithAirport(country):
+	return """
+	SELECT
+		?label ?coord ?citylabel
+	WHERE{
+		?country rdfs:label """+"\""+str(country)+"\""+"""@en.
+		?country p:P31 [ps:P31 wd:Q6256;].
+		?airport wdt:P31 wd:Q644371.
+		?airport wdt:P17 ?country.
+		?airport rdfs:label ?label.
+		?airport wdt:P625 ?coord.
+		?airport wdt:P131 ?city.
+		?city rdfs:label ?citylabel.
+		FILTER(lang(?label) = "en")
+		FILTER(lang(?citylabel) = "en")
+		SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+	}
+	"""
 if __name__=="__main__":
 	
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
@@ -158,7 +175,12 @@ if __name__=="__main__":
 			keys.append("coords")
 			keys.append("capitallabel")
 			query=countriesOfContinent(input("Name of Continent>>"))
-		
+		elif opt == str(7):
+			keys.append("label")	
+			keys.append("coord")	
+			keys.append("citylabel")
+			query=citysWithAirport(input("Name of Country>>"))
+
 		elif opt == str(0):
 			print("Watchyouprofanity")
 			sys.exit(1)
