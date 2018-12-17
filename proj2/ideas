@@ -17,11 +17,9 @@ ra has food
 ra has freerealestate
 ra nextroute rb #INFERENCIA
 
-
-
 CACHE:
-
-<http://www.airlinesdot.com/resources/pseudoroutes/id/AAA>
+---FLIGHT---
+<http://www.airlinesdot.com/resources/pseudoroutes/flight/AAA>
 	<http://www.airlinesdot.com/resources/pseudoroutes/validuntil/> "asdsdsd"^^xsd:date
 	<http://openflights.org/resource/route/sourceId> <http://openflights.org/resource/airport/id/BBB>;
 	<http://openflights.org/resource/route/destinationId> <http://openflights.org/resource/airport/id/CCC>;
@@ -31,11 +29,24 @@ CACHE:
 	<http://openflights.org/resource/route/timeofarrival> "09:50:00"^^xsd:time ;
     <http://openflights.org/resource/route/timeofdeparture> "23:01:00"^^xsd:time 
     <http://openflights.org/resource/route/distance> 655 ;
+	<http://www.airlinesdot.com/resources/pseudoroutes/next/> <http://www.airlinesdot.com/resources/pseudoroutes/route_1>;
+-------------
+--SUBROUTES--
+<http://www.airlinesdot.com/resources/pseudoroutes/route/route_1><http://www.airlinesdot.com/resources/pseudoroutes/routeid/> 1;
+<http://www.airlinesdot.com/resources/pseudoroutes/route><http://openflights.org/resource/route/id/DDD>;
+<http://www.airlinesdot.com/resources/pseudoroutes/next><http://www.airlinesdot.com/resources/pseudoroutes/route_2>;
+<http://www.airlinesdot.com/resources/pseudoroutes/partof><http://www.airlinesdot.com/resources/pseudoroutes/flight/AAA>
+-------------
 
-	<http://www.airlinesdot.com/resources/pseudoroutes/id/AAA/jump/0> <http://openflights.org/resource/route/id/DDD>;
-	<http://www.airlinesdot.com/resources/pseudoroutes/id/AAA/jump/1> <http://openflights.org/resource/route/id/EEE>;
-	...
-	
+
+
+
+
+
+
+
+
+
 
 https://openflights.org/data.html
 http://graphdb.ontotext.com/free/devhub/map.html
