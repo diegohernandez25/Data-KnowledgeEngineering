@@ -1,205 +1,185 @@
-from search import *
-import json
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
-import random
-import math
-from converter import *
-import sys
-import time
+import json
+from converter import distancecoord
+from functools import reduce
+from querycollection import *
 
 
-class AirportRoutes(SearchDomain):
-	def __init__(self,endpoint,repo_name,client,accessor):
-		self.endpoint = endpoint
-		self.repo_name = repo_name
-		self.client = client
-		self.accessor = accessor
+#TODO settings.py
+#endpoint = "http://localhost:7201"
+endpoint = "http://localhost:7200"
+repo_name = "airlinesdot"
 
-	def actions(self,node):
-		actlist = []
-		#print("Inside Actions Method:",repr(node))
-		query = getRoutesAirport(node) #TODO: check that node is an URI
-		#print(query)
-		res = queryGraphDB(query,self.accessor,self.repo_name)
-		for e in res['results']['bindings']:
-			dist =0
-			actlist.append((node,e['airportend']['value'],e['dist']['value'])) #TODO dist
-			#actlist.append((node,e['airportend']['value'],e['cost']['value'])) #TODO cost
-		#print("actlist: ",repr(actlist))
-		return actlist
+class routeFinder():
 
-	#Do I need this?? Ans: Probably not
-	def result(self, node, action):
-		(n1,n2,cost) = action
-		if n1 == node:
-			return n2
-
-	def heuristic(self,node,destnode):
-		query = getAirportCoord(node) #TODO: check that node is an URI
-		res = queryGraphDB(query,self.accessor,self.repo_name)
-		if(not len(res['results']['bindings'])==1):
-			print("More than one coordinate")#TODO Handle the situation
-			sys.exit(1)
-		lat1=float(res['results']['bindings'][0]['lat']['value'])
-		lon1=float(res['results']['bindings'][0]['lon']['value'])
-
-		query = getAirportCoord(destnode)
-		res = queryGraphDB(query,self.accessor,self.repo_name)
-		if(not len(res['results']['bindings'])==1):
-			print("More than one coordinate")#TODO Handle the situation
-			sys.exit(1)
-		lat2=float(res['results']['bindings'][0]['lat']['value'])
-		lon2=float(res['results']['bindings'][0]['lon']['value'])
-
-		heu = distancecoord((lat1,lon1),(lat2, lon2))
-		#print("Heuristic: ",heu)
-		return heu
-
-def getAirportCity(city):
-	return"""
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-    PREFIX of: <http://openflights.org/resource/> 
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-	PREFIX ns1: <http://openflights.org/resource/route/>
-	PREFIX ns2: <http://www.airlinesdot.com/resource/route/> 
-	PREFIX ns3: <http://openflights.org/resource/airport/> 
-	PREFIX ns4: <http://openflights.org/resource/airline/> 
-	
-	SELECT ?airport
-	WHERE{
-		?airport ns3:city """+"\""+str(city)+"\""+""".
-		?airport a of:Airport.
-	}
-	"""
-
-def getAirportURI(name):
-	return"""
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-    PREFIX of: <http://openflights.org/resource/> 
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-	PREFIX ns1: <http://openflights.org/resource/route/>
-	PREFIX ns2: <http://www.airlinesdot.com/resource/route/> 
-	PREFIX ns3: <http://openflights.org/resource/airport/> 
-	PREFIX ns4: <http://openflights.org/resource/airline/> 
-	
-	SELECT ?airport
-	WHERE{
-		?airport rdfs:label """+"\""+str(name)+"\""+""".
-		?airport a of:Airport.
-	}
-	"""
-def getAirportCoord(uri):
-	return """
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-    PREFIX of: <http://openflights.org/resource/> 
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-	PREFIX ns1: <http://openflights.org/resource/route/>
-	PREFIX ns2: <http://www.airlinesdot.com/resource/route/> 
-	PREFIX ns3: <http://openflights.org/resource/airport/> 
-	PREFIX ns4: <http://openflights.org/resource/airline/> 
-	SELECT ?lon ?lat
-	WHERE{
-		<"""+str(uri)+"""> a of:Airport.
-		<"""+str(uri)+"""> ns3:latitude ?lat.
-		<"""+str(uri)+"""> ns3:longitude ?lon.
-	}
-	"""
-
-def getRoutesAirport(uri):
-	return """
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-		PREFIX of: <http://openflights.org/resource/> 
-		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-		PREFIX ns1: <http://openflights.org/resource/route/>
-		PREFIX ns2: <http://www.airlinesdot.com/resource/route/> 
-		PREFIX ns3: <http://openflights.org/resource/airport/> 
-		PREFIX ns4: <http://openflights.org/resource/airline/> 
+	def __init__(self,srcuri,dsturi,optimize):
+		self.optimize=optimize
+		self.connectGraphDB()
+		qsrc=self.queryGraphDB(getAirportCoords(srcuri),repo_name)
+		srccoord=(float(qsrc[0]['airlat']),float(qsrc[0]['airlon']))
 		
-		SELECT ?airportend ?dist ?cost
-		WHERE{
-			<"""+str(uri)+"""> a of:Airport.
-			?route ns1:sourceId <"""+str(uri)+""">.
-			?route ns1:destinationId ?airportend.
-			?route ns2:cost ?cost.
-			?route ns2:distance ?dist.
-		}
-	"""
-def connectGraphDB():
-	endpoint = "http://localhost:7201"
-	#endpoint = "http://localhost:7200"
-	repo_name = "airlinesdot"
-	client = ApiClient(endpoint = endpoint)
-	accessor = GraphDBApi(client)
-	return endpoint,repo_name,client,accessor
-
-def routemain():
-	endpoint,repo_name,client,accessor = connectGraphDB()	
-	query = getAirportURI("Dallas Fort Worth Intl")
-	#print(query)
-	res= queryGraphDB(query,accessor,repo_name)
-	for e in res['results']['bindings']:
-		print("---Airport---")
-		print(e['airport']['value'])
-		_uri = e['airport']['value']
-		query = getAirportCoord(_uri)
-		#print(query)
-		res2=queryGraphDB(query,accessor,repo_name)
-		for e2 in res2['results']['bindings']:
-			print("---Coords---")
-			print(e2['lon']['value'])
-			print(e2['lat']['value'])
+		qdst=self.queryGraphDB(getAirportCoords(dsturi),repo_name)
+		self.dstcoord=(float(qdst[0]['airlat']),float(qdst[0]['airlon']))
+		self.dsturi=dsturi
 		
-		query = getRoutesAirport(_uri)
-		print(query)
-		res2=queryGraphDB(query,accessor,repo_name)
-		print("---ChildNodes---")
-		for e2 in res2['results']['bindings']:
-			print(e2['airportend']['value'])
-		print()
+		src=dict()
+		src['uri']=srcuri
+		src['coord']=srccoord
+		src['route']=None
+		src['parent']=None
+		src['heuristic']=None
+		src['cost']=0
+		src['hop']=0
+		src['price']=0
+		src['distance']=0
 
-def queryGraphDB(query,accessor,repo_name):
-	payload_query = {"query":query}
-	res = accessor.sparql_select(body = payload_query, repo_name = repo_name)
-	return json.loads(res)
+		self.open_nodes=list()
+		self.visited_nodes=list()
+		self.open_nodes.append(src)
+		
 
-def search_path():
-	endpoint,repo_name,client,accessor = connectGraphDB()	
-	
-	_orig= input("orig>>")
-	#query= getAirportURI(_orig)
-	query= getAirportCity(_orig)
-	res= queryGraphDB(query,accessor,repo_name)
-	print(query)
-	if(len(res['results']['bindings'])!=1):
-		#TODO: manage
-		print("Zero or more than one Airport named after. Handle this later") #TODO
-	_orig = res['results']['bindings'][0]['airport']['value']
-	print("Source Airport Node: ",_orig)
-	_dest= input("dest>>")
-	#query= getAirportURI(_dest)
-	query= getAirportCity(_dest)
-	print(query)
-	res= queryGraphDB(query,accessor,repo_name)
-	if(len(res['results']['bindings'])!=1):
-		#TODO: manage
-		print("Zero or more than one Airport named after. Handle this later") #TODO
-	_dest = res['results']['bindings'][0]['airport']['value']
-	print("Destiny Airport Node: ",_dest)
-	
-	route=AirportRoutes(endpoint,repo_name,client,accessor) 
-	
-	_limit = int(input("Max. number of flights>> "))
-	my_prob = SearchProblem(route,_orig,_dest)
-	my_tree = SearchTree(my_prob,strategy="greedy",limit=_limit)
-	my_tree.strategy = "greedy"
-	time.sleep(2)
-	repr(my_tree.search())
-	sys.exit(1)
+	def connectGraphDB(self):
+		client = ApiClient(endpoint = endpoint)
+		self.accessor = GraphDBApi(client)
 
-#routemain()
-search_path()
+	def queryGraphDB(self,query,repo_name):
+		payload_query = {"query":query}
+		res = self.accessor.sparql_select(body = payload_query, repo_name = repo_name)
+		results=json.loads(res)['results']['bindings']
+		ret=list()
+		for r in results:
+			tmp=dict()
+			for k in r:
+				tmp[k]=r[k]['value']
+			ret.append(tmp)
+		return ret
+
+	def get_route(self):
+
+		while self.open_nodes!=[]:
+			
+			node=self.open_nodes.pop(0)	
+			self.visited_nodes.append(node)	
+
+			next_hops=self.possible_hops(node)	
+			next_hops=self.handle_dups(next_hops)
+
+			print('\r',len(self.visited_nodes),'\t',len(self.open_nodes),end='')
+
+
+			if node['uri']==self.dsturi:
+				#print('FOUND')
+				#print(node)
+				#print('Cost: ',node['cost'])
+				#print('Price: ',routeFinder.sum_of_param(node,'price'))
+				#print('Distance: ',routeFinder.sum_of_param(node,'distance'))
+				#print('NrHops: ',node['hop'])
+				return {'route':routeFinder.node_route(node),'cost':node['cost'],'price':routeFinder.sum_of_param(node,'price'),'distance':routeFinder.sum_of_param(node,'distance'),'nrhops':node['hop']}	
+				continue
+
+			for hop in next_hops:
+				if reduce(lambda x,y: x and y['uri']!=hop['uri'],self.visited_nodes,True): #FIXME	
+
+					dup=list(filter(lambda x: x['uri']==hop['uri'],self.open_nodes))
+					if len(dup)>1:
+						raise Exception('Shit')
+					elif len(dup)==1:
+						if dup[0]['cost']>hop['cost']:
+							self.open_nodes.remove(dup[0])
+							self.open_nodes.append(hop)
+					else:	
+						self.open_nodes.append(hop)
+			
+			self.sort_open_nodes()
+
+	def node_route(node):
+		return (routeFinder.node_route(node['parent'])+[node['route']]) if node['parent'] else list()
+
+	def sum_of_param(node,key):
+		return node[key]+(routeFinder.sum_of_param(node['parent'],key) if node['parent'] else 0)					
+		
+	def sort_open_nodes(self):
+		self.open_nodes.sort(key=lambda node:node['heuristic']+node['cost'])
+
+
+	def handle_dups(self,nodes):
+		newlist=list()
+		for node in nodes:
+			dup=list(filter(lambda x: x['uri']==node['uri'],newlist))
+			if len(dup)>1:
+				raise Exception('Shit')
+			elif len(dup)==1:
+				if dup[0]['cost']>node['cost']:
+					newlist.remove(dup[0])
+					newlist.append(node)
+				
+			else:
+				newlist.append(node)
+		return newlist
+
+	def possible_hops(self,node):
+		hop_data=self.queryGraphDB(getRoutesAirport(node['uri']),repo_name)
+		hops=list()
+		for hd in hop_data:
+			h=dict()
+			h['uri']=hd['airportend']
+			h['coord']=(float(hd['airlat']),float(hd['airlon']))
+			h['route']=hd['route']
+			h['parent']=node
+			h['heuristic']=self.heuristic(node)
+			h['cost']=self.cost(node,hd)
+			h['hop']=node['hop']+1
+			h['price']=float(hd['price'])
+			h['distance']=float(hd['dist'])
+			hops.append(h)
+		return hops
+			
+	
+		
+	def cost(self,node,hop):
+		if self.optimize=='price':
+			return node['cost']+float(hop['price'])
+		elif self.optimize=='distance':
+			return node['cost']+float(hop['dist']) 
+		elif self.optimize=='hop':
+			return node['hop']+1
+		else:
+			raise Exception('Boom')
+		
+			
+	def heuristic(self,node):
+		return 0 #FIXME FIXME FIXME NON ADMISSIBLE HEURISTICS
+		if self.optimize=='price':
+			dist=distancecoord(self.dstcoord,node['coord'])
+			return 10*dist/100+10
+		elif self.optimize=='distance':
+			return dist
+		elif self.optimize=='hop':
+			return 0 #uniform search
+		else:
+			raise Exception('Boom')
+			
+		
+	
+
+def main():
+	#a=routeFinder('http://openflights.org/resource/airport/id/1638','http://openflights.org/resource/airport/id/1636','price')	
+	print('PRICE')
+	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','price')	
+	print(a.get_route())
+
+	print('DISTANCE')
+	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','distance')	
+	print(a.get_route())
+
+	print('HOP')
+	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','hop')	
+	print(a.get_route())
+
+	#print('TOTAL TIME')
+	#a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','time')	
+	#print(a.get_route())
+
+if __name__=='__main__':
+	main()

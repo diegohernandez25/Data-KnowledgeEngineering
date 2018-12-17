@@ -8,6 +8,7 @@ def printMenu():
 	print("3. Is a country")
 	print("4. Is a city")
 	print("5. Airport of a country")
+	print("6. Country of a Continent")
 	print("0. Exit")
 
 
@@ -81,7 +82,7 @@ def queryMonumentCities(city):
 	return """
 		SELECT
 		  ?label ?coords
-		{
+		WHERE{
 		  ?city rdfs:label """+"\""+str(city)+"\""+"""@en.
 		  ?city wdt:P31 wd:Q515.
 		  ?city wdt:P1830 ?monuments.
@@ -93,8 +94,30 @@ def queryMonumentCities(city):
 		  FILTER(lang(?label) = "en")
 		} 	
 	"""
+#TODO
+#Paises dum continente
+def countriesOfContinent(continent):
+	return """
+	SELECT
+		?country ?label ?capitallabel ?coords
+	WHERE{
+		?continent rdfs:label """+"\""+str(continent)+"\""+"""@en.
+		?continent wdt:P31 wd:Q5107.
+		?country p:P30 [ps:P30 ?continent;].
+		?country p:P31 [ps:P31 wd:Q6256;].
+		?country rdfs:label ?label.
+		?country wdt:P36 ?capital.
+		?capital rdfs:label ?capitallabel.
+		?capital wdt:P625 ?coords.
+		FILTER(lang(?label) = "en")
+		FILTER(lang(?capitallabel) = "en")
+		SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }}
+	
+	"""
 
-def main():
+#cidades dum pais com aeroporto
+
+if __name__=="__main__":
 	
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 	while 1:
@@ -130,6 +153,12 @@ def main():
 			keys.append("coords")
 			query = queryCountryAirports(input("Name of country>>"))
 
+		elif opt == str(6):
+			keys.append("label")
+			keys.append("coords")
+			keys.append("capitallabel")
+			query=countriesOfContinent(input("Name of Continent>>"))
+		
 		elif opt == str(0):
 			print("Watchyouprofanity")
 			sys.exit(1)
@@ -150,6 +179,7 @@ def main():
 		for result in results["results"]["bindings"]:
 			for k in keys:
 				if result.get(k) : print(result[k]["value"])
+			print('\n')
 
 
 main()
