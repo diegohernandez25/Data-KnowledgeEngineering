@@ -13,9 +13,11 @@ repo_name = "airlinesdot"
 
 class routeFinder():
 
-	def __init__(self,srcuri,dsturi,optimize):
-		self.optimize=optimize
+	def __init__(self):
 		self.connectGraphDB()
+
+	def configure(self,srcuri,dsturi,optimize):
+		self.optimize=optimize
 		qsrc=self.queryGraphDB(getAirportCoords(srcuri),repo_name)
 		srccoord=(float(qsrc[0]['airlat']),float(qsrc[0]['airlon']))
 		
@@ -161,24 +163,40 @@ class routeFinder():
 			raise Exception('Boom')
 			
 		
+def routeFinderNAME(srcCity,dstCity):
+	rf=routeFinder()
+	srcAirports=rf.queryGraphDB(getAirportCity(srcCity),repo_name)	
+	dstAirports=rf.queryGraphDB(getAirportCity(dstCity),repo_name)	
+
+	print('len(srcAirports)=',len(srcAirports))
+	print('len(dstAirports)=',len(dstAirports))
+
+	for src in srcAirports:
+		for dst in dstAirports:
+			print(dst['airport'])
+			route=routeFinderURI(src['airport'],dst['airport'],rf)
+			if route!=None:
+				return route
+	return None
+
+def routeFinderURI(srcuri,dsturi,rf=routeFinder()):
+	ret=dict()
+	for opt in ['price','distance','hop']:
+		print('AAA')
+		rf.configure(srcuri,dsturi,opt)
+		ret[opt]=rf.get_route()
+		if ret[opt]==None:
+			return None
+	return ret
 	
 
 def main():
-	#a=routeFinder('http://openflights.org/resource/airport/id/1638','http://openflights.org/resource/airport/id/1636','price')	
-	print('PRICE')
-	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','price')	
-	print(a.get_route())
-
-	print('DISTANCE')
-	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','distance')	
-	print(a.get_route())
-
-	print('HOP')
-	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','hop')	
-	print(a.get_route())
+	#print(routeFinderURI('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851'))
+	print(routeFinderNAME('Porto','New York'))
+	#print(routeFinderURI('http://openflights.org/resource/airport/id/1636','http://openflights.org/resource/airport/id/3797'))
 
 	#print('TOTAL TIME')
-	#a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','time')	
+	#a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','time')  
 	#print(a.get_route())
 
 if __name__=='__main__':
