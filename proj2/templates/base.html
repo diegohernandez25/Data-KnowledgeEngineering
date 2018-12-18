@@ -90,8 +90,10 @@
             document.getElementById(prev).style.visibility = "hidden";
             document.getElementById(page).style.visibility = "visible";
             prev = page;
-            if (page == "page2")
+            if (page == "page2") {
                 removePlacemarks();
+                initFunction();
+            }
         }
     </script>
 

@@ -25,7 +25,7 @@ class cacheManager:
 		PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>	
 		PREFIX psr: <http://www.airlinesdot.com/resources/pseudoroutes/>
 		INSERT DATA{
-			"""+_partof+""" psr:validuntil """+str(datetime.now().month)+""";
+			"""+_partof+""" psr:validuntil """+str(datetime.now()+timedelta(weeks=4))+""";  
 			ns2:sourceId <"""+source+""">;
 			ns2:destinationId <"""+destination+""">;
 			ns2:cost """+str(cost)+""";
