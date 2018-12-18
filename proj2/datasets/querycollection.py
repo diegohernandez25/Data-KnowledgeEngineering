@@ -56,12 +56,16 @@ def getAirportCity(city):
 	PREFIX ns3: <http://openflights.org/resource/airport/> 
 	PREFIX ns4: <http://openflights.org/resource/airline/> 
 	
-	SELECT ?airport ?airlat ?airlon
+	SELECT ?airport ?airlat ?airlon ?label ?iata ?country ?city
 	WHERE{
 		?airport ns3:city """+"\""+str(city)+"\""+""".
 		?airport a of:Airport.
 		?airport ns3:latitude ?airlat.
 		?airport ns3:longitude ?airlon.
+		?airport ns3:iata ?iata.
+		?airport ns3:country  ?country.
+		?airport ns3:city  ?city.
+		?airport rdfs:label ?label.
 	}
 	"""
 
@@ -113,7 +117,7 @@ def getCitysWithAirports(country):
         PREFIX ns4: <http://openflights.org/resource/airline/> 
         SELECT ?citylabel
         WHERE{
-            ?airport ns1:country """+str(country)+""".
+            ?airport ns1:country """+"\""+str(country)+"\""+""".
             ?airport a of:Airport.
             ?airport ns1:city ?citylabel.
         }
