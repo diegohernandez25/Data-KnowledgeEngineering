@@ -66,7 +66,7 @@ class routeFinder():
 
 					dup=list(filter(lambda x: x['uri']==hop['uri'],self.open_nodes))
 					if len(dup)>1:
-						raise Exception('Shit')
+						raise Exception('There are more than one duplicate entry on the opennodes array')
 					elif len(dup)==1:
 						if dup[0]['cost']>hop['cost']:
 							self.open_nodes.remove(dup[0])
@@ -91,7 +91,7 @@ class routeFinder():
 		for node in nodes:
 			dup=list(filter(lambda x: x['uri']==node['uri'],newlist))
 			if len(dup)>1:
-				raise Exception('Shit')
+				raise Exception('There are more than one duplicate entry on the nodes array')
 			elif len(dup)==1:
 				if dup[0]['cost']>node['cost']:
 					newlist.remove(dup[0])
@@ -162,7 +162,7 @@ class routeFinder():
 
 		#return node['elapsedtime']+duration
 		#return node['elapsedtime']+duration
-		return node['elapsedtime']+duration+(waiting_time if self.optimize!='flighttime' else 0) #FIXME?
+		return node['elapsedtime']+duration+(waiting_time if self.optimize!='flighttime' else 0)
 
 		
 		
@@ -176,7 +176,7 @@ class routeFinder():
 		elif self.optimize=='time' or self.optimize=='flighttime':
 			return self.elapsedtime(node,hop)
 		else:
-			raise Exception('Boom')
+			raise Exception('Unsuported optimize parameter')
 		
 			
 	def heuristic(self,node):
@@ -191,7 +191,7 @@ class routeFinder():
 		elif self.optimize=='time' or self.optimize=='flighttime':
 			return 0 #uniform search
 		else:
-			raise Exception('Boom')
+			raise Exception('Unsuported optimize parameter')
 			
 def connectGraphDB():
 	endpoint = "http://localhost:7200"

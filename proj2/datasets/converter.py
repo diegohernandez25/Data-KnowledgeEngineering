@@ -154,9 +154,8 @@ def getroutesdata(routes,airports,airlines_data):
 		try:
 			srcCoord=airportCoord(airports,list(routes.objects(route[0],srcAirportPred))[0])
 			dstCoord=airportCoord(airports,list(routes.objects(route[0],dstAirportPred))[0])
-		except Exception as a:
+		except Exception as a: #Some airports are not well-formed (ex: no sourceID, or no destinationID)
 			rip_count+=1
-			print(a)
 			continue
 
 		distance=distancecoord(srcCoord,dstCoord)
@@ -174,9 +173,8 @@ def getroutesdata(routes,airports,airlines_data):
 
 		try:
 			airline_data=airlines_data[list(routes.objects(route[0],airlinePred))[0]]
-		except Exception as a:
+		except Exception as a: #Some airports are not defined on the dataset, their routes have to be ignored.
 			rip_count+=1
-			print(a)
 			continue
 		cost=airline_data['basecost']+airline_data['costperdistance']*distance/100
 	
@@ -192,9 +190,9 @@ def getroutesdata(routes,airports,airlines_data):
 		routed['cost']=cost
 
 		hits+=1
-
-	print('Rejected count:',rip_count)	
-	print('Hits:',hits)	
+ 
+	print('-Rejected routes: ',rip_count)	
+	print('-Accepted routes: ',hits)	
 	return routes_data
 
 def generateroutesdatardf(routes_data):

@@ -224,7 +224,7 @@ if __name__=="__main__":
 			query=citysWithAirport(input("Name of Country>>"))
 
 		elif opt == str(0):
-			print("Watchyouprofanity")
+			print("Exit")
 			sys.exit(1)
 		else:
 			print("Wrong Option")
