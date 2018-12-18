@@ -1,34 +1,35 @@
 import sys
-sys.path.append("..")
+#sys.path.append("..")
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 import json
 import datasets.searchRoutes as sr
+import datasets.querywikidata as qw
+from SPARQLWrapper import SPARQLWrapper, JSON
 from django.shortcuts import render, redirect
 from django.conf import settings
 from os.path import join
 
-sys.path+=[join(settings.BASE_DIR,'')]
-import querywikidata as wiki
+#sys.path+=[join(settings.BASE_DIR,'')]
+#import querywikidata as wiki
 
 # Create your views here.
 
 def index(request):
-	assert isinstance(request,HttpRequest)
 	if 'query_citymonument' in request.POST:
 		print("QUERY_CITYMONUMENT")
 		_city = request.POST['query_citymonument']
-		_query = wiki.queryIsCity(_city)
+		_query =qw.queryIsCity(_city)
 		print("queryIsCity: ",str(_query))
-		_res = wiki.queryData(_query,ask=True)
+		_res =qw.queryData(_query,ask=True)
 	#	if not _res:
 	#		print("Not a city")
 			#TODO: find cities with symilar name
-			 
-		_query = wiki.queryMonumentCities(_city)
+
+		_query =qw.queryMonumentCities(_city)
 		print("queryMonumentCities:",_query)
-		_res = wiki.queryData(_query)
-		print(_res)	
+		_res =qw.queryData(_query)
+		print(_res)
 		tparams = dict()
 		tparams["monuments"]=list()
 		keys={"labels","coords"}
@@ -69,12 +70,62 @@ def index(request):
 
 	#print(processed_routes)
 
+
 	tparams = {}
 	info = "Airport details"
 	# (route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info)
 	tparams['route'] = processed_routes
+	tparams['africa'] = listCountries('Africa')
+	tparams['asia'] = listCountries('Asia')
+	tparams['europe'] = listCountries('Europe')
+	tparams['northame'] = listCountries('North America')
+	tparams['oceania'] = listCountries('Oceania')
+	tparams['southame'] = listCountries('South America')
+	tparams['all_cont'] = tparams['africa'] + tparams['asia'] + tparams['europe'] + tparams['northame'] + tparams['oceania'] + tparams['southame']
 
 	return render(request, 'index.html',tparams)
 
+def getCities(request, country):
+	resp = "<html><body>{}</body></html>".format(listCities(country))
+	return HttpResponse(resp)
 
+def getAirports(request, country):
+	resp = "<html><body>{}</body></html>".format(listAirports(country))
+	return HttpResponse(resp)
 
+def listCountries(continent):
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.countriesOfContinent(continent)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	lst = []
+	for c in results:
+	    #print(c)
+	    lst.append(c['label']['value'])
+	return lst
+
+def listCities(country):
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.queryCountryAirports(country)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	lst = []
+	for c in results:
+	    #print(c)
+	    if c['citylabel']['value'] not in lst:
+	        lst.append(c['citylabel']['value'])
+	return lst
+
+def listAirports(country):
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.citysWithAirport(country)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	lst = []
+	for c in results:
+	    #print(c)
+	    lst.append(c['label']['value'])
+	return lst

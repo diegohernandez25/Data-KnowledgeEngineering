@@ -138,7 +138,6 @@ def distancecoord(coorA,coorB): #in kilometers
 
 
 def getroutesdata(routes,airports,airlines_data):
-	dowlist=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	rip_count=0
 	hits=0
 	srcAirportPred=rdflib.URIRef('http://openflights.org/resource/route/sourceId')
@@ -150,15 +149,13 @@ def getroutesdata(routes,airports,airlines_data):
 		routed=routes_data[route[0]]
 
 		time=(random.randint(0,23),random.randint(0,59))
-		dow=random.randint(0,6)
 		tmpSpeed=random.randint(740,930) #average airplane airspeed
 
 		try:
 			srcCoord=airportCoord(airports,list(routes.objects(route[0],srcAirportPred))[0])
 			dstCoord=airportCoord(airports,list(routes.objects(route[0],dstAirportPred))[0])
-		except Exception as a:
+		except Exception as a: #Some airports are not well-formed (ex: no sourceID, or no destinationID)
 			rip_count+=1
-			print(a)
 			continue
 
 		distance=distancecoord(srcCoord,dstCoord)
@@ -171,15 +168,13 @@ def getroutesdata(routes,airports,airlines_data):
 		toa[1]+=time[1]
 		toa[0]+=int(toa[1]/60)+time[0]
 		toa[1]=toa[1]%60
-		doa=(dow+int(toa[0]/24))%7 #day of arrival
 		toa[0]=toa[0]%24
 
 
 		try:
 			airline_data=airlines_data[list(routes.objects(route[0],airlinePred))[0]]
-		except Exception as a:
+		except Exception as a: #Some airports are not defined on the dataset, their routes have to be ignored.
 			rip_count+=1
-			print(a)
 			continue
 		cost=airline_data['basecost']+airline_data['costperdistance']*distance/100
 	
@@ -189,17 +184,15 @@ def getroutesdata(routes,airports,airlines_data):
 		cost=int(cost+0.5)
 
 		routed['timeofdeparture']=datetime.strptime(str(time[0])+':'+str(time[1]),'%H:%M').time()
-		routed['dayofdeparture']=dowlist[dow]
 		routed['timeofarrival']=datetime.strptime(str(toa[0])+':'+str(toa[1]),'%H:%M').time()
-		routed['dayofarrival']=dowlist[doa]
 		routed['duration']=datetime.strptime(str(duration[0])+':'+str(duration[1]),'%H:%M').time()
 		routed['distance']=distance
 		routed['cost']=cost
 
 		hits+=1
-
-	print('rip_count:',rip_count)	
-	print('hits:',hits)	
+ 
+	print('-Rejected routes: ',rip_count)	
+	print('-Accepted routes: ',hits)	
 	return routes_data
 
 def generateroutesdatardf(routes_data):

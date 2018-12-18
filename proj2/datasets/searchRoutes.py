@@ -2,23 +2,24 @@ from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
 import json
 from functools import reduce
-
-
+from datetime import datetime,timedelta,date
 #TODO settings.py
 #endpoint = "http://localhost:7201"
 
 class routeFinder():
 
-	def __init__(self,srcuri,dsturi,optimize):
-		self.optimize=optimize
+	def __init__(self):
 		self.repo_name, self.accessor = connectGraphDB()
-		qsrc=queryGraphDB(getAirportCoords(srcuri),self.accessor, self.repo_name)
+
+	def configure(self,srcuri,dsturi,optimize):
+		self.optimize=optimize
+		qsrc=queryGraphDB(getAirportCoords(srcuri),self.accessor,self.repo_name)
 		srccoord=(float(qsrc[0]['airlat']),float(qsrc[0]['airlon']))
 		
 		qdst=queryGraphDB(getAirportCoords(dsturi),self.accessor, self.repo_name)
 		self.dstcoord=(float(qdst[0]['airlat']),float(qdst[0]['airlon']))
 		self.dsturi=dsturi
-		
+
 		src=dict()
 		src['uri']=srcuri
 		src['coord']=srccoord
@@ -29,6 +30,9 @@ class routeFinder():
 		src['hop']=0
 		src['price']=0
 		src['distance']=0
+		src['elapsedtime']=0
+		src['duration']=0
+		src['tod']=None
 
 		self.open_nodes=list()
 		self.visited_nodes=list()
@@ -55,15 +59,14 @@ class routeFinder():
 				#print('Price: ',routeFinder.sum_of_param(node,'price'))
 				#print('Distance: ',routeFinder.sum_of_param(node,'distance'))
 				#print('NrHops: ',node['hop'])
-				return {'route':routeFinder.node_route(node),'cost':node['cost'],'price':routeFinder.sum_of_param(node,'price'),'distance':routeFinder.sum_of_param(node,'distance'),'nrhops':node['hop']}	
-				continue
+				return {'route':routeFinder.node_route(node),'cost':node['cost'],'price':routeFinder.sum_of_param(node,'price'),'distance':routeFinder.sum_of_param(node,'distance'),'nrhops':node['hop'],'elapsedtime':node['elapsedtime']}	
 
 			for hop in next_hops:
 				if reduce(lambda x,y: x and y['uri']!=hop['uri'],self.visited_nodes,True): #FIXME	
 
 					dup=list(filter(lambda x: x['uri']==hop['uri'],self.open_nodes))
 					if len(dup)>1:
-						raise Exception('Shit')
+						raise Exception('There are more than one duplicate entry on the opennodes array')
 					elif len(dup)==1:
 						if dup[0]['cost']>hop['cost']:
 							self.open_nodes.remove(dup[0])
@@ -88,7 +91,7 @@ class routeFinder():
 		for node in nodes:
 			dup=list(filter(lambda x: x['uri']==node['uri'],newlist))
 			if len(dup)>1:
-				raise Exception('Shit')
+				raise Exception('There are more than one duplicate entry on the nodes array')
 			elif len(dup)==1:
 				if dup[0]['cost']>node['cost']:
 					newlist.remove(dup[0])
@@ -112,10 +115,56 @@ class routeFinder():
 			h['hop']=node['hop']+1
 			h['price']=float(hd['price'])
 			h['distance']=float(hd['dist'])
+			h['elapsedtime']=self.elapsedtime(node,hd) if self.optimize!='time' and self.optimize!='flighttime' else h['cost']
+			h['duration']=routeFinder._dt_to_rel_sec(datetime.strptime(hd['duration'],'%H:%M:%S'))
+			h['tod']=routeFinder._dt_to_rel_sec(datetime.strptime(hd['tod'],'%H:%M:%S'))
+	
+			#if h['elapsedtime']!=h['cost']:
+			#	print(h['elapsedtime'],' ',h['cost'])
+			#	import sys
+			#	sys.exit(0)
+
+			#print((h['duration']-datetime(1900,1,1)).total_seconds())
+			#print(h['duration'].date()+timedelta(days=1))
 			hops.append(h)
 		return hops
-			
-	
+
+	def _t_to_dt(t):
+		return datetime.combine(datetime(1970,1,1),t)
+
+	def _dt_to_sec(dt):
+		return (dt-datetime(1970,1,1)).total_seconds()#-3600
+
+	def _sec_to_dt(sec):
+		return datetime.fromtimestamp(sec)
+
+	def _dt_to_rel_sec(dt):
+		t=dt.time()	
+		dtt=routeFinder._t_to_dt(t)
+		#print('TIME ',dt)
+		return routeFinder._dt_to_sec(dtt)
+
+	def elapsedtime(self,node,hop):
+		duration=routeFinder._dt_to_rel_sec(datetime.strptime(hop['duration'],'%H:%M:%S'))
+
+		if node['tod']==None: #fist node			
+			return duration
+
+		tod=routeFinder._dt_to_rel_sec(datetime.strptime(hop['tod'],'%H:%M:%S'))
+		#print(datetime.strptime(hop['tod'],'%H:%M:%S'),' ',routeFinder._sec_to_dt(tod))
+		rcost=routeFinder._dt_to_rel_sec(routeFinder._sec_to_dt(node['cost']))
+		#print(routeFinder._sec_to_dt(node['cost']),' ',routeFinder._sec_to_dt(rcost))
+
+		if rcost>tod:
+			waiting_time=24*60*60-rcost+tod
+		else:
+			waiting_time=tod-rcost
+
+		#return node['elapsedtime']+duration
+		#return node['elapsedtime']+duration
+		return node['elapsedtime']+duration+(waiting_time if self.optimize!='flighttime' else 0)
+
+		
 		
 	def cost(self,node,hop):
 		if self.optimize=='price':
@@ -124,8 +173,10 @@ class routeFinder():
 			return node['cost']+float(hop['dist']) 
 		elif self.optimize=='hop':
 			return node['hop']+1
+		elif self.optimize=='time' or self.optimize=='flighttime':
+			return self.elapsedtime(node,hop)
 		else:
-			raise Exception('Boom')
+			raise Exception('Unsuported optimize parameter')
 		
 			
 	def heuristic(self,node):
@@ -137,10 +188,11 @@ class routeFinder():
 			return dist
 		elif self.optimize=='hop':
 			return 0 #uniform search
+		elif self.optimize=='time' or self.optimize=='flighttime':
+			return 0 #uniform search
 		else:
-			raise Exception('Boom')
+			raise Exception('Unsuported optimize parameter')
 			
-		
 def connectGraphDB():
 	endpoint = "http://localhost:7200"
 	repo_name = "airlinesdot"
@@ -159,23 +211,43 @@ def queryGraphDB(query,accessor,repo_name):
             tmp[k]=r[k]['value']
         ret.append(tmp)
     return ret
+		
+def routeFinderNAME(srcCity,dstCity):
+	repo_name,accessor = connectGraphDB()	
+	srcAirports=queryGraphDB(getAirportCity(srcCity),accessor,repo_name)	
+	dstAirports=queryGraphDB(getAirportCity(dstCity),accessor,repo_name)	
+
+	print('len(srcAirports)=',len(srcAirports))
+	print('len(dstAirports)=',len(dstAirports))
+
+	for src in srcAirports:
+		for dst in dstAirports:
+			#print(dst['airport'])
+			route=routeFinderURI(src['airport'],dst['airport'])
+			if route!=None:
+				return route
+	return None
+
+def routeFinderURI(srcuri,dsturi,rf=routeFinder()):
+	ret=dict()
+	for opt in ['price','distance','hop','time','flighttime']:
+		print('AAA')
+		rf.configure(srcuri,dsturi,opt)
+		ret[opt]=rf.get_route()
+		if ret[opt]==None:
+			return None
+	return ret
+	
 
 def main():
-	#a=routeFinder('http://openflights.org/resource/airport/id/1638','http://openflights.org/resource/airport/id/1636','price')	
-	print('PRICE')
-	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','price')	
-	print(a.get_route())
-
-	print('DISTANCE')
-	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','distance')	
-	print(a.get_route())
-
-	print('HOP')
-	a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','hop')	
-	print(a.get_route())
+	#print(routeFinderURI('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851'))
+	#print(routeFinderNAME('Porto','New York'))
+	#print(routeFinderNAME('Porto','Lisbon'))
+	print(routeFinderNAME('Funchal','Caracas'))
+	#print(routeFinderURI('http://openflights.org/resource/airport/id/1636','http://openflights.org/resource/airport/id/3797'))
 
 	#print('TOTAL TIME')
-	#a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','time')	
+	#a=routeFinder('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851','time')  
 	#print(a.get_route())
 
 if __name__=='__main__':

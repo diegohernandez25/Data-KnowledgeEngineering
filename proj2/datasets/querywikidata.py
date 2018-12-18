@@ -33,6 +33,7 @@ def queryCountryAirports(country):
 		}
 	"""
 
+
 def queryCities(country):
 	return"""
 		SELECT 
@@ -223,13 +224,13 @@ if __name__=="__main__":
 			query=citysWithAirport(input("Name of Country>>"))
 
 		elif opt == str(0):
-			print("Watchyouprofanity")
+			print("Exit")
 			sys.exit(1)
 		else:
 			print("Wrong Option")
 			continue
 		try:
-			print(query)
+			#print(query)
 			sparql.setQuery(query)
 			sparql.setReturnFormat(JSON)
 			results = sparql.query().convert()
@@ -246,3 +247,4 @@ if __name__=="__main__":
 					#_tuple=eval(result["coords"]["value"].replace("Point","").replace(" ",","))
 					#print(_tuple[0])	
 
+#main()

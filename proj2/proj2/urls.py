@@ -22,6 +22,17 @@ from airlines import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
+    path('api/country/<str:country>/cities', views.getCities, name = 'getCities'),
+    path('api/country/<str:country>/airports', views.getAirports, name = 'getAirports'),
+    path('api/routes/city/<str:src>/city/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/country/<str:src>/city/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/city/<str:src>/country/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/continent/<str:src>/city/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/city/<str:src>/continent/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/country/<str:src>/country/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/continent/<str:src>/continent/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/continent/<str:src>/country/<str:dst>', views.getAirports, name = 'getAirports'),
+    path('api/routes/country/<str:src>/continent/<str:dst>', views.getAirports, name = 'getAirports'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
