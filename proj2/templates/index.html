@@ -112,16 +112,22 @@
 
     </div>
 
-    <div id="page2" style="visibility: hidden; height: 0px; margin-top: -10px">
-        <center>
-            <h1>Points of interest</h1>
-            <br>
+    <div id="page2" style="visibility: hidden; height: 0px; margin-top: -10px" >
+    <center>
+
+        <h1>Points of interest</h1>
+        <br>
+        <form action="." method="post">
+            {% csrf_token %}
             <b>City:</b><br>
-            <input type="text" class="form-control" id="city-monum">
+            <input type="text" name="query_citymonument" class="form-control" id="city-monum" required>
             <br>
-            <button id="btn-monum" type="button" class="btn btn-default">Find</button>
-        </center>
+            <input type="submit" value="Submit">
+            </center>
+        </form>
     </div>
+
+
 
     <script>
         updateCountries('f-src-continent', 'f-src-country');
@@ -242,6 +248,15 @@
             xmlHttp.open("GET", theUrl, true); // true for asynchronous
             xmlHttp.send(null);
         }
+        function initFunction(){
+
+            {%if info %}
+                {%for d in monuments%}
+                    console.log({{d.coords.0}})
+                    console.log({{d.coords.1}})
+                    addPlacemark({{d.coords.1}}, {{d.coords.0}}, "None", "{{ d.coords.name }}", "None", false);
+                {%endfor%}
+            {%endif%}
+        }
     </script>
 {% endblock %}
-
