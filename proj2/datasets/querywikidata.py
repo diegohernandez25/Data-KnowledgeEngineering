@@ -1,6 +1,30 @@
+from s4api.graphdb_api import GraphDBApi
+from s4api.swagger import ApiClient
 import requests
 from SPARQLWrapper import SPARQLWrapper, JSON
 import sys 
+
+def connectGraphDB():
+	endpoint = "http://localhost:7201"
+	#endpoint = "http://localhost:7200"
+	repo_name = "airlinesdot"
+	client = ApiClient(endpoint=endpoint)
+	accessor = GraphDBApi(client)
+	return repo_name, accessor
+
+def queryGraphDB(query,accessor,repo_name):
+	payload_query = {"query":query}
+	res = accessor.sparql_select(body = payload_query, repo_name = repo_name)
+	results=json.loads(res)['results']['bindings']
+	ret=list()
+	for r in results:
+	    tmp=dict()
+	    for k in r:
+	        tmp[k]=r[k]['value']
+	    ret.append(tmp)
+	return ret
+
+
 
 def printMenu():
 	print("1. Cities of a Country")
@@ -10,6 +34,7 @@ def printMenu():
 	print("5. Airport of a country")
 	print("6. Country of a Continent")
 	print("7. Cities with airport")
+	print("8. Search place")
 	print("0. Exit")
 
 
@@ -101,10 +126,10 @@ def queryMonumentCities(city, limit =50):
 WHERE{
   ?city rdfs:label """+"\""+str(city)+"\""+"""@en.
   {
-    ?monuments wdt:P131 ?city.
+	?monuments wdt:P131 ?city.
   }
   UNION{
-    ?city wdt:P1830 ?monuments.
+	?city wdt:P1830 ?monuments.
   }
   ?monuments wdt:P31 ?type.
   ?type rdfs:label ?typelabel.
@@ -173,6 +198,33 @@ def queryData(query, ask=False):
 	print(results["results"]["bindings"])
 	return results["results"]["bindings"]
 
+
+#verificar se tem coordenadas o sujeito
+#para cada um deles verificar:
+#-coords
+#-owner of /destinations
+def queryProxCoord(obj):
+	return"""
+		SELECT ?coords ?typelabel ?itemlabel  WHERE {
+		  SERVICE wikibase:mwapi {
+			  bd:serviceParam wikibase:api "EntitySearch" .
+			  bd:serviceParam wikibase:endpoint "www.wikidata.org" .
+			  bd:serviceParam mwapi:search """+'\"'+str(obj)+'\"'+""" .
+			  bd:serviceParam mwapi:language "en" .
+			  ?item wikibase:apiOutputItem mwapi:item .
+			  ?num wikibase:apiOrdinal true .
+		  }
+		  ?item (wdt:P279|wdt:P31) ?type.
+		  ?item wdt:P625 ?coords.
+		  ?type rdfs:label ?typelabel.
+		  ?item rdfs:label ?itemlabel.
+
+		FILTER(lang(?typelabel) = "en")
+		FILTER(lang(?itemlabel) = "en")
+
+		} ORDER BY ASC(?num) LIMIT 5
+	"""
+
 if __name__=="__main__":
 	
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
@@ -222,7 +274,13 @@ if __name__=="__main__":
 			keys.append("coord")	
 			keys.append("citylabel")
 			query=citysWithAirport(input("Name of Country>>"))
-
+		
+		elif opt == str(8):
+			keys.append("typelabel")	
+			keys.append("itemlabel")	
+			keys.append("coords")	
+			query=queryProxCoord(input("Name of Country>>"))
+			
 		elif opt == str(0):
 			print("Exit")
 			sys.exit(1)
