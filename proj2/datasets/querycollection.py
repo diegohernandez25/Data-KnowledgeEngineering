@@ -9,13 +9,16 @@ def getRoutesAirport(uri):
 		PREFIX ns3: <http://openflights.org/resource/airport/> 
 		PREFIX ns4: <http://openflights.org/resource/airline/> 
 		
-		SELECT ?airportend ?dist ?price ?airlat ?airlon ?route
+		SELECT ?airportend ?dist ?price ?airlat ?airlon ?route ?duration ?toa ?tod
 		WHERE{
 			<"""+str(uri)+"""> a of:Airport.
 			?route ns1:sourceId <"""+str(uri)+""">.
 			?route ns1:destinationId ?airportend.
 			?route ns2:cost ?price.
 			?route ns2:distance ?dist.
+			?route ns2:duration ?duration.
+			?route ns2:timeofarrival ?toa.
+			?route ns2:timeofdeparture ?tod.
 
 			?airportend ns3:latitude ?airlat.
 			?airportend ns3:longitude ?airlon.

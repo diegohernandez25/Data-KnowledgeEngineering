@@ -138,7 +138,6 @@ def distancecoord(coorA,coorB): #in kilometers
 
 
 def getroutesdata(routes,airports,airlines_data):
-	dowlist=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	rip_count=0
 	hits=0
 	srcAirportPred=rdflib.URIRef('http://openflights.org/resource/route/sourceId')
@@ -150,7 +149,6 @@ def getroutesdata(routes,airports,airlines_data):
 		routed=routes_data[route[0]]
 
 		time=(random.randint(0,23),random.randint(0,59))
-		dow=random.randint(0,6)
 		tmpSpeed=random.randint(740,930) #average airplane airspeed
 
 		try:
@@ -171,7 +169,6 @@ def getroutesdata(routes,airports,airlines_data):
 		toa[1]+=time[1]
 		toa[0]+=int(toa[1]/60)+time[0]
 		toa[1]=toa[1]%60
-		doa=(dow+int(toa[0]/24))%7 #day of arrival
 		toa[0]=toa[0]%24
 
 
@@ -189,17 +186,15 @@ def getroutesdata(routes,airports,airlines_data):
 		cost=int(cost+0.5)
 
 		routed['timeofdeparture']=datetime.strptime(str(time[0])+':'+str(time[1]),'%H:%M').time()
-		routed['dayofdeparture']=dowlist[dow]
 		routed['timeofarrival']=datetime.strptime(str(toa[0])+':'+str(toa[1]),'%H:%M').time()
-		routed['dayofarrival']=dowlist[doa]
 		routed['duration']=datetime.strptime(str(duration[0])+':'+str(duration[1]),'%H:%M').time()
 		routed['distance']=distance
 		routed['cost']=cost
 
 		hits+=1
 
-	print('rip_count:',rip_count)	
-	print('hits:',hits)	
+	print('Rejected count:',rip_count)	
+	print('Hits:',hits)	
 	return routes_data
 
 def generateroutesdatardf(routes_data):
