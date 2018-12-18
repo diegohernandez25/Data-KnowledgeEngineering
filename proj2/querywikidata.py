@@ -16,17 +16,20 @@ def printMenu():
 def queryCountryAirports(country):
 	return"""
 		SELECT 
-			?label ?coords
+			?label ?coords ?airport ?citylabel
 		WHERE{
 			?country rdfs:label """+"\""+str(country)+"\""+"""@en.
 			?airport wdt:P31 wd:Q644371.
 			?airport wdt:P17 ?country.
 			?airport rdfs:label ?label.
+			?airport wdt:P131 ?city.
+			?city rdfs:label ?citylabel.
 			OPTIONAL
 			{
 				?airport wdt:P625 ?coords
 			}
 			FILTER(lang(?label) = "en")
+			FILTER(lang(?citylabel) = "en")
 		}
 	"""
 
@@ -79,23 +82,41 @@ def queryIsCity(city):
 		}	
 	"""
 
-def queryMonumentCities(city):
-	return """
-		SELECT
-		  ?label ?coords
-		WHERE{
-		  ?city rdfs:label """+"\""+str(city)+"\""+"""@en.
-		  ?city wdt:P31 wd:Q515.
-		  ?city wdt:P1830 ?monuments.
-		  ?monuments rdfs:label ?label.
-		  OPTIONAL
-		  {
-			?monuments wdt:P625 ?coords
-		  }
-		  FILTER(lang(?label) = "en")
-		} 	
+def queryCoord( _object):
+	return"""
+	SELECT ?coord
+	WHERE{
+		?object rdfs:label """+str(_object)+"""@en.
+		?object wdt:P625 ?coord.
+	}
 	"""
-#TODO
+
+
+
+def queryMonumentCities(city, limit =50):
+	return """
+	SELECT DISTINCT
+?label ?coords ?monuments ?typelabel
+WHERE{
+  ?city rdfs:label """+"\""+str(city)+"\""+"""@en.
+  {
+    ?monuments wdt:P131 ?city.
+  }
+  UNION{
+    ?city wdt:P1830 ?monuments.
+  }
+  ?monuments wdt:P31 ?type.
+  ?type rdfs:label ?typelabel.
+  ?monuments rdfs:label ?label.
+  ?monuments wdt:P625 ?coords
+
+  FILTER(lang(?label) = "en")
+  FILTER(lang(?typelabel) = "en")
+  FILTER(str(?typelabel)="museum" || str(?typelabel)="park" || str(?typelabel)="theater" || str(?typelabel)="church building"
+  || str(?typelabel)="university" || str(?typelabel)="fort" || str(?typelabel)="sculpture" || str(?typelabel)="architectural structure"
+  || str(?typelabel)="cathedral" || str(?typelabel)="stadium" || str(?typelabel)="cultural property" || str(?typelabel)="tourist destination")
+}limit """+str(limit)+"""
+	"""
 #Paises dum continente
 def countriesOfContinent(continent):
 	return """
@@ -133,7 +154,24 @@ def citysWithAirport(country):
 		FILTER(lang(?citylabel) = "en")
 		SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 	}
-	"""
+"""
+
+sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+def queryData(query, ask=False):
+	try:
+		print(query)
+		sparql.setQuery(query)
+		sparql.setReturnFormat(JSON)
+		results = sparql.query().convert()
+		print("RESULTS:",str(results))
+	except:
+		print("Error on query")
+		return -1
+	if ask:
+		return results['boolean']
+	print(results["results"]["bindings"])
+	return results["results"]["bindings"]
+
 if __name__=="__main__":
 	
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
@@ -151,6 +189,7 @@ if __name__=="__main__":
 		elif opt == str(2):
 			keys.append("label")
 			keys.append("coords")
+			keys.append("typelabel")
 			city = input("Name of city >>")
 			if not queryIsCity(city):
 				print("City does not exist")
@@ -168,6 +207,8 @@ if __name__=="__main__":
 		elif opt == str(5):
 			keys.append("label")
 			keys.append("coords")
+			keys.append("airport")
+			keys.append("citylabel")
 			query = queryCountryAirports(input("Name of country>>"))
 
 		elif opt == str(6):
@@ -201,7 +242,7 @@ if __name__=="__main__":
 		for result in results["results"]["bindings"]:
 			for k in keys:
 				if result.get(k) : print(result[k]["value"])
-			print('\n')
+				#if result.get("coords") : 
+					#_tuple=eval(result["coords"]["value"].replace("Point","").replace(" ",","))
+					#print(_tuple[0])	
 
-
-main()
