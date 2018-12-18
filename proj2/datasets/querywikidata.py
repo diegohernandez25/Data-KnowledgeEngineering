@@ -16,19 +16,23 @@ def printMenu():
 def queryCountryAirports(country):
 	return"""
 		SELECT 
-			?label ?coords
+			?label ?coords ?airport ?citylabel
 		WHERE{
 			?country rdfs:label """+"\""+str(country)+"\""+"""@en.
 			?airport wdt:P31 wd:Q644371.
 			?airport wdt:P17 ?country.
 			?airport rdfs:label ?label.
+			?airport wdt:P131 ?city.
+			?city rdfs:label ?citylabel.
 			OPTIONAL
 			{
 				?airport wdt:P625 ?coords
 			}
 			FILTER(lang(?label) = "en")
+			FILTER(lang(?citylabel) = "en")
 		}
 	"""
+
 
 def queryCities(country):
 	return"""
@@ -188,7 +192,7 @@ if __name__=="__main__":
 			print("Wrong Option")
 			continue
 		try:
-			print(query)
+			#print(query)
 			sparql.setQuery(query)
 			sparql.setReturnFormat(JSON)
 			results = sparql.query().convert()
@@ -204,4 +208,4 @@ if __name__=="__main__":
 			print('\n')
 
 
-main()
+#main()

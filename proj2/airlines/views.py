@@ -1,6 +1,8 @@
 from django.shortcuts import render
-import json
+from django.http import HttpRequest, HttpResponse
 import datasets.searchRoutes as sr
+import datasets.querywikidata as qw
+from SPARQLWrapper import SPARQLWrapper, JSON
 # Create your views here.
 
 
@@ -26,9 +28,63 @@ def index(request):
 
     #print(processed_routes)
 
+
     tparams = {}
     info = "Airport details"
     # (route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info)
     tparams['route'] = processed_routes
+    tparams['africa'] = listCountries('Africa')
+    tparams['asia'] = listCountries('Asia')
+    tparams['europe'] = listCountries('Europe')
+    tparams['northame'] = listCountries('North America')
+    tparams['oceania'] = listCountries('Oceania')
+    tparams['southame'] = listCountries('South America')
+    tparams['all_cont'] = tparams['africa'] + tparams['asia'] + tparams['europe'] + tparams['northame'] + tparams['oceania'] + tparams['southame']
 
     return render(request, 'index.html',tparams)
+
+def getCities(request, country):
+    resp = "<html><body>{}</body></html>".format(listCities(country))
+    return HttpResponse(resp)
+
+def getAirports(request, country):
+    resp = "<html><body>{}</body></html>".format(listAirports(country))
+    return HttpResponse(resp)
+
+def listCountries(continent):
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    query = qw.countriesOfContinent(continent)
+    sparql.setQuery(query)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()['results']['bindings']
+    lst = []
+    for c in results:
+        #print(c)
+        lst.append(c['label']['value'])
+    return lst
+
+def listCities(country):
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    query = qw.queryCountryAirports(country)
+    sparql.setQuery(query)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()['results']['bindings']
+    lst = []
+    for c in results:
+        #print(c)
+        if c['citylabel']['value'] not in lst:
+            lst.append(c['citylabel']['value'])
+    return lst
+
+def listAirports(country):
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    query = qw.citysWithAirport(country)
+    sparql.setQuery(query)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()['results']['bindings']
+    lst = []
+    for c in results:
+        #print(c)
+        lst.append(c['label']['value'])
+    return lst
+

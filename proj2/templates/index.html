@@ -1,10 +1,11 @@
 {% extends "map.html" %}
 
+<div></div>
 
 {% block contentbar %}
 
     <div id="page0" style="visibility: visible; height: 0px">
-        <center>
+        <div align="center">
             <h1>Welcome to Airlines.</h1>
             <br>
 
@@ -13,88 +14,233 @@
             <h3>Filter shown routes</h3>
             <p></p>
             <h4>Source</h4>
-            <b>Continent:</b> <select id="f-src-continent">
-            <option value="europe">Europe</option>
-        </select> <br><br>
-            <b>Country:</b> <select id="f-src-country">
-            <option value="portugal">Portugal</option>
-        </select> <br><br>
+            <b>Continent:</b>
+            <select id="f-src-continent" onchange="updateCountries('f-src-continent', 'f-src-country')">
+                <option value="all">All</option>
+                x
+                <option value="africa">Africa</option>
+                <option value="asia">Asia</option>
+                <option value="europe">Europe</option>
+                <option value="northame">North America</option>
+                <option value="oceania">Oceania</option>
+                <option value="southame">South America</option>
+            </select> <br><br>
+
+            <b>Country:</b>
+            <select id="f-src-country" onchange="updateCities('f-src-country', 'f-src-city')">
+                <option value="all">All</option>
+            </select> <br><br>
             <b>City:</b> <select id="f-src-city">
-            <option value="lisbon">Lisbon</option>
         </select>
             <br>
             <br>
             <h4>Destination</h4>
-            <b>Continent:</b> <select id="f-dst-continent">
-            <option value="europe">Europe</option>
-        </select> <br><br>
-            <b>Country:</b> <select id="f-dst-country">
-            <option value="portugal">Portugal</option>
+            <b>Continent:</b>
+            <select id="f-dst-continent" onchange="updateCountries('f-dst-continent', 'f-dst-country')">
+                <option value="all">All</option>
+                <option value="africa">Africa</option>
+                <option value="asia">Asia</option>
+                <option value="europe">Europe</option>
+                <option value="northame">North America</option>
+                <option value="oceania">Oceania</option>
+                <option value="southame">South America</option>
+            </select> <br><br>
+            <b>Country:</b> <select id="f-dst-country" onchange="updateCities('f-dst-country', 'f-dst-city')">
+            <option value="all">All</option>
         </select> <br><br>
             <b>City:</b> <select id="f-dst-city">
-            <option value="lisbon">Lisbon</option>
+            <option value="all">All</option>
         </select>
             <br>
             <br>
             <button id="filter" type="button" class="btn btn-default">Apply filter</button>
             <br><br>
-        </center>
+        </div>
     </div>
 
     <div id="page1" style="visibility: hidden; height: 0px; margin-top: -10px">
-        <center>
+        <div align="center">
             <h1>Search flights</h1>
             <p></p>
             <h4>Source</h4>
-            <b>Continent:</b> <select id="s-src-continent">
-            <option value="europe">Europe</option>
-        </select> <br><br>
-            <b>Country:</b> <select id="s-src-country">
-            <option value="portugal">Portugal</option>
-        </select> <br><br>
-            <b>City:</b> <select id="s-src-city">
-            <option value="lisbon">Lisbon</option>
-        </select>
+            <b>Continent:</b>
+            <select id="s-src-continent" onchange="updateCountries('s-src-continent', 's-src-country')">
+                <option value="all">All</option>
+                <option value="africa">Africa</option>
+                <option value="asia">Asia</option>
+                <option value="europe">Europe</option>
+                <option value="northame">North America</option>
+                <option value="oceania">Oceania</option>
+                <option value="southame">South America</option>
+            </select> <br><br>
+            <b>Country:</b>
+            <select id="s-src-country" onchange="updateCities('s-src-country', 's-src-city')">
+                <option value="all">All</option>
+            </select> <br><br>
+            <b>City:</b>
+            <select id="s-src-city">
+                <option value="all">All</option>
+            </select>
             <br>
             <br>
             <h4>Destination</h4>
-            <b>Continent:</b> <select id="s-dst-continent">
-            <option value="europe">Europe</option>
-        </select> <br><br>
-            <b>Country:</b> <select id="s-dst-country">
-            <option value="portugal">Portugal</option>
-        </select> <br><br>
-            <b>City:</b> <select id="s-dst-city">
-            <option value="lisbon">Lisbon</option>
-        </select>
+            <b>Continent:</b>
+            <select id="s-dst-continent" onchange="updateCountries('s-dst-continent', 's-dst-country')">
+                <option value="all">All</option>
+                <option value="africa">Africa</option>
+                <option value="asia">Asia</option>
+                <option value="europe">Europe</option>
+                <option value="northame">North America</option>
+                <option value="oceania">Oceania</option>
+                <option value="southame">South America</option>
+            </select> <br><br>
+            <b>Country:</b>
+            <select id="s-dst-country" onchange="updateCities('s-dst-country', 's-dst-city')">
+                <option value="all">All</option>
+            </select> <br><br>
+            <b>City:</b>
+            <select id="s-dst-city">
+                <option value="all">All</option>
+            </select>
             <br>
             <br>
             <button id="search" type="button" class="btn btn-default">Search</button>
             <br><br>
             <h3>Available routes:</h3>
 
-        </center>
+        </div>
 
     </div>
 
     <div id="page2" style="visibility: hidden; height: 0px; margin-top: -10px">
-    <center>
-        <h1>Points of interest</h1>
-        <br>
-        <b>City:</b><br>
-        <input type="text" class="form-control" id="city-monum">
-        <br>
-        <button id="btn-monum" type="button" class="btn btn-default">Find</button>
+        <center>
+            <h1>Points of interest</h1>
+            <br>
+            <b>City:</b><br>
+            <input type="text" class="form-control" id="city-monum">
+            <br>
+            <button id="btn-monum" type="button" class="btn btn-default">Find</button>
         </center>
     </div>
 
     <script>
+        updateCountries('f-src-continent', 'f-src-country');
+        updateCountries('f-dst-continent', 'f-dst-country');
+        updateCountries('s-src-continent', 's-src-country');
+        updateCountries('s-dst-continent', 's-dst-country');
+
+        updateCities('f-src-country', 'f-src-city');
+        updateCities('f-dst-country', 'f-dst-city');
+        updateCities('s-src-country', 's-src-city');
+        updateCities('s-dst-country', 's-dst-city');
+
         function place() {
             {% for route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info in route %}
                 drawRoutes({{ route }}, "{{ src_name }}", "{{ dst_name }}", {{src_lat}}, {{src_long}}, {{dst_lat}}, {{dst_long}}, true);
                 addPlacemark({{src_lat}}, {{src_long}}, {{src_iata}}, "{{ src_name }}", "{{ src_info }}", true);
                 addPlacemark({{dst_lat}}, {{dst_long}}, {{dst_iata}}, "{{ dst_name }}", "{{ dst_info }}", true);
             {% endfor %}
+        }
+
+        function updateCountries(continentBox, countryBox) {
+            var e = document.getElementById(continentBox);
+            var value = e.options[e.selectedIndex].value;
+            var select = document.getElementById(countryBox);
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+            if (value == 'africa') {
+                {% for country in africa %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+            if (value == 'asia') {
+                {% for country in asia %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+            if (value == 'europe') {
+                {% for country in europe %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+            if (value == 'northame') {
+                {% for country in northame %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+            if (value == 'oceania') {
+                {% for country in oceania %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+            if (value == 'southame') {
+                {% for country in southame %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+            if (value == 'all') {
+                {% for country in all_cont %}
+                    var option = document.createElement('option');
+                    option.setAttribute('value', "{{ country }}");
+                    option.appendChild(document.createTextNode("{{ country }}"));
+                    document.getElementById(countryBox).appendChild(option);
+                {% endfor %}
+            }
+
+        }
+
+        function updateCities(countryBox, cityBox) {
+            var e = document.getElementById(countryBox);
+            var value = e.options[e.selectedIndex].value;
+            var select = document.getElementById(cityBox);
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+
+            httpGetAsync("http://localhost:8000/api/country/" + value + "/cities", rcvCities, cityBox);
+        }
+
+        function rcvCities(response, arg) {
+            var parsed = response.slice(13, response.length-15).split(",");
+            for (i=0; i<parsed.length; i++) {
+                var city = parsed[i].split("'")[1];
+                console.log(city);
+                if (city.length > 0) {
+                    var option = document.createElement('option');
+                    option.setAttribute('value', city);
+                    option.appendChild(document.createTextNode(city));
+                    document.getElementById(arg).appendChild(option);
+                }
+            }
+        }
+
+        function httpGetAsync(theUrl, callback, arg) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText, arg);
+            }
+            xmlHttp.open("GET", theUrl, true); // true for asynchronous
+            xmlHttp.send(null);
         }
     </script>
 {% endblock %}
