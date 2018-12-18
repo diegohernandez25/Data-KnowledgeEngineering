@@ -1,27 +1,24 @@
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
 import json
-from converter import distancecoord
 from functools import reduce
 from querycollection import *
 from datetime import datetime,timedelta,date
-
+from converter import distancecoord
 #TODO settings.py
 #endpoint = "http://localhost:7201"
-endpoint = "http://localhost:7200"
-repo_name = "airlinesdot"
 
 class routeFinder():
 
 	def __init__(self):
-		self.connectGraphDB()
+		self.repo_name, self.accessor = connectGraphDB()
 
 	def configure(self,srcuri,dsturi,optimize):
 		self.optimize=optimize
-		qsrc=self.queryGraphDB(getAirportCoords(srcuri),repo_name)
+		qsrc=queryGraphDB(getAirportCoords(srcuri),self.accessor,self.repo_name)
 		srccoord=(float(qsrc[0]['airlat']),float(qsrc[0]['airlon']))
 		
-		qdst=self.queryGraphDB(getAirportCoords(dsturi),repo_name)
+		qdst=queryGraphDB(getAirportCoords(dsturi),self.accessor, self.repo_name)
 		self.dstcoord=(float(qdst[0]['airlat']),float(qdst[0]['airlon']))
 		self.dsturi=dsturi
 
@@ -42,23 +39,7 @@ class routeFinder():
 		self.open_nodes=list()
 		self.visited_nodes=list()
 		self.open_nodes.append(src)
-		
 
-	def connectGraphDB(self):
-		client = ApiClient(endpoint = endpoint)
-		self.accessor = GraphDBApi(client)
-
-	def queryGraphDB(self,query,repo_name):
-		payload_query = {"query":query}
-		res = self.accessor.sparql_select(body = payload_query, repo_name = repo_name)
-		results=json.loads(res)['results']['bindings']
-		ret=list()
-		for r in results:
-			tmp=dict()
-			for k in r:
-				tmp[k]=r[k]['value']
-			ret.append(tmp)
-		return ret
 
 	def get_route(self):
 
@@ -123,7 +104,7 @@ class routeFinder():
 		return newlist
 
 	def possible_hops(self,node):
-		hop_data=self.queryGraphDB(getRoutesAirport(node['uri']),repo_name)
+		hop_data=queryGraphDB(getRoutesAirport(node['uri']), self.accessor, self.repo_name)
 		hops=list()
 		for hd in hop_data:
 			h=dict()
@@ -214,11 +195,29 @@ class routeFinder():
 		else:
 			raise Exception('Boom')
 			
+def connectGraphDB():
+	endpoint = "http://localhost:7200"
+	repo_name = "airlinesdot"
+	client = ApiClient(endpoint=endpoint)
+	accessor = GraphDBApi(client)
+	return repo_name, accessor
+
+def queryGraphDB(query,accessor,repo_name):
+    payload_query = {"query":query}
+    res = accessor.sparql_select(body = payload_query, repo_name = repo_name)
+    results=json.loads(res)['results']['bindings']
+    ret=list()
+    for r in results:
+        tmp=dict()
+        for k in r:
+            tmp[k]=r[k]['value']
+        ret.append(tmp)
+    return ret
 		
 def routeFinderNAME(srcCity,dstCity):
-	rf=routeFinder()
-	srcAirports=rf.queryGraphDB(getAirportCity(srcCity),repo_name)	
-	dstAirports=rf.queryGraphDB(getAirportCity(dstCity),repo_name)	
+	repo_name,accessor = connectGraphDB()	
+	srcAirports=queryGraphDB(getAirportCity(srcCity),accessor,repo_name)	
+	dstAirports=queryGraphDB(getAirportCity(dstCity),accessor,repo_name)	
 
 	print('len(srcAirports)=',len(srcAirports))
 	print('len(dstAirports)=',len(dstAirports))
@@ -226,7 +225,7 @@ def routeFinderNAME(srcCity,dstCity):
 	for src in srcAirports:
 		for dst in dstAirports:
 			#print(dst['airport'])
-			route=routeFinderURI(src['airport'],dst['airport'],rf)
+			route=routeFinderURI(src['airport'],dst['airport'])
 			if route!=None:
 				return route
 	return None
@@ -254,4 +253,9 @@ def main():
 	#print(a.get_route())
 
 if __name__=='__main__':
+	from querycollection import *
+	from converter import distancecoord
 	main()
+else:
+	from datasets.querycollection import *
+	from datasets.converter import distancecoord

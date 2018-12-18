@@ -24,7 +24,6 @@
 
         <script>
             ymaps.ready(init);
-            ymaps.ready(place);
             var map;
             var lst = [];
             lstPMarks = [];
@@ -35,6 +34,7 @@
                     center: [50, 20],
                     zoom: 4
                 });
+                place();
               /*  map.events.add('click', function (e) {
                     if (map.geoObjects.getLength()>0)
                         map.geoObjects.removeAll()

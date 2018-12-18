@@ -5,27 +5,26 @@ import datasets.searchRoutes as sr
 
 
 def index(request):
-    #sr.search_path("Lisbon", "Porto", 10)
-    endpoint,repo_name,client,accessor = sr.connectGraphDB()
+    repo_name,accessor = sr.connectGraphDB()
     query = sr.getAirportCity("Lisbon")
-    airport_uri = sr.queryGraphDB(query,accessor,repo_name)['results']['bindings'][0]['airport']['value']
-    query = sr.getAirportCoord(airport_uri)
-    airport_coords = sr.queryGraphDB(query,accessor,repo_name)['results']['bindings'][0]
-    fields = [float(airport_coords['lat']['value']), float(airport_coords['lon']['value']), int(airport_uri[43:]), "Aeroporto de Lisboa"]
+    query_result = sr.queryGraphDB(query,accessor,repo_name)[0]
+    airport_coords = [query_result['airlat'], query_result['airlon']]
+    airport_uri = query_result['airport']
+    fields = [float(airport_coords[0]), float(airport_coords[1]), int(airport_uri[43:]), "Aeroporto de Lisboa"]
     query = sr.getRoutesAirport(airport_uri)
-    routes = sr.queryGraphDB(query,accessor,repo_name)['results']['bindings']
+    routes = sr.queryGraphDB(query,accessor,repo_name)
 
     processed_routes = []
 
     for r in range(1,len(routes)):
-        current = [r] + fields + ["info about Lisbon airport"]
-        curr_uri = routes[r]['airportend']['value']
-        query = sr.getAirportCoord(curr_uri)
-        curr_coords = sr.queryGraphDB(query,accessor,repo_name)['results']['bindings'][0]
-        current = current + [float(curr_coords['lat']['value']), float(curr_coords['lon']['value']), int(curr_uri[43:]), "Airport " + curr_uri[43:], "info about this airport"]
+        route = routes[r]
+        current = [int(route['route'][41:])] + fields + ["info about Lisbon airport"]
+        curr_uri = route['airportend']
+        curr_coords = [route['airlat'], route['airlon']]
+        current = current + [float(curr_coords[0]), float(curr_coords[1]), int(curr_uri[43:]), "Airport " + curr_uri[43:], "info about this airport"]
         processed_routes.append(tuple(current))
 
-    print(processed_routes)
+    #print(processed_routes)
 
     tparams = {}
     info = "Airport details"
