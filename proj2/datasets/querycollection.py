@@ -106,7 +106,7 @@ def getAirportCoord(uri):
 	}
 	"""
 def getInfoRoute(uri):
-	"""
+	return """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX of: <http://openflights.org/resource/>
 		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
