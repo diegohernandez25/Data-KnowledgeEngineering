@@ -56,8 +56,16 @@
                 map.setCenter([50, 20]);
                 map.setZoom(4);
             }
-
+            function centerCamera(lat,lon){
+                map.setCenter([lat,lon]);
+                console.log("Map centered")
+            }
+            function zoomCamera(){
+                map.setZoom(12);
+                console.log("Map zoomed")
+            }
             function addPlacemark(lat, long, iata, airport, info, flag) {
+                console.log("addplacemark");
                 if (!lst.includes(iata) || !flag) {
                     var placemark = new ymaps.Placemark([lat, long],
                         {
@@ -70,7 +78,38 @@
                              */
                             iconLayout: 'default#image',
                             // Custom image for the placemark icon.
+
                             iconImageHref: '/static/assets/aeroplane.png',
+                            // The size of the placemark.
+                            iconImageSize: [35, 42],
+                            /**
+                             * The offset of the upper left corner of the icon relative
+                             * to its "tail" (the anchor point).
+                             */
+                            iconImageOffset: [-17.5, -21]
+                        });
+                    map.geoObjects.add(placemark);
+                    lst.push(iata)
+                    if (flag)
+                        lstPMarks.push([lat, long, iata, airport, info]);
+                }
+            }
+            function addPlacemarkTourist(lat, long, iata, airport, info, flag) {
+                console.log("addplacemark");
+                if (!lst.includes(iata) || !flag) {
+                    var placemark = new ymaps.Placemark([lat, long],
+                        {
+                            hintContent: airport,
+                            balloonContent: info
+                        }, {
+                            /**
+                             * Options.
+                             * You must specify this type of layout.
+                             */
+                            iconLayout: 'default#image',
+                            // Custom image for the placemark icon.
+
+                            iconImageHref: '/static/assets/map_select.png',
                             // The size of the placemark.
                             iconImageSize: [35, 42],
                             /**

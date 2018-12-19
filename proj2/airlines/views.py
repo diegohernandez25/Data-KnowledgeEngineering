@@ -1,5 +1,4 @@
 import sys
-#sys.path.append("..")
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 import json
@@ -9,45 +8,9 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from django.shortcuts import render, redirect
 from django.conf import settings
 from os.path import join
-
-#sys.path+=[join(settings.BASE_DIR,'')]
-#import querywikidata as wiki
-
-# Create your views here.
+import json
 
 def index(request):
-	if 'query_citymonument' in request.POST:
-		print("QUERY_CITYMONUMENT")
-		_city = request.POST['query_citymonument']
-		_query =qw.queryIsCity(_city)
-		print("queryIsCity: ",str(_query))
-		_res =qw.queryData(_query,ask=True)
-	#	if not _res:
-	#		print("Not a city")
-			#TODO: find cities with symilar name
-
-		_query =qw.queryMonumentCities(_city)
-		print("queryMonumentCities:",_query)
-		_res =qw.queryData(_query)
-		print(_res)
-		tparams = dict()
-		tparams["monuments"]=list()
-		keys={"labels","coords"}
-		tparams["info"] = True if len(_res)>0 else False
-		stored= list()
-		for e in _res:
-			if e.get("label") and e.get("coords"):
-				if e["label"]["value"] not in stored:
-					stored.append(e["label"]["value"])
-					_coords= eval(e["coords"]["value"].replace("Point","").replace(" ",","))
-					_lat=_coords[0]
-					print(_lat)
-					_lon=_coords[1]
-					print(_lon)
-					#tparams["monuments"].append({'name':e["label"]["value"],'lat':_lat,'lon':_lon})
-					tparams["monuments"].append({'name':e["label"]["value"],'coords':_coords})
-		print("tparams: ",repr(tparams))
-		return render(request, 'index.html', tparams)
 
 	repo_name,accessor = sr.connectGraphDB()
 	query = sr.getAirportCity("Lisbon")
@@ -68,12 +31,9 @@ def index(request):
 	    current = current + [float(curr_coords[0]), float(curr_coords[1]), int(curr_uri[43:]), "Airport " + curr_uri[43:], "info about this airport"]
 	    processed_routes.append(tuple(current))
 
-	#print(processed_routes)
-
 
 	tparams = {}
 	info = "Airport details"
-	# (route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info)
 	tparams['route'] = processed_routes
 	tparams['africa'] = listCountries('Africa')
 	tparams['asia'] = listCountries('Asia')
@@ -89,9 +49,73 @@ def getCities(request, country):
 	resp = "<html><body>{}</body></html>".format(listCities(country))
 	return HttpResponse(resp)
 
+def getDestination(request, obj):
+	print("def getDestination(request, obj):")
+	resp = "<html><body>{}</body></html>".format(listDestinations(obj.replace("_"," ")))
+	return HttpResponse(resp)
+
 def getAirports(request, country):
 	resp = "<html><body>{}</body></html>".format(listAirports(country))
 	return HttpResponse(resp)
+
+def getMonumentCoords(request, city):
+	resp = "<html><body>{}</body></html>".format(listMonuments(city))
+	return HttpResponse(resp)
+
+def listDestinations(obj):
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.queryProxCoord(obj)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	lst = list()
+	lat_mean = 0
+	lon_mean = 0
+	for c in results:
+		d = dict()
+		d['typelabel'] = c['typelabel']['value']
+		d['itemlabel'] = c['itemlabel']['value']
+		cord = eval(c['coords']['value'].replace("Point","").replace(" ",","))
+		d['lat'] = cord[0]
+		d['lon'] = cord[1]
+		lat_mean+= float(cord[0])
+		lon_mean+= float(cord[1])
+		lst.append(d)
+	lat_mean = lat_mean / len(results)
+	lon_mean = lon_mean / len(results)
+	obj = dict()
+	obj['obj'] = lst
+	obj['lat_mean'] = lat_mean
+	obj['lon_mean'] = lon_mean
+	return json.dumps(obj)
+
+
+def listMonuments(city):
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.queryMonumentCities(city)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	lst = list()
+	lat_mean = 0
+	lon_mean = 0
+	for c in results:
+		monuments = dict()
+		monuments['label']= c['label']['value']
+		c = eval(c["coords"]["value"].replace("Point","").replace(" ",","))
+		monuments['lat']= c[0]
+		monuments['lon']= c[1]
+		lat_mean+=float(c[0])
+		lon_mean+=float(c[1])
+		lst.append(monuments)
+	lat_mean= lat_mean/ len(results)
+	lon_mean= lon_mean/ len(results)
+	monu = dict()
+	monu['monuments'] = lst
+	monu['lat_mean'] = lat_mean
+	monu['lon_mean'] = lon_mean
+	return json.dumps(monu)
+
 
 def listCountries(continent):
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
@@ -101,7 +125,6 @@ def listCountries(continent):
 	results = sparql.query().convert()['results']['bindings']
 	lst = []
 	for c in results:
-	    #print(c)
 	    lst.append(c['label']['value'])
 	return lst
 
@@ -113,7 +136,6 @@ def listCities(country):
 	results = sparql.query().convert()['results']['bindings']
 	lst = []
 	for c in results:
-	    #print(c)
 	    if c['citylabel']['value'] not in lst:
 	        lst.append(c['citylabel']['value'])
 	return lst
@@ -126,6 +148,5 @@ def listAirports(country):
 	results = sparql.query().convert()['results']['bindings']
 	lst = []
 	for c in results:
-	    #print(c)
 	    lst.append(c['label']['value'])
 	return lst

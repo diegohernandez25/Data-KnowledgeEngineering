@@ -117,19 +117,43 @@
 
         <h1>Points of interest</h1>
         <br>
-        <form action="." method="post">
-            {% csrf_token %}
-            <b>City:</b><br>
-            <input type="text" name="query_citymonument" class="form-control" id="city-monum" required>
-            <br>
-            <input type="submit" value="Submit">
-            </center>
-        </form>
+
+
+        <b>City:</b><br>
+        <input type="text" name="query_citymonument" class="form-control" id="city-monum" required>
+        <br>
+        <button onclick="searchMonuments()"> Search</button>
+        <br><br>
+        <b>Touristic Destination:</b>
+        <input type="text" name="query_citymonument" class="form-control" id="city-destiny" required>
+        <br>
+        <button onclick="searchDestination()"> Search  </button>
+
+    </center>
+
     </div>
 
 
 
     <script>
+        function searchMonuments(){
+            var val = document.getElementById("city-monum").value;
+            console.log("val: "+val);
+
+            //httpGetAsync("http://localhost:8000/api/country/" + value + "/cities", rcvCities, cityBox);
+            httpGetAsync("http://localhost:8000/api/city/"+val+"/monuments", updateMonuments, val);
+
+        }
+
+        function searchDestination(){
+            var val = document.getElementById("city-destiny").value;
+            val = val.toLowerCase();
+            val = val.replace(/ /g,"_");
+            console.log("val: "+val);
+            httpGetAsync("http://localhost:8000/api/monument/"+val,locateDestination,val);
+
+        }
+
         updateCountries('f-src-continent', 'f-src-country');
         updateCountries('f-dst-continent', 'f-dst-country');
         updateCountries('s-src-continent', 's-src-country');
@@ -239,6 +263,36 @@
             }
         }
 
+        function updateMonuments(response, arg){
+
+            var parsed = response.slice(12, response.length-14);
+
+            var obj = JSON.parse(parsed);
+            removePlacemarks();
+
+            for(i=0;i<obj.monuments.length;i+=1){
+                addPlacemarkTourist(obj.monuments[i].lon,obj.monuments[i].lat, "None", obj.monuments[i].label, "None", false);
+            }
+            zoomCamera();
+            centerCamera(obj.lon_mean,obj.lat_mean);
+        }
+
+        function locateDestination(response, arg){
+            var parsed = response.slice(12, response.length-14);
+            var obj = JSON.parse(parsed);
+            removePlacemarks();
+            for(i=0;i<obj.obj.length;i+=1){
+                dict= obj.obj[i];
+                // console.log('dict : '+dict);
+
+                addPlacemarkTourist(dict.lon,dict.lat, "None", dict.label, "None", false);
+            }
+            zoomCamera();
+            centerCamera(obj.lon_mean,obj.lat_mean);
+        }
+
+
+
         function httpGetAsync(theUrl, callback, arg) {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function () {
@@ -248,15 +302,6 @@
             xmlHttp.open("GET", theUrl, true); // true for asynchronous
             xmlHttp.send(null);
         }
-        function initFunction(){
 
-            {%if info %}
-                {%for d in monuments%}
-                    console.log({{d.coords.0}})
-                    console.log({{d.coords.1}})
-                    addPlacemark({{d.coords.1}}, {{d.coords.0}}, "None", "{{ d.coords.name }}", "None", false);
-                {%endfor%}
-            {%endif%}
-        }
     </script>
 {% endblock %}
