@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/city/<str:city>/airports', views.getCityAirports, name = 'getCityAirports'),
     path('api/country/<str:country>/airports', views.getCountryAirports, name = 'getCountryAirports'),
     path('api/routes/<str:src>/<str:dst>', views.getRoutes, name = 'getRoutes'),
+    path('api/city/orig/<str:orig>/dest/<str:dest>/coord', views.getCityCoords, name = 'getCityCoords'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

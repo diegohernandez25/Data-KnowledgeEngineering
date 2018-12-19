@@ -135,9 +135,34 @@
 
     </div>
 
+    <div id="page3" style="visibility: hidden; height: 0px; margin-top: -10px" >
+        <center>
+            <h1> Smart Search</h1>
+            <br>
+            <b>Origin:</b>
+            <input type="text" name="query_citya" class="form-control" id="city_a" required>
+            <br>
+            <b>Destination:</b>
+            <input type="text" name="query_cityb" class="form-control" id="city_b" required>
+            <br>
+            <button onclick="createRoute()">Create Route</button>
+            <br><br>
+
+        </center>
+    </div>
+
 
 
     <script>
+        function createRoute(){
+            console.log(" createRoute()");
+            var val_orig = document.getElementById("city_a").value;
+            var val_dest = document.getElementById("city_b").value;
+            console.log(val_orig);
+            console.log(val_dest);
+            httpGetAsync("http://localhost:8000/api/city/orig/"+val_orig+"/dest/"+val_dest+"/coord", updateRoute, 0);
+        }
+
         function searchMonuments(){
             var val = document.getElementById("city-monum").value;
             console.log("val: "+val);
@@ -224,6 +249,7 @@
                     var option = document.createElement('option');
                     option.setAttribute('value', "{{ country }}");
                     option.appendChild(document.createTextNode("{{ country }}"));
+
                     document.getElementById(countryBox).appendChild(option);
                 {% endfor %}
             }
@@ -317,6 +343,19 @@
             }
             zoomCamera();
             centerCamera(obj.lon_mean,obj.lat_mean);
+        }
+
+        function updateRoute(response,arg){
+            var parsed = response.slice(12, response.length-14);
+            var obj = JSON.parse(parsed);
+            removePlacemarks();
+            console.log("updateRoute(response,arg)");
+            console.log(obj);
+            orig = obj.orig;
+            dst = obj.dest;
+            addPlacemarkTourist(orig[1],orig[0], "None", "None", "None", false);
+            addPlacemarkTourist(dst[1],dst[0], "None", "None", "None", false);
+            addTerritorialRoute(orig[1],orig[0],dst[1],dst[0]);
         }
 
 

@@ -34,7 +34,7 @@
                     center: [50, 20],
                     zoom: 4
                 });
-                place();
+                 place();
               /*  map.events.add('click', function (e) {
                     if (map.geoObjects.getLength()>0)
                         map.geoObjects.removeAll()
@@ -184,6 +184,29 @@
                     drawRoutes(lstRoutes[i][0], lstRoutes[i][1], lstRoutes[i][2], lstRoutes[i][3], lstRoutes[i][4], lstRoutes[i][5], lstRoutes[i][6], false);
                 }
             }
+
+            function addTerritorialRoute(origin_lat, origin_lon, destiny_lat, destiny_lon){
+                var multiRoute = new ymaps.multiRouter.MultiRoute({
+                        // The description of the reference points on the multi-stop route.
+                        referencePoints: [
+                            [origin_lat,origin_lon],
+                            [destiny_lat,destiny_lon]
+                        ],
+                        // Routing options.
+                        params: {
+                            // Limit on the maximum number of routes returned by the router.
+                            results: 3
+                        }
+                    }, {
+                        // Automatically set the map boundaries so the entire route is visible.
+                        boundsAutoApply: true
+                    });
+
+                map.geoObjects.add( multiRoute);
+            }
+
+
+
         </script>
     </div>
 {% endblock %}

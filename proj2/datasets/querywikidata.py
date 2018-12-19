@@ -199,10 +199,6 @@ def queryData(query, ask=False):
 	return results["results"]["bindings"]
 
 
-#verificar se tem coordenadas o sujeito
-#para cada um deles verificar:
-#-coords
-#-owner of /destinations
 def queryProxCoord(obj):
 	return"""
 		SELECT ?coords ?typelabel ?itemlabel  WHERE {
@@ -224,6 +220,17 @@ def queryProxCoord(obj):
 
 		} ORDER BY ASC(?num) LIMIT 5
 	"""
+def queryCityCoord(obj):
+	return """
+		SELECT ?coord 
+		WHERE{
+			?city rdfs:label """+"\""+str(obj)+"\""+"""@en.
+			?city (wdt:P17 | wdt:P1376 | wdt:P131 | wdt:P150) ?a.
+			?city wdt:P625 ?coord.
+		} limit 1
+	"""
+
+
 
 if __name__=="__main__":
 	

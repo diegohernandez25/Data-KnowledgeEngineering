@@ -112,6 +112,32 @@ def getMonumentCoords(request, city):
 	resp = "<html><body>{}</body></html>".format(listMonuments(city))
 	return HttpResponse(resp)
 
+def getCityCoords(request,orig,dest):
+	coord_orig=listCityCoords(orig)
+	print("coord_orig",coord_orig)
+	coord_dest=listCityCoords(dest)
+	print("coord_dest",coord_dest)
+	d = dict()
+	d['orig']=coord_orig
+	d['dest']=coord_dest
+	d = json.dumps(d)
+	resp = "<html><body>{}</body></html>".format(d)
+	return HttpResponse(resp)
+
+def listCityCoords(city):
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.queryCityCoord(city)
+	print(query)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	print("results",repr(results))
+	coord=list()
+	if results: 
+		coord=eval(results[0]['coord']['value'].replace("Point","").replace(" ",","))
+		coord=[coord[0],coord[1]]
+	return coord	
+
 def listDestinations(obj):
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 	query = qw.queryProxCoord(obj)
