@@ -3,7 +3,6 @@ from s4api.swagger import ApiClient
 import json
 from functools import reduce
 from datetime import datetime,timedelta,date
-from cacheManager import cacheManager
 
 class routeFinder():
 
@@ -259,7 +258,9 @@ def main():
 if __name__=='__main__':
 	from querycollection import *
 	from converter import distancecoord
+	from cacheManager import cacheManager
 	main()
 else:
 	from datasets.querycollection import *
 	from datasets.converter import distancecoord
+	from datasets.cacheManager import cacheManager
