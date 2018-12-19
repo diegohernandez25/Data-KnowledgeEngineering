@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from os.path import join
 import json
+from datasets.converter import distancecoord
 
 def index(request):
 
@@ -258,3 +259,25 @@ def getSingleAirportRdfa(a):
         'airlat'] + "</span>\n</div>\n<p>\n"
 
     return elem
+
+def findBestAirport(local):
+	repo_name, accessor = sr.connectGraphDB()
+	query = qw.queryCountryOf(local)
+	results = qw.queryData(query)
+	country=results[0]['country']['value']
+
+	local_coods = eval(results[0]['coords']['value'].replace("Point","").replace(" ",","))
+	local_coods=(float(local_coods[1]),float(local_coods[0]))
+
+	query = sr.getAirportsFromCountry(country)
+	query_result = sr.queryGraphDB(query, accessor, repo_name)
+
+	query_result.sort(key=lambda x:distancecoord((float(x['lat']),float(x['lon'])),local_coods))
+	return query_result[0]
+
+def smartAirRoute(localA,localB):
+	a=findBestAirport(localA)	
+	b=findBestAirport(localB)	
+	bestroute=sr.routeFinderURI(a['airport'],b['airport'])	
+	return bestroute
+ 
