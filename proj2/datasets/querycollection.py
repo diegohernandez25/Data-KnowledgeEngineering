@@ -155,3 +155,22 @@ def getCitysWithAirports(country):
             ?airport ns1:city ?citylabel.
         }
 		"""
+def getAirportsFromCountry(country):
+	return """
+		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX of: <http://openflights.org/resource/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+        PREFIX ns1: <http://openflights.org/resource/airport/>
+        PREFIX ns2: <http://www.airlinesdot.com/resource/route/>
+        PREFIX ns3: <http://openflights.org/resource/airport/>
+        SELECT ?airport ?lat ?lon
+        WHERE{
+
+            ?airport ns1:country """+"\""+str(country)+"\""+""".
+
+            ?airport a of:Airport.
+			?airport ns1:latitude ?lat. 
+			?airport ns1:longitude ?lon. 
+        }
+		"""

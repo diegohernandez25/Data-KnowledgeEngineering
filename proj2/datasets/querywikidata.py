@@ -35,6 +35,7 @@ def printMenu():
 	print("6. Country of a Continent")
 	print("7. Cities with airport")
 	print("8. Search place")
+	print("9. Search place's country")
 	print("0. Exit")
 
 
@@ -185,11 +186,11 @@ def citysWithAirport(country):
 sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 def queryData(query, ask=False):
 	try:
-		print(query)
+		#print(query)
 		sparql.setQuery(query)
 		sparql.setReturnFormat(JSON)
 		results = sparql.query().convert()
-		print("RESULTS:",str(results))
+		#print("RESULTS:",str(results))
 	except:
 		print("Error on query")
 		return -1
@@ -218,7 +219,7 @@ def queryProxCoord(obj):
 		FILTER(lang(?typelabel) = "en")
 		FILTER(lang(?itemlabel) = "en")
 
-		} ORDER BY ASC(?num) LIMIT 5
+		} ORDER BY ASC(?num) LIMIT 1
 	"""
 def queryCityCoord(obj):
 	return """
@@ -231,6 +232,33 @@ def queryCityCoord(obj):
 	"""
 
 
+
+def queryCountryOf(obj):
+	return """
+		SELECT ?country ?coords  WHERE {
+		  SERVICE wikibase:mwapi {
+			  bd:serviceParam wikibase:api "EntitySearch" .
+			  bd:serviceParam wikibase:endpoint "www.wikidata.org" .
+			  bd:serviceParam mwapi:search """+'\"'+str(obj)+'\"'+""" .
+			  bd:serviceParam mwapi:language "en" .
+			  ?item wikibase:apiOutputItem mwapi:item .
+			  ?num wikibase:apiOrdinal true .
+		  }
+		  ?item (wdt:P279|wdt:P31) ?type.
+		  ?item wdt:P17 ?ctry.
+		  ?item wdt:P625 ?coords.
+		  ?type rdfs:label ?typelabel.
+		  ?item rdfs:label ?itemlabel.
+
+		  ?ctry rdfs:label ?country
+
+		FILTER(lang(?typelabel) = "en")
+		FILTER(lang(?itemlabel) = "en")
+		FILTER(lang(?country) = "en")
+
+		} ORDER BY ASC(?num) LIMIT 1
+	"""
+	
 
 if __name__=="__main__":
 	
@@ -287,6 +315,10 @@ if __name__=="__main__":
 			keys.append("itemlabel")	
 			keys.append("coords")	
 			query=queryProxCoord(input("Name of Country>>"))
+		
+		elif opt == str(9):
+			keys.append("country")	
+			query=queryCountryOf(input("Some object>>"))
 			
 		elif opt == str(0):
 			print("Exit")
