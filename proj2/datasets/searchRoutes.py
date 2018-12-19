@@ -201,7 +201,7 @@ def queryGraphDB(query,accessor,repo_name):
         ret.append(tmp)
     return ret
 		
-def routeFinderNAME(srcCity,dstCity):
+def routeFinderNAME(srcCity,dstCity,departdate):
 	repo_name,accessor = connectGraphDB()	
 	srcAirports=queryGraphDB(getAirportCity(srcCity),accessor,repo_name)	
 	dstAirports=queryGraphDB(getAirportCity(dstCity),accessor,repo_name)	
@@ -212,16 +212,17 @@ def routeFinderNAME(srcCity,dstCity):
 	for src in srcAirports:
 		for dst in dstAirports:
 			#print(dst['airport'])
-			route=routeFinderURI(src['airport'],dst['airport'])
+			route=routeFinderURI(src['airport'],dst['airport'],departdate)
 			if route!=None:
 				return route
 	return None
 
-def routeFinderURI(srcuri,dsturi,rf=routeFinder()):
+def routeFinderURI(srcuri,dsturi,departdate,rf=routeFinder()):
 
 	cache=cacheManager()
 	ch=cache.retrivefromcache(srcuri,dsturi)
 	if ch!=None:
+		calcarrivaldate(ch,departdate)
 		return ch
 
 	ret=dict()
@@ -233,7 +234,30 @@ def routeFinderURI(srcuri,dsturi,rf=routeFinder()):
 			return None
 
 	addroutestocache(ret,srcuri,dsturi)
+	calcarrivaldate(ret,departdate)
 	return ret
+
+def calcarrivaldate(routes,dod):
+	dtdeparture=datetime.strptime(dod,'%Y-%m-%d')
+	print(dtdeparture)
+	basedt=routeFinder._dt_to_sec(dtdeparture)
+	for route in routes:
+		offset=0
+		if route!='flighttime':
+			routes[route]['arrival']=datetime.strftime(routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])+basedt),
+											"%H:%M:%S %d-%m-%Y")
+			offset=-3600
+		nrdays=routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])+offset).day-1
+		if nrdays==0:
+			strdays=""
+		elif nrdays==1:
+			strdays=str(nrdays)+' day '
+		else:
+			strdays=str(nrdays)+' days '
+		hours=datetime.strftime(routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])+offset),"%H:%M:%S")
+		routes[route]['elapsedtimepretty']=strdays+hours
+		print(routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])))
+		
 
 def addroutestocache(routes,srcURI,dstURI):
 	cache=cacheManager()
@@ -246,9 +270,9 @@ def addroutestocache(routes,srcURI,dstURI):
 		
 def main():
 	#print(routeFinderURI('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851'))
-	#print(routeFinderNAME('Porto','New York'))
-	#print(routeFinderNAME('Porto','Lisbon'))
-	print(routeFinderNAME('Funchal','Caracas'))
+	print(routeFinderNAME('Caracas','Kiev','2018-1-1'))
+	#print(routeFinderNAME('Porto','Lisbon','2018-1-1'))
+	#print(routeFinderNAME('Funchal','Caracas','2018-1-1'))
 	#print(routeFinderURI('http://openflights.org/resource/airport/id/1636','http://openflights.org/resource/airport/id/3797'))
 
 	#print('TOTAL TIME')
