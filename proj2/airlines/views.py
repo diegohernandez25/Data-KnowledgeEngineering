@@ -113,17 +113,6 @@ def getMonumentCoords(request, city):
 	resp = "<html><body>{}</body></html>".format(listMonuments(city))
 	return HttpResponse(resp)
 
-def getCityCoords(request,orig,dest):
-	coord_orig=listCityCoords(orig)
-	print("coord_orig",coord_orig)
-	coord_dest=listCityCoords(dest)
-	print("coord_dest",coord_dest)
-	d = dict()
-	d['orig']=coord_orig
-	d['dest']=coord_dest
-	d = json.dumps(d)
-	resp = "<html><body>{}</body></html>".format(d)
-	return HttpResponse(resp)
 
 def listCityCoords(city):
 	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
@@ -299,11 +288,21 @@ def findBestAirport(local):
 	query_result = sr.queryGraphDB(query, accessor, repo_name)
 
 	query_result.sort(key=lambda x:distancecoord((float(x['lat']),float(x['lon'])),local_coods))
-	return query_result[0]
+	return query_result[0],list(local_coods)
+
+def getCityCoords(request,orig,dest):
+	bestroute,origincoord,destinycoord = smartAirRoute(orig,dest)
+	d = dict()
+	d['orig']=[origincoord[1],origincoord[0]]
+	d['dest']=[destinycoord[0],destinycoord[1]]
+	d = json.dumps(d)
+	resp = "<html><body>{}</body></html>".format(d)
+	return HttpResponse(resp)
 
 def smartAirRoute(localA,localB):
-	a=findBestAirport(localA)	
-	b=findBestAirport(localB)	
+	a,locala=findBestAirport(localA)	
+	b,localb=findBestAirport(localB)
 	bestroute=sr.routeFinderURI(a['airport'],b['airport'])	
-	return bestroute
- 
+	##TODO localA cidade do pais , localB cidade do outro pais, nao necessariamente a cidade do aeroporto
+	return bestroute,[locala,[float(a['lat']),float(a['lon'])]],[localb,[float(b['lat']),float(b['lon'])]]
+

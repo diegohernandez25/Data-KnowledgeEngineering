@@ -185,7 +185,7 @@
                 }
             }
 
-            function addTerritorialRoute(origin_lat, origin_lon, destiny_lat, destiny_lon){
+            function addTerritorialRoute(origin_lat, origin_lon, destiny_lat, destiny_lon,origin_lat2, origin_lon2, destiny_lat2, destiny_lon2){
                 var multiRoute = new ymaps.multiRouter.MultiRoute({
                         // The description of the reference points on the multi-stop route.
                         referencePoints: [
@@ -195,14 +195,30 @@
                         // Routing options.
                         params: {
                             // Limit on the maximum number of routes returned by the router.
-                            results: 3
+                            results: 2
                         }
                     }, {
                         // Automatically set the map boundaries so the entire route is visible.
                         boundsAutoApply: true
                     });
+                    var multiRoute2 = new ymaps.multiRouter.MultiRoute({
+                            // The description of the reference points on the multi-stop route.
+                            referencePoints: [
+                                [origin_lat2,origin_lon2],
+                                [destiny_lat2,destiny_lon2]
+                            ],
+                            // Routing options.
+                            params: {
+                                // Limit on the maximum number of routes returned by the router.
+                                results: 2
+                            }
+                        }, {
+                            // Automatically set the map boundaries so the entire route is visible.
+                            boundsAutoApply: true
+                        });
 
                 map.geoObjects.add( multiRoute);
+                map.geoObjects.add( multiRoute2);
             }
 
 

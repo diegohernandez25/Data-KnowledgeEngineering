@@ -349,13 +349,10 @@
             var parsed = response.slice(12, response.length-14);
             var obj = JSON.parse(parsed);
             removePlacemarks();
-            console.log("updateRoute(response,arg)");
-            console.log(obj);
             orig = obj.orig;
             dst = obj.dest;
-            addPlacemarkTourist(orig[1],orig[0], "None", "None", "None", false);
-            addPlacemarkTourist(dst[1],dst[0], "None", "None", "None", false);
-            addTerritorialRoute(orig[1],orig[0],dst[1],dst[0]);
+            addTerritorialRoute(orig[0][0],orig[0][1],orig[1][0],orig[1][1],dst[0][0],dst[0][1],dst[1][0],dst[1][1]);
+
         }
 
 
