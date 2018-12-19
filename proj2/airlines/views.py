@@ -279,6 +279,8 @@ def findBestAirport(local):
 	repo_name, accessor = sr.connectGraphDB()
 	query = qw.queryCountryOf(local)
 	results = qw.queryData(query)
+	if(not len(results) or not results[0].get('country')):
+		return None,None
 	country=results[0]['country']['value']
 
 	local_coods = eval(results[0]['coords']['value'].replace("Point","").replace(" ",","))
@@ -288,6 +290,8 @@ def findBestAirport(local):
 	query_result = sr.queryGraphDB(query, accessor, repo_name)
 
 	query_result.sort(key=lambda x:distancecoord((float(x['lat']),float(x['lon'])),local_coods))
+	if(not len(query_result)):
+		return None, None
 	return query_result[0],list(local_coods)
 
 def getCityCoords(request,orig,dest):
@@ -302,7 +306,16 @@ def getCityCoords(request,orig,dest):
 def smartAirRoute(localA,localB):
 	a,locala=findBestAirport(localA)	
 	b,localb=findBestAirport(localB)
-	bestroute=sr.routeFinderURI(a['airport'],b['airport'])	
+	if a!=None: 
+		_a=[locala,[float(a['lat']),float(a['lon'])]]
+	else: 
+		_a=[None,None]
+	if b !=None: 
+		_b=[localb,[float(b['lat']),float(b['lon'])]]
+	else: 
+		_b=[None,None]
+	bestroute=sr.routeFinderURI(a['airport'],b['airport']) if a!=None and b!=None else None
 	##TODO localA cidade do pais , localB cidade do outro pais, nao necessariamente a cidade do aeroporto
-	return bestroute,[locala,[float(a['lat']),float(a['lon'])]],[localb,[float(b['lat']),float(b['lon'])]]
+	#return bestroute,[locala,[float(a['lat']),float(a['lon'])]],[localb,[float(b['lat']),float(b['lon'])]]
+	return bestroute,_a,_b
 
