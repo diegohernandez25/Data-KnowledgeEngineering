@@ -252,11 +252,3 @@ class cacheManager:
 		payload_query = {"update":query}
 		res = self.accessor.sparql_update(body=payload_query, repo_name=self.repo_name)
 		return res
-
-if __name__ == "__main__":
-	cm = cacheManager()
-	path=['http://openflights.org/resource/route/id/DDD','http://openflights.org/resource/route/id/EEE','http://openflights.org/resource/route/id/FFF','http://openflights.org/resource/route/id/GGG']
-	cm.addtocache('http://openflights.org/resource/airport/id/BBB','http://openflights.org/resource/airport/id/CCC',155,'Saturday','Saturday',"09:50:00","23:01:00",655,path)
-	cm.verifycache("http://openflights.org/resource/airport/id/BBB","http://openflights.org/resource/airport/id/CCC")
-	
-
