@@ -17,7 +17,7 @@
             <b>Continent:</b>
             <select id="f-src-continent" onchange="updateCountries('f-src-continent', 'f-src-country')">
                 <option value="all">All</option>
-                x
+
                 <option value="africa">Africa</option>
                 <option value="asia">Asia</option>
                 <option value="europe">Europe</option>
@@ -85,6 +85,12 @@
             </select>
             <br>
             <br>
+            <label for="start"><b>Arrival date:</b></label>
+            <input type="date" id="init-date" name="init-date"
+                value="2018-12-01">
+
+            <br>
+            <br>
             <h4>Destination</h4>
             <b>Continent:</b>
             <select id="s-dst-continent" onchange="updateCountries('s-dst-continent', 's-dst-country')">
@@ -105,6 +111,11 @@
                 <option value="null">----</option>
             </select>
             <br>
+            <br><br>
+            <label for="start"><b>Departure date:</b></label>
+            <input type="date" id="end-date" name="end-date"
+                value="2018-12-01">
+            <br>
             <br>
             <button id="search" type="button" class="btn btn-default">Search</button>
             <br><br>
@@ -122,6 +133,7 @@
 
 
         <b>City:</b><br>
+        <br>
         <input type="text" name="query_citymonument" class="form-control" id="city-monum" required>
         <br>
         <button onclick="searchMonuments()"> Search</button>
@@ -144,9 +156,14 @@
             <br>
             <b>Destination:</b>
             <input type="text" name="query_cityb" class="form-control" id="city_b" required>
+            <br><br>
+            <label for="start"><b>Date:</b></label>
+            <input type="date" id="date" name="date"
+                value="2018-12-01">
+            <br>
             <br>
             <button onclick="createRoute()">Create Route</button>
-            <br><br>
+            <br>
 
         </center>
     </div>
