@@ -35,7 +35,9 @@ urlpatterns = [
     path('api/routes/country/<str:src>/continent/<str:dst>', views.getAirports, name = 'getAirports'),
 	path('api/city/<str:city>/monuments', views.getMonumentCoords, name = 'getMonumentCoords'),
 	path('api/monument/<str:obj>', views.getDestination, name = 'getDestination'),
+    path('api/city/<str:city>/airports', views.getCityAirports, name = 'getCityAirports'),
+    path('api/country/<str:country>/airports', views.getCountryAirports, name = 'getCountryAirports'),
+    path('api/routes/<str:src>/<str:dst>', views.getRoutes, name = 'getRoutes'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
-

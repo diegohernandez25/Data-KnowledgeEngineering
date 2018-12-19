@@ -3,8 +3,6 @@ from s4api.swagger import ApiClient
 import json
 from functools import reduce
 from datetime import datetime,timedelta,date
-#TODO settings.py
-#endpoint = "http://localhost:7201"
 
 class routeFinder():
 
@@ -53,16 +51,10 @@ class routeFinder():
 
 
 			if node['uri']==self.dsturi:
-				#print('FOUND')
-				#print(node)
-				#print('Cost: ',node['cost'])
-				#print('Price: ',routeFinder.sum_of_param(node,'price'))
-				#print('Distance: ',routeFinder.sum_of_param(node,'distance'))
-				#print('NrHops: ',node['hop'])
 				return {'route':routeFinder.node_route(node),'cost':node['cost'],'price':routeFinder.sum_of_param(node,'price'),'distance':routeFinder.sum_of_param(node,'distance'),'nrhops':node['hop'],'elapsedtime':node['elapsedtime']}	
 
 			for hop in next_hops:
-				if reduce(lambda x,y: x and y['uri']!=hop['uri'],self.visited_nodes,True): #FIXME	
+				if reduce(lambda x,y: x and y['uri']!=hop['uri'],self.visited_nodes,True): 
 
 					dup=list(filter(lambda x: x['uri']==hop['uri'],self.open_nodes))
 					if len(dup)>1:
@@ -141,7 +133,6 @@ class routeFinder():
 	def _dt_to_rel_sec(dt):
 		t=dt.time()	
 		dtt=routeFinder._t_to_dt(t)
-		#print('TIME ',dt)
 		return routeFinder._dt_to_sec(dtt)
 
 	def elapsedtime(self,node,hop):
@@ -151,9 +142,7 @@ class routeFinder():
 			return duration
 
 		tod=routeFinder._dt_to_rel_sec(datetime.strptime(hop['tod'],'%H:%M:%S'))
-		#print(datetime.strptime(hop['tod'],'%H:%M:%S'),' ',routeFinder._sec_to_dt(tod))
 		rcost=routeFinder._dt_to_rel_sec(routeFinder._sec_to_dt(node['cost']))
-		#print(routeFinder._sec_to_dt(node['cost']),' ',routeFinder._sec_to_dt(rcost))
 
 		if rcost>tod:
 			waiting_time=24*60*60-rcost+tod
@@ -229,6 +218,12 @@ def routeFinderNAME(srcCity,dstCity):
 	return None
 
 def routeFinderURI(srcuri,dsturi,rf=routeFinder()):
+
+	cache=cacheManager()
+	ch=cache.retrivefromcache(srcuri,dsturi)
+	if ch!=None:
+		return ch
+
 	ret=dict()
 	for opt in ['price','distance','hop','time','flighttime']:
 		print('AAA')
@@ -236,9 +231,19 @@ def routeFinderURI(srcuri,dsturi,rf=routeFinder()):
 		ret[opt]=rf.get_route()
 		if ret[opt]==None:
 			return None
-	return ret
-	
 
+	addroutestocache(ret,srcuri,dsturi)
+	return ret
+
+def addroutestocache(routes,srcURI,dstURI):
+	cache=cacheManager()
+	for route in routes:
+		rt=dict(routes[route])
+		rt['optimize']=route
+		rt['srcURI']=srcURI
+		rt['dstURI']=dstURI
+		routes[route]['uri']=cache.addtocache(rt)
+		
 def main():
 	#print(routeFinderURI('http://openflights.org/resource/airport/id/2279','http://openflights.org/resource/airport/id/2851'))
 	#print(routeFinderNAME('Porto','New York'))
@@ -253,7 +258,9 @@ def main():
 if __name__=='__main__':
 	from querycollection import *
 	from converter import distancecoord
+	from cacheManager import cacheManager
 	main()
 else:
 	from datasets.querycollection import *
 	from datasets.converter import distancecoord
+	from datasets.cacheManager import cacheManager

@@ -31,6 +31,7 @@
                 <option value="all">All</option>
             </select> <br><br>
             <b>City:</b> <select id="f-src-city">
+                <option value="null">----</option>
         </select>
             <br>
             <br>
@@ -49,13 +50,14 @@
             <option value="all">All</option>
         </select> <br><br>
             <b>City:</b> <select id="f-dst-city">
-            <option value="all">All</option>
+                <option value="null">----</option>
         </select>
             <br>
             <br>
-            <button id="filter" type="button" class="btn btn-default">Apply filter</button>
+            <button id="filter" type="button" class="btn btn-default" onclick="filterRoutes()">Apply filter</button>
             <br><br>
         </div>
+        <div id="filter-container"></div>
     </div>
 
     <div id="page1" style="visibility: hidden; height: 0px; margin-top: -10px">
@@ -79,7 +81,7 @@
             </select> <br><br>
             <b>City:</b>
             <select id="s-src-city">
-                <option value="all">All</option>
+                <option value="null">----</option>
             </select>
             <br>
             <br>
@@ -100,7 +102,7 @@
             </select> <br><br>
             <b>City:</b>
             <select id="s-dst-city">
-                <option value="all">All</option>
+                <option value="null">----</option>
             </select>
             <br>
             <br>
@@ -179,6 +181,12 @@
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
+
+            var option = document.createElement('option');
+            option.setAttribute('value', 'all');
+            option.appendChild(document.createTextNode("All"));
+            document.getElementById(countryBox).appendChild(option);
+
             if (value == 'africa') {
                 {% for country in africa %}
                     var option = document.createElement('option');
@@ -246,21 +254,41 @@
                 select.removeChild(select.firstChild);
             }
 
+            var option = document.createElement('option');
+            option.setAttribute('value', 'null');
+            option.appendChild(document.createTextNode('----'));
+            document.getElementById(cityBox).appendChild(option);
+
             httpGetAsync("http://localhost:8000/api/country/" + value + "/cities", rcvCities, cityBox);
         }
 
         function rcvCities(response, arg) {
-            var parsed = response.slice(13, response.length-15).split(",");
-            for (i=0; i<parsed.length; i++) {
-                var city = parsed[i].split("'")[1];
-                console.log(city);
-                if (city.length > 0) {
+            var cities = response.slice(13, response.length-15).split("<br>");
+            for (i=0; i<cities.length; i++) {
+                if (cities[i].length > 0) {
                     var option = document.createElement('option');
-                    option.setAttribute('value', city);
-                    option.appendChild(document.createTextNode(city));
+                    option.setAttribute('value', cities[i]);
+                    option.appendChild(document.createTextNode(cities[i]));
                     document.getElementById(arg).appendChild(option);
                 }
             }
+        }
+
+        function filterRoutes() {
+            if (document.getElementById("f-src-city").value == "null" || document.getElementById("f-dst-city").value == "null")
+                alert("Source/Destination city must be set");
+            else {
+                removePlacemarks();
+                src = document.getElementById("f-src-city").value;
+                dst = document.getElementById("f-dst-city").value;
+                httpGetAsync("http://localhost:8000/api/routes/" + src + "/" + dst, showFilteredInfo, "filter-container");
+            }
+
+        }
+
+        function showFilteredInfo(response, arg) {
+            //FIXME
+            document.getElementById(arg).innerHTML += response;
         }
 
         function updateMonuments(response, arg){
@@ -290,7 +318,6 @@
             zoomCamera();
             centerCamera(obj.lon_mean,obj.lat_mean);
         }
-
 
 
         function httpGetAsync(theUrl, callback, arg) {

@@ -1,11 +1,3 @@
-ra company TAP
-##ra type normal/scale #verificar se cached
-ra src LAX
-ra dst LIS
-ra cost 123
-ra start 20:23 seg
-ra duration 2h
-
 OPTIONAL
 ra firstclass 
 ra allows dogs
@@ -16,32 +8,6 @@ ra has TV
 ra has food
 ra has freerealestate
 ra nextroute rb #INFERENCIA
-
-CACHE:
----FLIGHT---
-<http://www.airlinesdot.com/resources/pseudoroutes/flight/AAA>
-	<http://www.airlinesdot.com/resources/pseudoroutes/validuntil/> "asdsdsd"^^xsd:date
-	<http://openflights.org/resource/route/sourceId> <http://openflights.org/resource/airport/id/BBB>;
-	<http://openflights.org/resource/route/destinationId> <http://openflights.org/resource/airport/id/CCC>;
-    <http://openflights.org/resource/route/cost> 155 ;
-    <http://openflights.org/resource/route/dayofarrival> "Saturday" ;
-    <http://openflights.org/resource/route/dayofdeparture> "Saturday" ;
-	<http://openflights.org/resource/route/timeofarrival> "09:50:00"^^xsd:time ;
-    <http://openflights.org/resource/route/timeofdeparture> "23:01:00"^^xsd:time 
-    <http://openflights.org/resource/route/distance> 655 ;
-	<http://www.airlinesdot.com/resources/pseudoroutes/next/> <http://www.airlinesdot.com/resources/pseudoroutes/route_1>;
--------------
---SUBROUTES--
-<http://www.airlinesdot.com/resources/pseudoroutes/route/route_1><http://www.airlinesdot.com/resources/pseudoroutes/routeid/> 1;
-<http://www.airlinesdot.com/resources/pseudoroutes/route><http://openflights.org/resource/route/id/DDD>;
-<http://www.airlinesdot.com/resources/pseudoroutes/next><http://www.airlinesdot.com/resources/pseudoroutes/route_2>;
-<http://www.airlinesdot.com/resources/pseudoroutes/partof><http://www.airlinesdot.com/resources/pseudoroutes/flight/AAA>
--------------
-
-
-
-
-
 
 
 
@@ -61,3 +27,4 @@ random tipo de classes (primeira classe, etc.. com scalars)
 allows aleatorios
 has aleatorios
 dar 2 cidades sem aeroporto e ele calcular!!!
+paralelism in a*
