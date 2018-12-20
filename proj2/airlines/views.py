@@ -60,6 +60,9 @@ def getRoutes(request, src, dst, year, month, day):
     elems = ""
     cnt = 0
 
+    if routes==None:
+        return HttpResponse('No routes found')
+
     for r in routes:
         div = "\n\t\t<div id=\"flight" + str(cnt) + "\" about=\"" + routes[r]['uri'] + "\">"
         elem = "\n\t\t\t<h2><b><span id=\"optimize" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/optimize\" style=\"text-transform: capitalize;\">" + r + "</span> optimization</b></h2>"
