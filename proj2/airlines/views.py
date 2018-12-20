@@ -53,15 +53,13 @@ def getCityAirports(request, city):
     return HttpResponse(head + elems + tail)
 
 
-def getRoutes(request, src, dst):
+def getRoutes(request, src, dst, year, month, day):
     head = "<html>\n\t<body>\n"
     tail = "\t</body>\n</html>"
-    routes = sr.routeFinderNAME(src, dst)
+    routes = sr.routeFinderNAME(src, dst, str(year)+"-"+str(month)+"-"+str(day))
     elems = ""
-    for r in routes:
-        print(r)
-        print(routes[r])
     cnt = 0
+
     for r in routes:
         div = "\n\t\t<div id=\"flight" + str(cnt) + "\" about=\"" + routes[r]['uri'] + "\">"
         elem = "\n\t\t\t<h2><b><span id=\"optimize" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/optimize\" style=\"text-transform: capitalize;\">" + r + "</span> optimization</b></h2>"
@@ -69,13 +67,16 @@ def getRoutes(request, src, dst):
         elem += "\n\t\t\tCost: <span id=\"cost" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/cost\">" + str(
             routes[r]['cost']) + "</span><br>"
         elem += "\n\t\t\tPrice: <span id=\"price" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/price\">" + str(
-            routes[r]['price']) + "</span><br>"
+            routes[r]['price']) + "</span>€<br>"
         elem += "\n\t\t\tDistance: <span id=\"distance" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/distance\">" + str(
-            routes[r]['distance']) + "</span><br>"
+            routes[r]['distance']) + "</span> km<br>"
         elem += "\n\t\t\tHops: <span id=\"hops" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/hops\">" + str(
             routes[r]['nrhops']) + "</span><br>"
         elem += "\n\t\t\tElapsed time: <span id=\"elapsed" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/time\">" + str(
-            routes[r]['elapsedtime']) + "</span><br>"
+            routes[r]['elapsedtimepretty']) + "</span><br>"
+        if r != "flighttime":
+            elem += "\n\t\t\tArrival: <span id=\"arrival" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/time\">" + str(
+            routes[r]['arrival']) + "</span><br>"
 
         elem += "\n\n\t\t\t<h3>Subroutes:</h3>"
 
@@ -148,19 +149,6 @@ def getMonumentCoords(request, city):
     return HttpResponse(resp)
 
 
-def getCityCoords(request, orig, dest):
-    coord_orig = listCityCoords(orig)
-    print("coord_orig", coord_orig)
-    coord_dest = listCityCoords(dest)
-    print("coord_dest", coord_dest)
-    d = dict()
-    d['orig'] = coord_orig
-    d['dest'] = coord_dest
-    d = json.dumps(d)
-    resp = "<html><body>{}</body></html>".format(d)
-    return HttpResponse(resp)
-
-
 def listCityCoords(city):
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
     query = qw.queryCityCoord(city)
@@ -205,30 +193,32 @@ def listDestinations(obj):
 
 
 def listMonuments(city):
-    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
-    query = qw.queryMonumentCities(city)
-    sparql.setQuery(query)
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()['results']['bindings']
-    lst = list()
-    lat_mean = 0
-    lon_mean = 0
-    for c in results:
-        monuments = dict()
-        monuments['label'] = c['label']['value']
-        c = eval(c["coords"]["value"].replace("Point", "").replace(" ", ","))
-        monuments['lat'] = c[0]
-        monuments['lon'] = c[1]
-        lat_mean += float(c[0])
-        lon_mean += float(c[1])
-        lst.append(monuments)
-    lat_mean = lat_mean / len(results)
-    lon_mean = lon_mean / len(results)
-    monu = dict()
-    monu['monuments'] = lst
-    monu['lat_mean'] = lat_mean
-    monu['lon_mean'] = lon_mean
-    return json.dumps(monu)
+	sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+	query = qw.queryMonumentCities(city)
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()['results']['bindings']
+	lst = list()
+	lat_mean = 0
+	lon_mean = 0
+	for c in results:
+		print(c)
+		monuments = dict()
+		monuments['label']= c['label']['value']
+		monuments['typelabel'] = c['typelabel']['value']
+		c = eval(c["coords"]["value"].replace("Point","").replace(" ",","))
+		monuments['lat']= c[0]
+		monuments['lon']= c[1]
+		lat_mean+=float(c[0])
+		lon_mean+=float(c[1])
+		lst.append(monuments)
+	lat_mean= lat_mean/ len(results)
+	lon_mean= lon_mean/ len(results)
+	monu = dict()
+	monu['monuments'] = lst
+	monu['lat_mean'] = lat_mean
+	monu['lon_mean'] = lon_mean
+	return json.dumps(monu)
 
 
 def listCountries(continent):
@@ -347,23 +337,174 @@ def getSingleAirportRdfa(a):
     return elem
 
 def findBestAirport(local):
+	repo_name, accessor = sr.connectGraphDB()
+	query = qw.queryCountryOf(local)
+	results = qw.queryData(query)
+	if(not len(results) or not results[0].get('country')):
+		return None,None
+	country=results[0]['country']['value']
+
+	local_coods = eval(results[0]['coords']['value'].replace("Point","").replace(" ",","))
+	local_coods=(float(local_coods[1]),float(local_coods[0]))
+
+	query = sr.getAirportsFromCountry(country)
+	query_result = sr.queryGraphDB(query, accessor, repo_name)
+
+	query_result.sort(key=lambda x:distancecoord((float(x['lat']),float(x['lon'])),local_coods))
+	if(not len(query_result)):
+		return None, None
+	return query_result[0],list(local_coods)
+
+def getCityCoords(request, orig, dest, date):
     repo_name, accessor = sr.connectGraphDB()
-    query = qw.queryCountryOf(local)
-    results = qw.queryData(query)
-    country = results[0]['country']['value']
+    bestroute, origincoord, destinycoord = smartAirRoute(orig, dest, date)
+    d = dict()
+    d['orig'] = [origincoord[1], origincoord[0]]
+    d['dest'] = [destinycoord[0], destinycoord[1]]
+    print("bestroute: ", repr(bestroute))
+    if bestroute:
+        d['hop'] = dict()
+        d['hop']['route'] = list()
+        for h in bestroute['hop']['route']:
+            query = sr.getInfoRoute(h)
+            query_result = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['sourceId'])
+            res1 = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['destinationId'])
+            res2 = sr.queryGraphDB(query, accessor, repo_name)
+            node = dict()
+            node['origin_air'] = query_result[0]['sourceIdLabel']
+            node['destination_air'] = query_result[0]['destinationIdLabel']
+            node['destination'] = query_result[0]['destination']
+            node['source'] = query_result[0]['source']
+            node['lat1'] = float(res1[0]['airlat'])
+            node['lon1'] = float(res1[0]['airlon'])
+            node['lat2'] = float(res2[0]['airlat'])
+            node['lon2'] = float(res2[0]['airlon'])
+            d['hop']['route'].append(node)
+        d['hop']['price'] = bestroute['hop']['price']
+        d['hop']['cost'] = bestroute['hop']['cost']
+        d['hop']['distance'] = bestroute['hop']['distance']
+        d['hop']['time'] = bestroute['hop']['elapsedtimepretty']
 
-    local_coods = eval(results[0]['coords']['value'].replace("Point", "").replace(" ", ","))
-    local_coods = (float(local_coods[1]), float(local_coods[0]))
+        d['price'] = dict()
+        d['price']['route'] = list()
+        for h in bestroute['price']['route']:
+            query = sr.getInfoRoute(h)
+            query_result = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['sourceId'])
+            res1 = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['destinationId'])
+            res2 = sr.queryGraphDB(query, accessor, repo_name)
+            node = dict()
+            node['origin_air'] = query_result[0]['sourceIdLabel']
+            node['destination_air'] = query_result[0]['destinationIdLabel']
+            node['destination'] = query_result[0]['destination']
+            node['source'] = query_result[0]['source']
+            node['lat1'] = float(res1[0]['airlat'])
+            node['lon1'] = float(res1[0]['airlon'])
+            node['lat2'] = float(res2[0]['airlat'])
+            node['lon2'] = float(res2[0]['airlon'])
+            d['price']['route'].append(node)
+        d['price']['price'] = bestroute['price']['price']
+        d['price']['cost'] = bestroute['price']['cost']
+        d['price']['distance'] = bestroute['price']['distance']
+        d['price']['time'] = bestroute['price']['elapsedtimepretty']
 
-    query = sr.getAirportsFromCountry(country)
-    query_result = sr.queryGraphDB(query, accessor, repo_name)
+        d['distance'] = dict()
+        d['distance']['route'] = list()
+        for h in bestroute['distance']['route']:
+            query = sr.getInfoRoute(h)
+            query_result = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['sourceId'])
+            res1 = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['destinationId'])
+            res2 = sr.queryGraphDB(query, accessor, repo_name)
+            node = dict()
+            node['origin_air'] = query_result[0]['sourceIdLabel']
+            node['destination_air'] = query_result[0]['destinationIdLabel']
+            node['destination'] = query_result[0]['destination']
+            node['source'] = query_result[0]['source']
+            node['lat1'] = float(res1[0]['airlat'])
+            node['lon1'] = float(res1[0]['airlon'])
+            node['lat2'] = float(res2[0]['airlat'])
+            node['lon2'] = float(res2[0]['airlon'])
+            d['distance']['route'].append(node)
 
-    query_result.sort(key=lambda x: distancecoord((float(x['lat']), float(x['lon'])), local_coods))
-    return query_result[0]
+        d['distance']['price'] = bestroute['distance']['price']
+        d['distance']['cost'] = bestroute['distance']['cost']
+        d['distance']['distance'] = bestroute['distance']['distance']
+        d['distance']['time'] = bestroute['distance']['elapsedtimepretty']
+
+        d['time'] = dict()
+
+        d['time']['route'] = list()
+        for h in bestroute['time']['route']:
+            query = sr.getInfoRoute(h)
+            query_result = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['sourceId'])
+            res1 = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['destinationId'])
+            res2 = sr.queryGraphDB(query, accessor, repo_name)
+            node = dict()
+            node['origin_air'] = query_result[0]['sourceIdLabel']
+            node['destination_air'] = query_result[0]['destinationIdLabel']
+            node['destination'] = query_result[0]['destination']
+            node['source'] = query_result[0]['source']
+            node['lat1'] = float(res1[0]['airlat'])
+            node['lon1'] = float(res1[0]['airlon'])
+            node['lat2'] = float(res2[0]['airlat'])
+            node['lon2'] = float(res2[0]['airlon'])
+            d['time']['route'].append(node)
+
+        d['time']['price'] = bestroute['time']['price']
+        d['time']['cost'] = bestroute['time']['cost']
+        d['time']['distance'] = bestroute['time']['distance']
+        d['time']['time'] = bestroute['time']['elapsedtimepretty']
+
+        d['flighttime'] = dict()
+        d['flighttime']['route'] = list()
+        for h in bestroute['flighttime']['route']:
+            query = sr.getInfoRoute(h)
+            query_result = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['sourceId'])
+            res1 = sr.queryGraphDB(query, accessor, repo_name)
+            query = sr.getAirportCoords(query_result[0]['destinationId'])
+            res2 = sr.queryGraphDB(query, accessor, repo_name)
+            node = dict()
+            node['origin_air'] = query_result[0]['sourceIdLabel']
+            node['destination_air'] = query_result[0]['destinationIdLabel']
+            node['destination'] = query_result[0]['destination']
+            node['source'] = query_result[0]['source']
+            node['lat1'] = float(res1[0]['airlat'])
+            node['lon1'] = float(res1[0]['airlon'])
+            node['lat2'] = float(res2[0]['airlat'])
+            node['lon2'] = float(res2[0]['airlon'])
+            d['flighttime']['route'].append(node)
+
+        d['flighttime']['price'] = bestroute['flighttime']['price']
+        d['flighttime']['cost'] = bestroute['flighttime']['cost']
+        d['flighttime']['distance'] = bestroute['flighttime']['distance']
+        d['flighttime']['time'] = bestroute['flighttime']['elapsedtimepretty']
+
+    d = json.dumps(d)
+    print("d: ", d)
+    resp = "<html><body>{}</body></html>".format(d)
+    return HttpResponse(resp)
+
+def smartAirRoute(localA,localB,date):
+	a,locala=findBestAirport(localA)
+	b,localb=findBestAirport(localB)
+	if a!=None:
+		_a=[locala,[float(a['lat']),float(a['lon'])]]
+	else:
+		_a=[None,None]
+	if b !=None:
+		_b=[localb,[float(b['lat']),float(b['lon'])]]
+	else:
+		_b=[None,None]
+	bestroute=sr.routeFinderURI(a['airport'],b['airport'],date) if a!=None and b!=None else None
+	return bestroute,_a,_b
 
 
-def smartAirRoute(localA, localB):
-    a = findBestAirport(localA)
-    b = findBestAirport(localB)
-    bestroute = sr.routeFinderURI(a['airport'], b['airport'])
-    return bestroute
+
