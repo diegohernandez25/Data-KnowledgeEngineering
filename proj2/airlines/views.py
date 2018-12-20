@@ -319,7 +319,7 @@ def getSingleAirportRdfa2(a, cnt, cnt_sub, tail):
     elem += "\nCity: " + span + "id=\"city_r" + str(cnt) + "_sub" + str(cnt_sub) + "_" + tail + "\"" + Open + "http://openflights.org/resource/airport/city\">" + a['city'] + "</span><br>"
     elem += "\nLongitude: " + span + "id=\"lon_r" + str(cnt) + "_sub" + str(cnt_sub) + "_" + tail + "\"" + Open + "http://openflights.org/resource/airport/longitude\">" + a[
         'airlon'] + "</span><br>"
-    elem += "\nLatitude: " + span + "id=\"lat_r" + str(cnt) + "_sub" + str(cnt_sub) + "_" + tail + "\"" + Open + "http://openflights.org/resource/airport/latitudel\">" + a[
+    elem += "\nLatitude: " + span + "id=\"lat_r" + str(cnt) + "_sub" + str(cnt_sub) + "_" + tail + "\"" + Open + "http://openflights.org/resource/airport/latitude\">" + a[
         'airlat'] + "</span>\n"
 
     return elem
