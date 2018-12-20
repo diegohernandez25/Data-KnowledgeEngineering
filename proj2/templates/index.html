@@ -282,7 +282,7 @@
 				return;
 			}
             var div = document.getElementById(arg);
-            div.innerHTML = "<center><input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox\" onChange=\"toggleDescriptions()\">Show enabled routes info</input></center>"
+            div.innerHTML = "<br><center><button id=\"descr\" type=\"button\" class=\"btn btn-default\" onclick=\"toggleDescriptions()\">Show enabled routes info</button></center><br>";
             div.innerHTML += response;
 
             for (i=0; i<5; i++) {
@@ -342,8 +342,9 @@
             }
         }
 
+        checkbox = false;
         function toggleDescriptions() {
-
+            checkbox = !checkbox;
             for (k=0; k<shownRoutes.length; k++) {
                 if (shownRoutes[k]) {
                     var div = document.getElementById("flight" + k);
@@ -358,12 +359,12 @@
         function toggleFlight(i) {
             if (shownRoutes[i] == false) {
                 shownRoutes[i] = true;
-                if (document.getElementById('checkbox').checked == true)
+                if (checkbox == true)
                     document.getElementById("flight" + i).style.display = "block";
             }
             else {
                 shownRoutes[i] = false;
-                if (document.getElementById('checkbox').checked == true)
+                if (checkbox == true)
                     document.getElementById("flight" + i).style.display = "none";
             }
 
