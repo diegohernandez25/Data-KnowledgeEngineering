@@ -75,7 +75,7 @@ def getRoutes(request, src, dst, year, month, day):
             routes[r]['distance']) + "</span> km<br>"
         elem += "\n\t\t\tHops: <span id=\"hops" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/hops\">" + str(
             routes[r]['nrhops']) + "</span><br>"
-        elem += "\n\t\t\tElapsed time: <span id=\"elapsed" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/time\">" + str(
+        elem += "\n\t\t\tElapsed time: <span id=\"elapsed" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/elapsedtime\">" + str(
             routes[r]['elapsedtimepretty']) + "</span><br>"
         if r != "flighttime":
             elem += "\n\t\t\tArrival: <span id=\"arrival" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/time\">" + str(
