@@ -4,6 +4,7 @@
 
 {% block contentbar %}
 
+
     <div id="page0" style="visibility: visible; height: 0px">
         <div align="center">
             <h1>Welcome to Airlines.</h1>
@@ -57,7 +58,8 @@
             <button id="filter" type="button" class="btn btn-default" onclick="filterRoutes()">Apply filter</button>
             <br><br>
         </div>
-        <div id="filter-container"></div>
+        <div id="filter-container">
+        </div>
     </div>
 
     <div id="page1" style="visibility: hidden; height: 0px; margin-top: -10px">
@@ -152,7 +154,6 @@
     </div>
 
 
-
     <script>
         function createRoute(){
             console.log(" createRoute()");
@@ -203,73 +204,63 @@
             var e = document.getElementById(continentBox);
             var value = e.options[e.selectedIndex].value;
             var select = document.getElementById(countryBox);
+            var list = [];
+
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
 
-            var option = document.createElement('option');
-            option.setAttribute('value', 'all');
-            option.appendChild(document.createTextNode("All"));
-            document.getElementById(countryBox).appendChild(option);
-
             if (value == 'africa') {
                 {% for country in africa %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
             if (value == 'asia') {
                 {% for country in asia %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
             if (value == 'europe') {
                 {% for country in europe %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
             if (value == 'northame') {
                 {% for country in northame %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
             if (value == 'oceania') {
                 {% for country in oceania %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
             if (value == 'southame') {
                 {% for country in southame %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
             if (value == 'all') {
                 {% for country in all_cont %}
-                    var option = document.createElement('option');
-                    option.setAttribute('value', "{{ country }}");
-                    option.appendChild(document.createTextNode("{{ country }}"));
-                    document.getElementById(countryBox).appendChild(option);
+                    if (!list.includes("{{ country }}"))
+                        list.push("{{ country }}");
                 {% endfor %}
             }
 
+            list.sort();
+
+            for (i=0; i<list.length; i++) {
+                option = document.createElement('option');
+                option.setAttribute('value', list[i]);
+                option.appendChild(document.createTextNode(list[i]));
+                document.getElementById(countryBox).appendChild(option);
+            }
         }
 
         function updateCities(countryBox, cityBox) {
@@ -290,31 +281,76 @@
 
         function rcvCities(response, arg) {
             var cities = response.slice(13, response.length-15).split("<br>");
+            var list = [];
             for (i=0; i<cities.length; i++) {
-                if (cities[i].length > 0) {
-                    var option = document.createElement('option');
-                    option.setAttribute('value', cities[i]);
-                    option.appendChild(document.createTextNode(cities[i]));
-                    document.getElementById(arg).appendChild(option);
+                if (/\S/.test(cities[i]) && !list.includes(cities[i])) {
+                    list.push(cities[i]);
                 }
+            }
+
+            list.sort();
+
+            for (i=0; i<list.length; i++) {
+                var option = document.createElement('option');
+                option.setAttribute('value', list[i]);
+                option.appendChild(document.createTextNode(list[i]));
+                document.getElementById(arg).appendChild(option);
             }
         }
 
         function filterRoutes() {
-            if (document.getElementById("f-src-city").value == "null" || document.getElementById("f-dst-city").value == "null")
+            var f_src = document.getElementById("f-src-city").value
+            var f_dst =document.getElementById("f-dst-city").value
+            if (f_src == "null" ||f_dst == "null")
                 alert("Source/Destination city must be set");
+            else if (f_src == f_dst)
+                alert("Source and destination cities must be different");
             else {
+                document.getElementById("filter").innerText = "Filtering...";
                 removePlacemarks();
                 src = document.getElementById("f-src-city").value;
                 dst = document.getElementById("f-dst-city").value;
+
                 httpGetAsync("http://localhost:8000/api/routes/" + src + "/" + dst, showFilteredInfo, "filter-container");
             }
 
         }
 
         function showFilteredInfo(response, arg) {
-            //FIXME
-            document.getElementById(arg).innerHTML += response;
+            var div = document.getElementById(arg);
+            div.innerHTML += response;
+            document.getElementById("filter").innerText = "Apply filter";
+
+            for (i=0; i<5; i++) {
+                var hops = document.getElementById("hops" + i).innerText;
+                for (j=0; j<hops; j++) {
+                    var route = document.getElementById("id" + i).innerText;
+                    var subroute = document.getElementById("subrouteId_r" + i + "_sub" + j).innerText;
+                    var src_lat = document.getElementById("lat_r" + i + "_sub" + j + "_src").innerText;
+                    var src_long = document.getElementById("lon_r" + i + "_sub" + j + "_src").innerText;
+                    var src_iata = document.getElementById("iata_r" + i + "_sub" + j + "_src").innerText;
+                    var src_name = document.getElementById("label_r" + i + "_sub" + j + "_src").innerText;
+                    var src_city = document.getElementById("city_r" + i + "_sub" + j + "_src").innerText;
+                    var src_country = document.getElementById("country_r" + i + "_sub" + j + "_src").innerText;
+                    var src_info = "<b>" + src_name + "<br> IATA: </b>" + src_iata + "<br>" + src_city + ", " + src_country + "<br><b>Longitude:</b> " + src_long + "<br><b>Latitude: </b>" + src_lat
+
+                    var dst_lat = document.getElementById("lat_r" + i + "_sub" + j + "_dst").innerText;
+                    var dst_long = document.getElementById("lon_r" + i + "_sub" + j + "_dst").innerText;
+                    var dst_iata = document.getElementById("iata_r" + i + "_sub" + j + "_dst").innerText;
+                    var dst_name = document.getElementById("label_r" + i + "_sub" + j + "_dst").innerText;
+                    var dst_city = document.getElementById("city_r" + i + "_sub" + j + "_dst").innerText;
+                    var dst_country = document.getElementById("country_r" + i + "_sub" + j + "_dst").innerText;
+                    var dst_info = "<b>" + dst_name + "<br> IATA: </b>" + dst_iata + "<br>" + dst_city + ", " + dst_country + "<br><b>Longitude:</b> " + dst_long + "<br><b>Latitude: </b>" + dst_lat
+
+
+                    drawRoutesColor(route, parseFloat(subroute), "info", src_name, dst_name, parseFloat(src_lat), parseFloat(src_long), parseFloat(dst_lat), parseFloat(dst_long), i);
+                    addPlacemarkColor(src_lat, src_long, src_iata, src_name, src_info, i);
+                    addPlacemarkColor(dst_lat, dst_long, dst_iata, dst_name, dst_info, i);
+
+                }
+            }
+
+
         }
 
         function updateMonuments(response, arg){

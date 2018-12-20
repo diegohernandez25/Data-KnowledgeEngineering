@@ -93,13 +93,18 @@
         function togglePage(page) {
             if (prev == "page2")
                 resetPlacemarks();
+
+            if (prev == "page0")
+                document.getElementById("wrapper").scrollTop =  0;
             document.getElementById(prev).style.visibility = "hidden";
             document.getElementById(page).style.visibility = "visible";
+
             prev = page;
             if (page == "page2") {
                 removePlacemarks();
                 initFunction();
             }
+
         }
     </script>
 

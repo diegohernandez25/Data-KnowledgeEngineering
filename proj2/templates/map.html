@@ -65,7 +65,6 @@
                 console.log("Map zoomed")
             }
             function addPlacemark(lat, long, iata, airport, info, flag) {
-                console.log("addplacemark");
                 if (!lst.includes(iata) || !flag) {
                     var placemark = new ymaps.Placemark([lat, long],
                         {
@@ -92,6 +91,33 @@
                     lst.push(iata)
                     if (flag)
                         lstPMarks.push([lat, long, iata, airport, info]);
+                }
+            }
+            function addPlacemarkColor(lat, long, iata, airport, info, i) {
+                if (!lst.includes(iata)) {
+                    var placemark = new ymaps.Placemark([lat, long],
+                        {
+                            hintContent: airport,
+                            balloonContent: info
+                        }, {
+                            /**
+                             * Options.
+                             * You must specify this type of layout.
+                             */
+                            iconLayout: 'default#image',
+                            // Custom image for the placemark icon.
+
+                            iconImageHref: '/static/assets/aeroplane' + i + '.png',
+                            // The size of the placemark.
+                            iconImageSize: [35, 42],
+                            /**
+                             * The offset of the upper left corner of the icon relative
+                             * to its "tail" (the anchor point).
+                             */
+                            iconImageOffset: [-17.5, -21]
+                        });
+                    map.geoObjects.add(placemark);
+                    lst.push(iata)
                 }
             }
             function addPlacemarkTourist(lat, long, iata, airport, info, flag) {
@@ -153,6 +179,38 @@
                     {
                         iconLayout: 'default#image',
                         iconImageHref: '/static/assets/red_dot.png',
+                        iconImageSize: [4, 4],
+                        iconImageOffset: [-2, -2]
+                    });
+                map.geoObjects.add(placemark);
+            }
+
+            function drawRoutesColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, i) {
+                var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
+                if (recLevel < 3)
+                    recLevel++;
+                recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel, i);
+            }
+
+            function recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level, i) {
+                var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
+                if (level == 0)
+                    placeMidPointColor(route, subroute, info, srcName, dstName, midpoint, i)
+                else {
+                    recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1, i);
+                    recColor(route, subroute, info, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1, i);
+                }
+            }
+
+            function placeMidPointColor(route, subroute, info, srcName, dstName, point, i) {
+                var placemark = new ymaps.Placemark(point,
+                    {
+                        hintContent: "<b>" + srcName +  " -> " + dstName + "</b><br>Route " + route + ", Subroute " + subroute,
+                        balloonContent: "Route between " + srcName + " and " + dstName
+                    },
+                    {
+                        iconLayout: 'default#image',
+                        iconImageHref: '/static/assets/dot' + i + '.png',
                         iconImageSize: [4, 4],
                         iconImageOffset: [-2, -2]
                     });

@@ -116,9 +116,9 @@ def getInfoRoute(uri):
 		PREFIX ns3: <http://www.airlinesdot.com/resource/route/>
 		PREFIX ns4: <http://openflights.org/resource/airline/>
 
-		SELECT ?airline ?airlineIdLabel ?destination ?destinationIdLabel ?plane ?source ?sourceIdLabel ?cost ?distance ?duration ?timeofarrival ?timeofdeparture
+		SELECT ?airline ?airlineIdLabel ?destination ?destinationIdLabel ?plane ?source ?sourceIdLabel ?cost ?distance ?duration ?timeofarrival ?timeofdeparture ?destinationId ?sourceId
 		WHERE{
-			<"""+uri+"""> ns2:airline ?airline;
+			<"""+uri+"""> ns2:airline ?airline ;
 
 			 ns2:airlineId ?airlineId;
 			 ns2:destination ?destination;
@@ -174,3 +174,25 @@ def getAirportsFromCountry(country):
 			?airport ns1:longitude ?lon. 
         }
 		"""
+
+def getAirportInfo(uri):
+	return """
+	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX of: <http://openflights.org/resource/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+	PREFIX ns1: <http://openflights.org/resource/route/>
+	PREFIX ns2: <http://www.airlinesdot.com/resource/route/>
+	PREFIX ns3: <http://openflights.org/resource/airport/>
+	PREFIX ns4: <http://openflights.org/resource/airline/>
+	SELECT ?airlat ?airlon ?label ?iata ?country ?city
+	WHERE{
+		<"""+uri+"""> a of:Airport.
+		<"""+uri+"""> ns3:latitude ?airlat.
+		<"""+uri+"""> ns3:longitude ?airlon.
+		<"""+uri+"""> ns3:iata ?iata.
+		<"""+uri+"""> ns3:country  ?country.
+		<"""+uri+"""> ns3:city  ?city.
+		<"""+uri+"""> rdfs:label ?label.
+	}
+	"""
