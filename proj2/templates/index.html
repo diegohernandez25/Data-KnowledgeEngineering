@@ -4,71 +4,13 @@
 
 {% block contentbar %}
 
-
-    <div id="page0" style="visibility: visible; height: 0px">
-        <div align="center">
-            <h1>Welcome to Airlines.</h1>
-            <br>
-
-            <button type="button" class="btn btn-default" onclick=recenter()>Reset map focus</button>
-            <br><br>
-            <h3>Filter shown routes</h3>
-            <p></p>
-            <h4>Source</h4>
-            <b>Continent:</b>
-            <select id="f-src-continent" onchange="updateCountries('f-src-continent', 'f-src-country')">
-                <option value="all">All</option>
-                x
-                <option value="africa">Africa</option>
-                <option value="asia">Asia</option>
-                <option value="europe">Europe</option>
-                <option value="northame">North America</option>
-                <option value="oceania">Oceania</option>
-                <option value="southame">South America</option>
-            </select> <br><br>
-
-            <b>Country:</b>
-            <select id="f-src-country" onchange="updateCities('f-src-country', 'f-src-city')">
-                <option value="all">All</option>
-            </select> <br><br>
-            <b>City:</b> <select id="f-src-city">
-                <option value="null">----</option>
-        </select>
-            <br>
-            <br>
-            <h4>Destination</h4>
-            <b>Continent:</b>
-            <select id="f-dst-continent" onchange="updateCountries('f-dst-continent', 'f-dst-country')">
-                <option value="all">All</option>
-                <option value="africa">Africa</option>
-                <option value="asia">Asia</option>
-                <option value="europe">Europe</option>
-                <option value="northame">North America</option>
-                <option value="oceania">Oceania</option>
-                <option value="southame">South America</option>
-            </select> <br><br>
-            <b>Country:</b> <select id="f-dst-country" onchange="updateCities('f-dst-country', 'f-dst-city')">
-            <option value="all">All</option>
-        </select> <br><br>
-            <b>City:</b> <select id="f-dst-city">
-                <option value="null">----</option>
-        </select>
-            <br>
-            <br>
-            <button id="filter" type="button" class="btn btn-default" onclick="filterRoutes()">Apply filter</button>
-            <br><br>
-        </div>
-        <div id="filter-container">
-        </div>
-    </div>
-
-    <div id="page1" style="visibility: hidden; height: 0px; margin-top: -10px">
+    <div id="page1" style="visibility: visible; height: 0px; margin-top: -10px">
         <div align="center">
             <h1>Search flights</h1>
             <p></p>
             <h4>Source</h4>
             <b>Continent:</b>
-            <select id="s-src-continent" onchange="updateCountries('s-src-continent', 's-src-country')">
+            <select id="src-continent" onchange="updateCountries('src-continent', 'src-country')">
                 <option value="all">All</option>
                 <option value="africa">Africa</option>
                 <option value="asia">Asia</option>
@@ -78,18 +20,18 @@
                 <option value="southame">South America</option>
             </select> <br><br>
             <b>Country:</b>
-            <select id="s-src-country" onchange="updateCities('s-src-country', 's-src-city')">
+            <select id="src-country" onchange="updateCities('src-country', 'src-city')">
                 <option value="all">All</option>
             </select> <br><br>
             <b>City:</b>
-            <select id="s-src-city">
+            <select id="src-city">
                 <option value="null">----</option>
             </select>
             <br>
             <br>
             <h4>Destination</h4>
             <b>Continent:</b>
-            <select id="s-dst-continent" onchange="updateCountries('s-dst-continent', 's-dst-country')">
+            <select id="dst-continent" onchange="updateCountries('dst-continent', 'dst-country')">
                 <option value="all">All</option>
                 <option value="africa">Africa</option>
                 <option value="asia">Asia</option>
@@ -99,19 +41,19 @@
                 <option value="southame">South America</option>
             </select> <br><br>
             <b>Country:</b>
-            <select id="s-dst-country" onchange="updateCities('s-dst-country', 's-dst-city')">
+            <select id="dst-country" onchange="updateCities('dst-country', 'dst-city')">
                 <option value="all">All</option>
             </select> <br><br>
             <b>City:</b>
-            <select id="s-dst-city">
+            <select id="dst-city">
                 <option value="null">----</option>
             </select>
             <br>
             <br>
-            <button id="search" type="button" class="btn btn-default">Search</button>
+            <button id="search" type="button" class="btn btn-default" onclick="searchRoutes()">Search</button>
             <br><br>
-            <h3>Available routes:</h3>
-
+        </div>
+        <div id="search-container"></div>
         </div>
 
     </div>
@@ -182,23 +124,13 @@
 
         }
 
-        updateCountries('f-src-continent', 'f-src-country');
-        updateCountries('f-dst-continent', 'f-dst-country');
-        updateCountries('s-src-continent', 's-src-country');
-        updateCountries('s-dst-continent', 's-dst-country');
 
-        updateCities('f-src-country', 'f-src-city');
-        updateCities('f-dst-country', 'f-dst-city');
-        updateCities('s-src-country', 's-src-city');
-        updateCities('s-dst-country', 's-dst-city');
+        updateCountries('src-continent', 'src-country');
+        updateCountries('dst-continent', 'dst-country');
+        
+        updateCities('src-country', 'src-city');
+        updateCities('dst-country', 'dst-city');
 
-        function place() {
-            {% for route, src_lat, src_long, src_iata, src_name, src_info, dst_lat, dst_long, dst_iata, dst_name, dst_info in route %}
-                drawRoutes({{ route }}, "{{ src_name }}", "{{ dst_name }}", {{src_lat}}, {{src_long}}, {{dst_lat}}, {{dst_long}}, true);
-                addPlacemark({{src_lat}}, {{src_long}}, {{src_iata}}, "{{ src_name }}", "{{ src_info }}", true);
-                addPlacemark({{dst_lat}}, {{dst_long}}, {{dst_iata}}, "{{ dst_name }}", "{{ dst_info }}", true);
-            {% endfor %}
-        }
 
         function updateCountries(continentBox, countryBox) {
             var e = document.getElementById(continentBox);
@@ -298,58 +230,114 @@
             }
         }
 
-        function filterRoutes() {
-            var f_src = document.getElementById("f-src-city").value
-            var f_dst =document.getElementById("f-dst-city").value
+        function searchRoutes() {
+            var f_src = document.getElementById("src-city").value
+            var f_dst =document.getElementById("dst-city").value
             if (f_src == "null" ||f_dst == "null")
                 alert("Source/Destination city must be set");
             else if (f_src == f_dst)
                 alert("Source and destination cities must be different");
             else {
-                document.getElementById("filter").innerText = "Filtering...";
+                document.getElementById("search").innerText = "Searching...";
                 removePlacemarks();
-                src = document.getElementById("f-src-city").value;
-                dst = document.getElementById("f-dst-city").value;
+                src = document.getElementById("src-city").value;
+                dst = document.getElementById("dst-city").value;
 
-                httpGetAsync("http://localhost:8000/api/routes/" + src + "/" + dst, showFilteredInfo, "filter-container");
+                httpGetAsync("http://localhost:8000/api/routes/" + src + "/" + dst, showSearchInfo, "search-container");
             }
 
         }
 
-        function showFilteredInfo(response, arg) {
+        function showSearchInfo(response, arg) {
             var div = document.getElementById(arg);
+            div.innerHTML = "<center><input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox\" onChange=\"toggleDescriptions()\">Show enabled routes info</input></center>"
             div.innerHTML += response;
-            document.getElementById("filter").innerText = "Apply filter";
+            document.getElementById("search").innerText = "New search";
 
             for (i=0; i<5; i++) {
-                var hops = document.getElementById("hops" + i).innerText;
-                for (j=0; j<hops; j++) {
-                    var route = document.getElementById("id" + i).innerText;
-                    var subroute = document.getElementById("subrouteId_r" + i + "_sub" + j).innerText;
-                    var src_lat = document.getElementById("lat_r" + i + "_sub" + j + "_src").innerText;
-                    var src_long = document.getElementById("lon_r" + i + "_sub" + j + "_src").innerText;
-                    var src_iata = document.getElementById("iata_r" + i + "_sub" + j + "_src").innerText;
-                    var src_name = document.getElementById("label_r" + i + "_sub" + j + "_src").innerText;
-                    var src_city = document.getElementById("city_r" + i + "_sub" + j + "_src").innerText;
-                    var src_country = document.getElementById("country_r" + i + "_sub" + j + "_src").innerText;
-                    var src_info = "<b>" + src_name + "<br> IATA: </b>" + src_iata + "<br>" + src_city + ", " + src_country + "<br><b>Longitude:</b> " + src_long + "<br><b>Latitude: </b>" + src_lat
+                var optimize = document.getElementById("optimize" + i).innerText;
 
-                    var dst_lat = document.getElementById("lat_r" + i + "_sub" + j + "_dst").innerText;
-                    var dst_long = document.getElementById("lon_r" + i + "_sub" + j + "_dst").innerText;
-                    var dst_iata = document.getElementById("iata_r" + i + "_sub" + j + "_dst").innerText;
-                    var dst_name = document.getElementById("label_r" + i + "_sub" + j + "_dst").innerText;
-                    var dst_city = document.getElementById("city_r" + i + "_sub" + j + "_dst").innerText;
-                    var dst_country = document.getElementById("country_r" + i + "_sub" + j + "_dst").innerText;
-                    var dst_info = "<b>" + dst_name + "<br> IATA: </b>" + dst_iata + "<br>" + dst_city + ", " + dst_country + "<br><b>Longitude:</b> " + dst_long + "<br><b>Latitude: </b>" + dst_lat
+                var flight = document.getElementById("flight" + i);
+                var btncolor;
+                switch(i) {
+                    case 0:
+                        btncolor = "btn-danger";
+                        break;
+                    case 1:
+                        btncolor = "btn-info";
+                        break;
+                    case 2:
+                        btncolor = "btn-success";
+                        break;
+                    case 3:
+                        btncolor = "btn-warning";
+                        break;
+                    case 4:
+                        btncolor = "btn-primary";
+                        break;
+                }
+                var html = "<br><center><button id=\"toggle" + i + "\" type=\"button\" class=\"btn " + btncolor + "\" onclick=\"toggleFlight(" + i + ")\">Toggle " + optimize + " metric route</button></center>";
+                flight.insertAdjacentHTML("beforebegin", html);
 
+                document.getElementById("flight" + i).style.display = "none";
+            }
+        }
 
-                    drawRoutesColor(route, parseFloat(subroute), "info", src_name, dst_name, parseFloat(src_lat), parseFloat(src_long), parseFloat(dst_lat), parseFloat(dst_long), i);
-                    addPlacemarkColor(src_lat, src_long, src_iata, src_name, src_info, i);
-                    addPlacemarkColor(dst_lat, dst_long, dst_iata, dst_name, dst_info, i);
+        shownRoutes = [false, false, false, false, false];
+        function placeRoute(i) {
+            var hops = document.getElementById("hops" + i).innerText;
+            for (j=0; j<hops; j++) {
+                var route = document.getElementById("id" + i).innerText;
+                var subroute = document.getElementById("subrouteId_r" + i + "_sub" + j).innerText;
+                var src_lat = document.getElementById("lat_r" + i + "_sub" + j + "_src").innerText;
+                var src_long = document.getElementById("lon_r" + i + "_sub" + j + "_src").innerText;
+                var src_iata = document.getElementById("iata_r" + i + "_sub" + j + "_src").innerText;
+                var src_name = document.getElementById("label_r" + i + "_sub" + j + "_src").innerText;
+                var src_city = document.getElementById("city_r" + i + "_sub" + j + "_src").innerText;
+                var src_country = document.getElementById("country_r" + i + "_sub" + j + "_src").innerText;
+                var src_info = "<b>" + src_name + "<br> IATA: </b>" + src_iata + "<br>" + src_city + ", " + src_country + "<br><b>Longitude:</b> " + src_long + "<br><b>Latitude: </b>" + src_lat
 
+                var dst_lat = document.getElementById("lat_r" + i + "_sub" + j + "_dst").innerText;
+                var dst_long = document.getElementById("lon_r" + i + "_sub" + j + "_dst").innerText;
+                var dst_iata = document.getElementById("iata_r" + i + "_sub" + j + "_dst").innerText;
+                var dst_name = document.getElementById("label_r" + i + "_sub" + j + "_dst").innerText;
+                var dst_city = document.getElementById("city_r" + i + "_sub" + j + "_dst").innerText;
+                var dst_country = document.getElementById("country_r" + i + "_sub" + j + "_dst").innerText;
+                var dst_info = "<b>" + dst_name + "<br> IATA: </b>" + dst_iata + "<br>" + dst_city + ", " + dst_country + "<br><b>Longitude:</b> " + dst_long + "<br><b>Latitude: </b>" + dst_lat
+
+                drawRoutesColor(route, parseFloat(subroute), "info", src_name, dst_name, parseFloat(src_lat), parseFloat(src_long), parseFloat(dst_lat), parseFloat(dst_long), i);
+                addPlacemarkColor(src_lat, src_long, src_iata, src_name, src_info, i);
+                addPlacemarkColor(dst_lat, dst_long, dst_iata, dst_name, dst_info, i);
+            }
+        }
+
+        function toggleDescriptions() {
+
+            for (k=0; k<shownRoutes.length; k++) {
+                if (shownRoutes[k]) {
+                    var div = document.getElementById("flight" + k);
+                    if (div.style.display == "block")
+                        div.style.display = "none";
+                    else
+                        div.style.display = "block";
                 }
             }
+        }
 
+        function toggleFlight(i) {
+            if (shownRoutes[i] == false)
+                shownRoutes[i] = true;
+            else
+                shownRoutes[i] = false;
+
+            removePlacemarks();
+            lst = [];
+
+            for (k=0; k<shownRoutes.length; k++) {
+                if (shownRoutes[k]) {
+                    placeRoute(k);
+                }
+            }
 
         }
 

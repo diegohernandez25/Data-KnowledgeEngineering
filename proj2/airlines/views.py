@@ -14,28 +14,10 @@ from datasets.converter import distancecoord
 
 def index(request):
     repo_name, accessor = sr.connectGraphDB()
-    query = sr.getAirportCity("Lisbon")
-    query_result = sr.queryGraphDB(query, accessor, repo_name)[0]
-    airport_coords = [query_result['airlat'], query_result['airlon']]
-    airport_uri = query_result['airport']
-    fields = [float(airport_coords[0]), float(airport_coords[1]), int(airport_uri[43:]), "Aeroporto de Lisboa"]
-    query = sr.getRoutesAirport(airport_uri)
-    routes = sr.queryGraphDB(query, accessor, repo_name)
 
     processed_routes = []
 
-    for r in range(1, len(routes)):
-        route = routes[r]
-        current = [int(route['route'][41:])] + fields + ["info about Lisbon airport"]
-        curr_uri = route['airportend']
-        curr_coords = [route['airlat'], route['airlon']]
-        current = current + [float(curr_coords[0]), float(curr_coords[1]), int(curr_uri[43:]),
-                             "Airport " + curr_uri[43:], "info about this airport"]
-        processed_routes.append(tuple(current))
-
     tparams = {}
-    info = "Airport details"
-    tparams['route'] = processed_routes
     tparams['africa'] = listCountries('Africa')
     tparams['asia'] = listCountries('Asia')
     tparams['europe'] = listCountries('Europe')
@@ -81,7 +63,7 @@ def getRoutes(request, src, dst):
         print(routes[r])
     cnt = 0
     for r in routes:
-        div = "\n\t\t<div about=\"" + routes[r]['uri'] + "\">"
+        div = "\n\t\t<div id=\"flight" + str(cnt) + "\" about=\"" + routes[r]['uri'] + "\">"
         elem = "\n\t\t\t<h2><b><span id=\"optimize" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/optimize\" style=\"text-transform: capitalize;\">" + r + "</span> optimization</b></h2>"
         elem += "\n\t\t\tRoute id: <span id=\"id" + str(cnt) + "\" property=\"http://airlinesdot.com/resource/route/id\">" + routes[r]['uri'][57:] + "</span><br>"
         elem += "\n\t\t\tCost: <span id=\"cost" + str(cnt) + "\" property=\"http://www.airlinesdot.com/resource/route/cost\">" + str(

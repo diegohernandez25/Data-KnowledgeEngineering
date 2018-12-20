@@ -48,12 +48,7 @@
 
         <br><br>
 
-        <li class="nav-item">
-            <a class="nav-link" onclick=togglePage("page0")>
-                <i class="fas fa-fw fa-home"></i>
-                <span>Home</span>
-            </a>
-        </li>
+
         <li class="nav-item">
             <!-- <a class="nav-link" href="index/schedule/"> -->
             <a class="nav-link" onclick=togglePage("page1")>
@@ -88,14 +83,12 @@
     {% endblock %}
 
     <script>
-        prev = "page0";
+        prev = "page1";
 
         function togglePage(page) {
             if (prev == "page2")
                 resetPlacemarks();
 
-            if (prev == "page0")
-                document.getElementById("wrapper").scrollTop =  0;
             document.getElementById(prev).style.visibility = "hidden";
             document.getElementById(page).style.visibility = "visible";
 
