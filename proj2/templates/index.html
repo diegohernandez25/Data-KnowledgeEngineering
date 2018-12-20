@@ -74,12 +74,12 @@
         <b>City:</b><br>
         <input type="text" name="query_citymonument" class="form-control" id="city-monum" required>
         <br>
-        <button class="btn btn-default" onclick="searchMonuments()"> Search</button>
+        <button id="searchMonumentsBtn" class="btn btn-default" onclick="searchMonuments()"> Search</button>
         <br><br>
         <b>Touristic Destination:</b>
         <input type="text" name="query_citymonument" class="form-control" id="city-destiny" required>
         <br>
-        <button class="btn btn-default" onclick="searchDestination()"> Search  </button>
+        <button id="searchDestinationBtn" class="btn btn-default" onclick="searchDestination()"> Search  </button>
 
     </center>
 
@@ -113,12 +113,21 @@
         function createRoute(){
             console.log(" createRoute()");
             var val_orig = document.getElementById("city_a").value;
+            var val_dest = document.getElementById("city_b").value;
+            var date = document.getElementById("date").value;
+			if(val_dest=="" || val_orig==""){
+                alert("Origin/Destination city must be set");
+				return;
+			}
+            var date = document.getElementById("date").value;
+			if (date==''){
+                alert("Departure date must be set");
+				return;
+			}
             val_orig=val_orig.toLowerCase();
             val_orig = val_orig.replace(/ /g,"_");
-            var val_dest = document.getElementById("city_b").value;
             val_dest=val_dest.toLowerCase();
             val_dest = val_dest.replace(/ /g,"_");
-            var date = document.getElementById("date").value;
             console.log("date: "+date);
             console.log(val_orig);
             console.log(val_dest);
@@ -132,16 +141,28 @@
         function searchMonuments(){
             var val = document.getElementById("city-monum").value;
             console.log("val: "+val);
+			if(val==''){
+				alert('City not set');
+				return;
+			}	
             //httpGetAsync("http://localhost:8000/api/country/" + value + "/cities", rcvCities, cityBox);
+            document.getElementById("searchMonumentsBtn").disabled=true;
+            document.getElementById("searchMonumentsBtn").innerText="Searching...";
             httpGetAsync("http://localhost:8000/api/city/"+val+"/monuments", updateMonuments, val);
 
         }
 
         function searchDestination(){
             var val = document.getElementById("city-destiny").value;
+			if(val==''){
+				alert('Touristic destination not set');
+				return;
+			}	
             val = val.toLowerCase();
             val = val.replace(/ /g,"_");
             console.log("val: "+val);
+            document.getElementById("searchDestinationBtn").disabled=true;
+            document.getElementById("searchDestinationBtn").innerText="Searching...";
             httpGetAsync("http://localhost:8000/api/monument/"+val,locateDestination,val);
 
         }
@@ -257,6 +278,8 @@
             var f_dst = document.getElementById("dst-city").value
             if (f_src == "null" ||f_dst == "null")
                 alert("Source/Destination city must be set");
+			else if (document.getElementById("init-date").value=='')
+                alert("Departure date must be set");
             else if (f_src == f_dst)
                 alert("Source and destination cities must be different");
             else {
@@ -381,10 +404,18 @@
 
         function updateMonuments(response, arg){
 
+            document.getElementById("searchMonumentsBtn").disabled=false;
+            document.getElementById("searchMonumentsBtn").innerText="Search";
             var parsed = response.slice(12, response.length-14);
+
+			if(parsed==""){
+				alert("City not found");
+				return;
+			}
 
             var obj = JSON.parse(parsed);
             removePlacemarks();
+
 
             for(i=0;i<obj.monuments.length;i+=1){
                 addPlacemarkTourist(obj.monuments[i].lon,obj.monuments[i].lat, "None", obj.monuments[i].label, obj.monuments[i].typelabel, false);
@@ -394,7 +425,15 @@
         }
 
         function locateDestination(response, arg){
+            document.getElementById("searchDestinationBtn").disabled=false;
+            document.getElementById("searchDestinationBtn").innerText="Search";
+
             var parsed = response.slice(12, response.length-14);
+			if(parsed==""){
+				alert("Touristic Destination not found");
+				return;
+			}
+
             var obj = JSON.parse(parsed);
             removePlacemarks();
             for(i=0;i<obj.obj.length;i+=1){

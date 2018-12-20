@@ -176,6 +176,8 @@ def listDestinations(obj):
     lst = list()
     lat_mean = 0
     lon_mean = 0
+    if len(results)==0:
+        return ''
     for c in results:
         d = dict()
         d['typelabel'] = c['typelabel']['value']
@@ -204,6 +206,8 @@ def listMonuments(city):
 	lst = list()
 	lat_mean = 0
 	lon_mean = 0
+	if len(results)==0:
+		return ''
 	for c in results:
 		print(c)
 		monuments = dict()
