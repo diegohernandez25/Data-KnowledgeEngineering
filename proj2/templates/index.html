@@ -262,6 +262,9 @@
                 src = document.getElementById("src-city").value;
                 dst = document.getElementById("dst-city").value;
 
+                shownRoutes = [false, false, false, false, false];
+                document.getElementById('search-container').innerHTML = "";
+
                 httpGetAsync("http://localhost:8000/api/routes/" + src + "/" + dst + "/" + document.getElementById("init-date").value, showSearchInfo, "search-container");
             }
 
