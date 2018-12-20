@@ -247,7 +247,7 @@ def calcarrivaldate(routes,dod):
 		if route!='flighttime':
 			routes[route]['arrival']=datetime.strftime(routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])+basedt),
 											"%H:%M:%S %d-%m-%Y")
-			offset=-3600
+			#offset=-3600
 		nrdays=routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])+offset).day-1
 		if nrdays==0:
 			strdays=""

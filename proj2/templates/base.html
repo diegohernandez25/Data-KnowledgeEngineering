@@ -86,17 +86,18 @@
         prev = "page1";
 
         function togglePage(page) {
-            if (prev == "page2")
-                resetPlacemarks();
+            if (prev == "page1"){
+                shownRoutes = [false, false, false, false, false];
+                document.getElementById('search-container').innerHTML = "";
+            }
 
+            removePlacemarks();
             document.getElementById(prev).style.visibility = "hidden";
             document.getElementById(page).style.visibility = "visible";
 
             prev = page;
-            if (page == "page2") {
-                removePlacemarks();
+            if (page == "page2")
                 initFunction();
-            }
 
         }
     </script>
