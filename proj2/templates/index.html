@@ -5,7 +5,7 @@
 {% block contentbar %}
 
 
-    <div id="page1" style="visibility: visible; height: 0px; margin-top: -10px">
+    <div id="page1" style="display:block;  overflow-y: scroll; margin-top: -10px">
         <div align="center">
             <h1>Search flights</h1>
             <p></p>
@@ -64,7 +64,7 @@
 
 
 
-    <div id="page2" style="visibility: hidden; height: 0px; margin-top: -10px" >
+    <div id="page2" style="display: none; margin-top: -10px" >
     <center>
 
         <h1>Points of interest</h1>
@@ -86,7 +86,7 @@
 
     </div>
 
-    <div id="page3" style="visibility: hidden; height: 0px; margin-top: -10px" >
+    <div id="page3" style="display: none; margin-top: -10px" >
         <center>
             <h1> Smart Search</h1>
             <br>
@@ -109,6 +109,7 @@
 
 
     <script>
+        document.getElementById("page1").style.height = window.innerHeight-50 + "px";
         function createRoute(){
             console.log(" createRoute()");
             var val_orig = document.getElementById("city_a").value;
