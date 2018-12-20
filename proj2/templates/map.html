@@ -47,255 +47,147 @@
             function zoomCamera(){
                 map.setZoom(12);
             }
-            function addPlacemark(lat, long, iata, airport, info, flag) {
-                if (!lst.includes(iata) || !flag) {
-                    var placemark = new ymaps.Placemark([lat, long],
-                        {
-                            hintContent: airport,
-                            balloonContent: info
-                        }, {
-                            /**
-                             * Options.
-                             * You must specify this type of layout.
-                             */
-                            iconLayout: 'default#image',
-                            // Custom image for the placemark icon.
-
-                            iconImageHref: '/static/assets/aeroplane.png',
-                            // The size of the placemark.
-                            iconImageSize: [35, 42],
-                            /**
-                             * The offset of the upper left corner of the icon relative
-                             * to its "tail" (the anchor point).
-                             */
-                            iconImageOffset: [-17.5, -21]
-                        });
-                    map.geoObjects.add(placemark);
-                    lst.push(iata)
-                    if (flag)
-                        lstPMarks.push([lat, long, iata, airport, info]);
-                }
-            }
 
             function addPlacemarkColor(lat, long, iata, airport, info, i) {
-                if (!lst.includes(iata)) {
-                    var placemark = new ymaps.Placemark([lat, long],
-                        {
-                            hintContent: airport,
-                            balloonContent: info
-                        }, {
-                            /**
-                             * Options.
-                             * You must specify this type of layout.
-                             */
-                            iconLayout: 'default#image',
-                            // Custom image for the placemark icon.
+                var placemark = new ymaps.Placemark([lat, long],
+                    {
+                        hintContent: airport,
+                        balloonContent: info
+                    }, {
+                        /**
+                         * Options.
+                         * You must specify this type of layout.
+                         */
+                        iconLayout: 'default#image',
+                        // Custom image for the placemark icon.
 
-                            iconImageHref: '/static/assets/aeroplane' + i + '.png',
-                            // The size of the placemark.
-                            iconImageSize: [35, 42],
-                            /**
-                             * The offset of the upper left corner of the icon relative
-                             * to its "tail" (the anchor point).
-                             */
-                            iconImageOffset: [-17.5, -21]
-                        });
-                    map.geoObjects.add(placemark);
-                    lst.push(iata)
-                }
+                        iconImageHref: '/static/assets/aeroplane' + i + '.png',
+                        // The size of the placemark.
+                        iconImageSize: [35, 42],
+                        /**
+                         * The offset of the upper left corner of the icon relative
+                         * to its "tail" (the anchor point).
+                         */
+                        iconImageOffset: [-17.5, -21]
+                    });
+                map.geoObjects.add(placemark);
             }
 
-            function addPlacemarkColor2(lat, long, iata, airport, info, flag,color) {
-                if (!lst.includes(iata) || !flag) {
-                    var placemark = new ymaps.Placemark([lat, long],
-                        {
-                            hintContent: airport,
-                            balloonContent: info
-                        }, {
-                            /**
-                             * Options.
-                             * You must specify this type of layout.
-                             */
-                            iconLayout: 'default#image',
-                            // Custom image for the placemark icon.
+            function addPlacemarkTourist(lat, long, iata, airport, info) {
+                var placemark = new ymaps.Placemark([lat, long],
+                    {
+                        hintContent: airport,
+                        balloonContent: info
+                    }, {
+                        /**
+                         * Options.
+                         * You must specify this type of layout.
+                         */
+                        iconLayout: 'default#image',
+                        // Custom image for the placemark icon.
 
-                            iconImageHref: '/static/assets/'+color+'.png',
-                            // The size of the placemark.
-                            iconImageSize: [35, 42],
-                            /**
-                             * The offset of the upper left corner of the icon relative
-                             * to its "tail" (the anchor point).
-                             */
-                            iconImageOffset: [-17.5, -21]
+                        iconImageHref: '/static/assets/map_select.png',
+                        // The size of the placemark.
+                        iconImageSize: [35, 42],
+                        /**
+                         * The offset of the upper left corner of the icon relative
+                         * to its "tail" (the anchor point).
+                         */
+                        iconImageOffset: [-17.5, -21]
+                    });
+                map.geoObjects.add(placemark);
+            }
+
+                function drawSubroutesColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, i) {
+                    var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
+                    if (recLevel < 3)
+                        recLevel++;
+                    recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel, i);
+                }
+
+                function recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level, i) {
+                    var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
+                    if (level == 0)
+                        placeSubrouteMidpoint(route, subroute, info, srcName, dstName, midpoint, i)
+                    else {
+                        recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1, i);
+                        recColor(route, subroute, info, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1, i);
+                    }
+                }
+
+                function placeSubrouteMidpoint(route, subroute, info, srcName, dstName, point, i) {
+                    var placemark = new ymaps.Placemark(point,
+                        {
+                            hintContent: "<b>" + srcName + " -> " + dstName + "</b><br>Route " + route + ", Subroute " + subroute,
+                            balloonContent: "Route between " + srcName + " and " + dstName
+                        },
+                        {
+                            iconLayout: 'default#image',
+                            iconImageHref: '/static/assets/dot' + i + '.png',
+                            iconImageSize: [4, 4],
+                            iconImageOffset: [-2, -2]
                         });
                     map.geoObjects.add(placemark);
-                    lst.push(iata);
+                }
+
+                function drawRoutesColor(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, flag, color) {
+                    var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
+                    if (recLevel < 3)
+                        recLevel++;
+                    rec(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel, color);
                     if (flag)
-                        lstPMarks.push([lat, long, iata, airport, info]);
+                        lstRoutes.push([route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, color]);
                 }
-            }
+                
+                function rec(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level, color) {
+                    var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
+                    if (level == 0)
+                        placeMidpointColor(route, srcName, dstName, midpoint, color)
+                    else {
+                        rec(route, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1, color);
+                        rec(route, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1, color);
+                    }
+                }
 
-            function addPlacemarkTourist(lat, long, iata, airport, info, flag) {
-                if (!lst.includes(iata) || !flag) {
-                    var placemark = new ymaps.Placemark([lat, long],
+
+                function placeMidpointColor(route, srcName, dstName, point, color) {
+                    var placemark = new ymaps.Placemark(point,
                         {
-                            hintContent: airport,
-                            balloonContent: info
-                        }, {
-                            /**
-                             * Options.
-                             * You must specify this type of layout.
-                             */
+                            hintContent: "Route " + route,
+                            balloonContent: "Route between " + srcName + " and " + dstName
+                        },
+                        {
                             iconLayout: 'default#image',
-                            // Custom image for the placemark icon.
-
-                            iconImageHref: '/static/assets/map_select.png',
-                            // The size of the placemark.
-                            iconImageSize: [35, 42],
-                            /**
-                             * The offset of the upper left corner of the icon relative
-                             * to its "tail" (the anchor point).
-                             */
-                            iconImageOffset: [-17.5, -21]
+                            iconImageHref: '/static/assets/' + color + '.png',
+                            iconImageSize: [4, 4],
+                            iconImageOffset: [-2, -2]
                         });
                     map.geoObjects.add(placemark);
-                    lst.push(iata);
-                    if (flag)
-                        lstPMarks.push([lat, long, iata, airport, info]);
                 }
-            }
 
-            function drawRoutes(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, flag) {
-                var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
-                if (recLevel < 3)
-                    recLevel++;
-                rec(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel);
-                if (flag)
-                    lstRoutes.push([route, srcName, dstName, srcLat, srcLong, dstLat, dstLong]);
-            }
-            function drawRoutesColor2(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, flag,color) {
-                var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
-                if (recLevel < 3)
-                    recLevel++;
-                rec2(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel,color);
-                if (flag)
-                    lstRoutes.push([route, srcName, dstName, srcLat, srcLong, dstLat, dstLong,color]);
-            }
 
-            function rec(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level) {
-                var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
-                if (level == 0)
-                    placeMidPoint(route, srcName, dstName, midpoint)
-                else {
-                    rec(route, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1);
-                    rec(route, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1);
+                function distance(srcLat, srcLong, dstLat, dstLong) {
+                    var lat = srcLat - dstLat;
+                    var long = srcLong - dstLong;
+                    return Math.sqrt(lat * lat + long * long);
                 }
-            }
-            function rec2(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level,color) {
-                var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
-                if (level == 0)
-                    placeMidPointColor2(route, srcName, dstName, midpoint,color)
-                else {
-                    rec2(route, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1,color);
-                    rec2(route, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1,color);
+
+                function calcMidPoint(srcLat, srcLong, dstLat, dstLong) {
+                    var lat = (srcLat + dstLat) / 2;
+                    var long = (srcLong + dstLong) / 2;
+                    return [lat, long];
                 }
-            }
 
-            function placeMidPoint(route, srcName, dstName, point) {
-                var placemark = new ymaps.Placemark(point,
-                    {
-                        hintContent: "Route " + route,
-                        balloonContent: "Route between " + srcName + " and " + dstName
-                    },
-                    {
-                        iconLayout: 'default#image',
-                        iconImageHref: '/static/assets/red_dot.png',
-                        iconImageSize: [4, 4],
-                        iconImageOffset: [-2, -2]
-                    });
-                map.geoObjects.add(placemark);
-            }
-
-            function placeMidPointColor2(route, srcName, dstName, point,color) {
-                var placemark = new ymaps.Placemark(point,
-                    {
-                        hintContent: "Route " + route,
-                        balloonContent: "Route between " + srcName + " and " + dstName
-                    },
-                    {
-                        iconLayout: 'default#image',
-                        iconImageHref: '/static/assets/'+color+'.png',
-                        iconImageSize: [4, 4],
-                        iconImageOffset: [-2, -2]
-                    });
-                map.geoObjects.add(placemark);
-            }
-
-            function drawRoutesColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, i) {
-                var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
-                if (recLevel < 3)
-                    recLevel++;
-                recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel, i);
-            }
-
-            function recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level, i) {
-                var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
-                if (level == 0)
-                    placeMidPointColor(route, subroute, info, srcName, dstName, midpoint, i)
-                else {
-                    recColor(route, subroute, info, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1, i);
-                    recColor(route, subroute, info, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1, i);
+                function removePlacemarks() {
+                    map.geoObjects.removeAll();
                 }
-            }
 
-            function placeMidPointColor(route, subroute, info, srcName, dstName, point, i) {
-                var placemark = new ymaps.Placemark(point,
-                    {
-                        hintContent: "<b>" + srcName +  " -> " + dstName + "</b><br>Route " + route + ", Subroute " + subroute,
-                        balloonContent: "Route between " + srcName + " and " + dstName
-                    },
-                    {
-                        iconLayout: 'default#image',
-                        iconImageHref: '/static/assets/dot' + i + '.png',
-                        iconImageSize: [4, 4],
-                        iconImageOffset: [-2, -2]
-                    });
-                map.geoObjects.add(placemark);
-            }
-
-
-            function distance(srcLat, srcLong, dstLat, dstLong) {
-                var lat = srcLat - dstLat;
-                var long = srcLong - dstLong;
-                return Math.sqrt(lat * lat + long * long);
-            }
-
-            function calcMidPoint(srcLat, srcLong, dstLat, dstLong) {
-                var lat = (srcLat + dstLat) / 2;
-                var long = (srcLong + dstLong) / 2;
-                return [lat, long];
-            }
-
-            function removePlacemarks() {
-                map.geoObjects.removeAll();
-            }
-
-            function resetPlacemarks() {
-                map.geoObjects.removeAll();
-                for (i = 0; i < lstPMarks.length; i++) {
-                    addPlacemark(lstPMarks[i][0], lstPMarks[i][1], lstPMarks[i][2], lstPMarks[i][3], lstPMarks[i][4], false);
-                }
-                for (i = 0; i < lstRoutes.length; i++) {
-                    drawRoutes(lstRoutes[i][0], lstRoutes[i][1], lstRoutes[i][2], lstRoutes[i][3], lstRoutes[i][4], lstRoutes[i][5], lstRoutes[i][6], false);
-                }
-            }
-
-            function addTerritorialRoute2(origin_lat, origin_lon, destiny_lat, destiny_lon,origin_lat2, origin_lon2, destiny_lat2, destiny_lon2){
-                var multiRoute = new ymaps.multiRouter.MultiRoute({
+                function addTerritorialRoute2(origin_lat, origin_lon, destiny_lat, destiny_lon, origin_lat2, origin_lon2, destiny_lat2, destiny_lon2) {
+                    var multiRoute = new ymaps.multiRouter.MultiRoute({
                         // The description of the reference points on the multi-stop route.
                         referencePoints: [
-                            [origin_lat,origin_lon],
-                            [destiny_lat,destiny_lon]
+                            [origin_lat, origin_lon],
+                            [destiny_lat, destiny_lon]
                         ],
                         // Routing options.
                         params: {
@@ -307,30 +199,10 @@
                         boundsAutoApply: true
                     });
                     var multiRoute2 = new ymaps.multiRouter.MultiRoute({
-                            // The description of the reference points on the multi-stop route.
-                            referencePoints: [
-                                [origin_lat2,origin_lon2],
-                                [destiny_lat2,destiny_lon2]
-                            ],
-                            // Routing options.
-                            params: {
-                                // Limit on the maximum number of routes returned by the router.
-                                results: 2
-                            }
-                        }, {
-                            // Automatically set the map boundaries so the entire route is visible.
-                            boundsAutoApply: true
-                        });
-
-                map.geoObjects.add( multiRoute);
-                map.geoObjects.add( multiRoute2);
-            }
-            function addTerritorialRoute(origin_lat, origin_lon, destiny_lat, destiny_lon){
-                var multiRoute = new ymaps.multiRouter.MultiRoute({
                         // The description of the reference points on the multi-stop route.
                         referencePoints: [
-                            [origin_lat,origin_lon],
-                            [destiny_lat,destiny_lon]
+                            [origin_lat2, origin_lon2],
+                            [destiny_lat2, destiny_lon2]
                         ],
                         // Routing options.
                         params: {
@@ -341,9 +213,30 @@
                         // Automatically set the map boundaries so the entire route is visible.
                         boundsAutoApply: true
                     });
-                map.geoObjects.add( multiRoute);
 
-            }
+                    map.geoObjects.add(multiRoute);
+                    map.geoObjects.add(multiRoute2);
+                }
+
+                function addTerritorialRoute(origin_lat, origin_lon, destiny_lat, destiny_lon) {
+                    var multiRoute = new ymaps.multiRouter.MultiRoute({
+                        // The description of the reference points on the multi-stop route.
+                        referencePoints: [
+                            [origin_lat, origin_lon],
+                            [destiny_lat, destiny_lon]
+                        ],
+                        // Routing options.
+                        params: {
+                            // Limit on the maximum number of routes returned by the router.
+                            results: 2
+                        }
+                    }, {
+                        // Automatically set the map boundaries so the entire route is visible.
+                        boundsAutoApply: true
+                    });
+                    map.geoObjects.add(multiRoute);
+                }
+
 
 
 

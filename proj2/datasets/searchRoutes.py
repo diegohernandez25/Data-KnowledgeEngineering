@@ -159,7 +159,7 @@ class routeFinder():
 		
 			
 	def heuristic(self,node):
-		return 0 #FIXME FIXME FIXME NON ADMISSIBLE HEURISTICS
+		return 0
 		if self.optimize=='price':
 			dist=distancecoord(self.dstcoord,node['coord'])
 			return 10*dist/100+10

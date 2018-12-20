@@ -55,7 +55,7 @@ def genairlinedata(graph):
 	for airline in getuniqueIDs(graph):
 		airline_dict[airline[0]]=dict()
 
-	for key in airline_dict: #TODO GET MORE ACCURATE DATA, AVISAR DIEGO POR CAUSA DA HEURISTICA
+	for key in airline_dict:
 		airline_dict[key]['costperdistance']=random.randint(10,20) #euro/hundredKm
 		airline_dict[key]['basecost']=random.randint(10,50) #euro
 		

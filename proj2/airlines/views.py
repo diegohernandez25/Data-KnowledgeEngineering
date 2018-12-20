@@ -98,8 +98,8 @@ def getRoutes(request, src, dst, year, month, day):
             query = sr.getAirportInfo(destinationId)
             destination = sr.queryGraphDB(query, accessor, repo_name)[0]
 
-            srcinfo = getSingleAirportRdfa2(source, cnt, cnt_sub, "src")
-            dstinfo = getSingleAirportRdfa2(destination, cnt, cnt_sub, "dst")
+            srcinfo = getAirportStyle(source, cnt, cnt_sub, "src")
+            dstinfo = getAirportStyle(destination, cnt, cnt_sub, "dst")
 
             elem += "\n\n\t\t\t<div rel=\"http://www.airlinesdot.com/resource/route/subroute\">"
 
@@ -298,7 +298,7 @@ def getCityAirportsRdfa(city):
         elems += elem + "</div>\n<p>\n"
     return elems
 
-def getSingleAirportRdfa2(a, cnt, cnt_sub, tail):
+def getAirportStyle(a, cnt, cnt_sub, tail):
     span = "<span "
     Open = " property=\""
     elem = "\nLabel: " + span + "id=\"label_r" + str(cnt) + "_sub" + str(cnt_sub) + "_" + tail + "\"" + Open + "http://openflights.org/resource/airport/label\">" + a[
