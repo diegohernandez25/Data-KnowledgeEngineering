@@ -85,7 +85,7 @@
             </select>
             <br>
             <br>
-            <label for="start"><b>Arrival date:</b></label>
+            <label for="start"><b>Departure date:</b></label>
             <input type="date" id="init-date" name="init-date"
                 value="2018-12-01">
 
@@ -112,12 +112,8 @@
             </select>
             <br>
             <br><br>
-            <label for="start"><b>Departure date:</b></label>
-            <input type="date" id="end-date" name="end-date"
-                value="2018-12-01">
-            <br>
-            <br>
-            <button id="search" type="button" class="btn btn-default">Search</button>
+
+            <button id="search" type="button" class="btn btn-default" onclick="drawRoute()">Search</button>
             <br><br>
             <h3>Available routes:</h3>
 
@@ -174,16 +170,23 @@
         function createRoute(){
             console.log(" createRoute()");
             var val_orig = document.getElementById("city_a").value;
+            val_orig=val_orig.toLowerCase();
+            val_orig = val_orig.replace(/ /g,"_");
             var val_dest = document.getElementById("city_b").value;
+            val_dest=val_dest.toLowerCase();
+            val_dest = val_dest.replace(/ /g,"_");
+            var date = document.getElementById("date").value;
+            console.log("date: "+date);
             console.log(val_orig);
             console.log(val_dest);
-            httpGetAsync("http://localhost:8000/api/city/orig/"+val_orig+"/dest/"+val_dest+"/coord", updateRoute, 0);
+            var val = document.getElementById("city-destiny").value;
+            console.log("val: "+val);
+            httpGetAsync("http://localhost:8000/api/city/orig/"+val_orig+"/dest/"+val_dest+"/"+date+"/coord", updateRoute, 0);
         }
 
         function searchMonuments(){
             var val = document.getElementById("city-monum").value;
             console.log("val: "+val);
-
             //httpGetAsync("http://localhost:8000/api/country/" + value + "/cities", rcvCities, cityBox);
             httpGetAsync("http://localhost:8000/api/city/"+val+"/monuments", updateMonuments, val);
 
@@ -342,7 +345,7 @@
             removePlacemarks();
 
             for(i=0;i<obj.monuments.length;i+=1){
-                addPlacemarkTourist(obj.monuments[i].lon,obj.monuments[i].lat, "None", obj.monuments[i].label, "None", false);
+                addPlacemarkTourist(obj.monuments[i].lon,obj.monuments[i].lat, "None", obj.monuments[i].label, obj.monuments[i].typelabel, false);
             }
             zoomCamera();
             centerCamera(obj.lon_mean,obj.lat_mean);
@@ -356,7 +359,7 @@
                 dict= obj.obj[i];
                 // console.log('dict : '+dict);
 
-                addPlacemarkTourist(dict.lon,dict.lat, "None", dict.label, "None", false);
+                addPlacemarkTourist(dict.lon,dict.lat, "None", dict.typelabel, dict.itemlabel, false);
             }
             zoomCamera();
             centerCamera(obj.lon_mean,obj.lat_mean);
@@ -379,13 +382,54 @@
                 addTerritorialRoute(orig[0][0],orig[0][1],orig[1][0],orig[1][1]);
             }
             else if(orig[0] != null && dst[0]!=null){
+                //There is an flight route
                 console.log(3);
                 addTerritorialRoute2(orig[0][0],orig[0][1],orig[1][0],orig[1][1],dst[0][0],dst[0][1],dst[1][0],dst[1][1]);
-                return;
-            }
-            else{
-                console.log(4);
-                return;
+                var i;
+                for(i=0;i<obj.hop.route.length;i++){
+                    console.log("lat1 "+obj.hop.route[i].lat1);
+                    console.log("lon1 "+obj.hop.route[i].lon1);
+                    console.log("lat2 "+obj.hop.route[i].lat2);
+                    console.log("lon2 "+obj.hop.route[i].lon2);
+                    console.log("nameorig "+obj.hop.route[i].origin_air);
+                    console.log("namedest "+obj.hop.route[i].destination_air);
+                    drawRoutes("Best Route", obj.hop.route[i].origin_air, obj.hop.route[i].destination_air,obj.hop.route[i].lat1,obj.hop.route[i].lon1, obj.hop.route[i].lat2,obj.hop.route[i].lon2, false);
+                    addPlacemark(obj.hop.route[i].lat1, obj.hop.route[i].lon1, obj.hop.route[i].source, obj.hop.route[i].origin_air, obj.hop.route[i].source, false);
+                    addPlacemark(obj.hop.route[i].lat2, obj.hop.route[i].lon2, obj.hop.route[i].destination, obj.hop.route[i].destination_air, obj.hop.route[i].destination, false);
+                }
+                for(i=0;i<obj.price.route.length;i++){
+                    console.log("lat1 "+obj.price.route[i].lat1);
+                    console.log("lon1 "+obj.price.route[i].lon1);
+                    console.log("lat2 "+obj.price.route[i].lat2);
+                    console.log("lon2 "+obj.price.route[i].lon2);
+                    console.log("nameorig "+obj.price.route[i].origin_air);
+                    console.log("namedest "+obj.price.route[i].destination_air);
+                    drawRoutes("Best Route", obj.price.route[i].origin_air, obj.price.route[i].destination_air,obj.price.route[i].lat1,obj.price.route[i].lon1, obj.price.route[i].lat2,obj.price.route[i].lon2, false);
+                    addPlacemark(obj.price.route[i].lat1, obj.price.route[i].lon1, obj.price.route[i].source, obj.price.route[i].origin_air, obj.price.route[i].source, false);
+                    addPlacemark(obj.price.route[i].lat2, obj.price.route[i].lon2, obj.price.route[i].destination, obj.price.route[i].destination_air, obj.price.route[i].destination, false);
+                }
+                for(i=0;i<obj.distance.route.length;i++){
+                    console.log("lat1 "+obj.distance.route[i].lat1);
+                    console.log("lon1 "+obj.distance.route[i].lon1);
+                    console.log("lat2 "+obj.distance.route[i].lat2);
+                    console.log("lon2 "+obj.distance.route[i].lon2);
+                    console.log("nameorig "+obj.distance.route[i].origin_air);
+                    console.log("namedest "+obj.distance.route[i].destination_air);
+                    drawRoutes("Best Route", obj.distance.route[i].origin_air, obj.distance.route[i].destination_air,obj.distance.route[i].lat1,obj.distance.route[i].lon1, obj.distance.route[i].lat2,obj.distance.route[i].lon2, false);
+                    addPlacemark(obj.distance.route[i].lat1, obj.distance.route[i].lon1, obj.distance.route[i].source, obj.distance.route[i].origin_air, obj.distance.route[i].source, false);
+                    addPlacemark(obj.distance.route[i].lat2, obj.distance.route[i].lon2, obj.distance.route[i].destination, obj.distance.route[i].destination_air, obj.distance.route[i].destination, false);
+                }
+                for(i=0;i<obj.time.route.length;i++){
+                    console.log("lat1 "+obj.time.route[i].lat1);
+                    console.log("lon1 "+obj.time.route[i].lon1);
+                    console.log("lat2 "+obj.time.route[i].lat2);
+                    console.log("lon2 "+obj.time.route[i].lon2);
+                    console.log("nameorig "+obj.time.route[i].origin_air);
+                    console.log("namedest "+obj.time.route[i].destination_air);
+                    drawRoutes("Best Route", obj.time.route[i].origin_air, obj.time.route[i].destination_air,obj.time.route[i].lat1,obj.time.route[i].lon1, obj.time.route[i].lat2,obj.time.route[i].lon2, false);
+                    addPlacemark(obj.time.route[i].lat1, obj.time.route[i].lon1, obj.time.route[i].source, obj.time.route[i].origin_air, obj.time.route[i].source, false);
+                    addPlacemark(obj.time.route[i].lat2, obj.time.route[i].lon2, obj.time.route[i].destination, obj.time.route[i].destination_air, obj.time.route[i].destination, false);
+                }
 
             }
         }

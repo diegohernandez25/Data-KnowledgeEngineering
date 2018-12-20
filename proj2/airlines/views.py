@@ -67,6 +67,7 @@ def getCityAirports(request, city):
     elems = getCityAirportsRdfa(city)
     return HttpResponse(head + elems + tail)
 
+	
 def getRoutes(request, src, dst):
     head = "<html>\n<body>\n"
     tail ="</body>\n</html>"
@@ -166,8 +167,10 @@ def listMonuments(city):
 	lat_mean = 0
 	lon_mean = 0
 	for c in results:
+		print(c)
 		monuments = dict()
 		monuments['label']= c['label']['value']
+		monuments['typelabel'] = c['typelabel']['value']
 		c = eval(c["coords"]["value"].replace("Point","").replace(" ",","))
 		monuments['lat']= c[0]
 		monuments['lon']= c[1]
@@ -294,16 +297,121 @@ def findBestAirport(local):
 		return None, None
 	return query_result[0],list(local_coods)
 
-def getCityCoords(request,orig,dest):
-	bestroute,origincoord,destinycoord = smartAirRoute(orig,dest)
+def getCityCoords(request,orig,dest,date):
+	repo_name, accessor = sr.connectGraphDB()
+	bestroute,origincoord,destinycoord = smartAirRoute(orig,dest,date)
 	d = dict()
 	d['orig']=[origincoord[1],origincoord[0]]
 	d['dest']=[destinycoord[0],destinycoord[1]]
+	print("bestroute: ",repr(bestroute))
+	if bestroute:
+		d['hop']=dict()
+		d['hop']['route']=list()
+		for h in bestroute['hop']['route']:
+			query = sr.getInfoRoute(h)
+			query_result = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['sourceId'])				
+			res1 = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['destinationId'])				
+			res2 = sr.queryGraphDB(query, accessor, repo_name)
+			node = dict()
+			node['origin_air']=query_result[0]['sourceIdLabel']
+			node['destination_air']=query_result[0]['destinationIdLabel']
+			node['destination']=query_result[0]['destination']
+			node['source']=query_result[0]['source']
+			node['lat1']=float(res1[0]['airlat'])
+			node['lon1']=float(res1[0]['airlon'])
+			node['lat2']=float(res2[0]['airlat'])
+			node['lon2']=float(res2[0]['airlon'])
+			d['hop']['route'].append(node)
+		d['hop']['price']=bestroute['hop']['price']
+		d['hop']['cost']=bestroute['hop']['cost']
+		d['hop']['distance']=bestroute['hop']['distance']
+		d['hop']['time']=bestroute['hop']['elapsedtimepretty']
+		
+		d['price']=dict()
+		d['price']['route']=list()
+		for h in bestroute['price']['route']:
+			query = sr.getInfoRoute(h)
+			query_result = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['sourceId'])				
+			res1 = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['destinationId'])				
+			res2 = sr.queryGraphDB(query, accessor, repo_name)
+			node = dict()
+			node['origin_air']=query_result[0]['sourceIdLabel']
+			node['destination_air']=query_result[0]['destinationIdLabel']
+			node['destination']=query_result[0]['destination']
+			node['source']=query_result[0]['source']
+			node['lat1']=float(res1[0]['airlat'])
+			node['lon1']=float(res1[0]['airlon'])
+			node['lat2']=float(res2[0]['airlat'])
+			node['lon2']=float(res2[0]['airlon'])
+			d['price']['route'].append(node)
+		d['price']['price']=bestroute['price']['price']
+		d['price']['cost']=bestroute['price']['cost']
+		d['price']['distance']=bestroute['price']['distance']
+		d['price']['time']=bestroute['price']['elapsedtimepretty']
+		
+		d['distance']=dict()	
+		d['distance']['route']=list()
+		for h in bestroute['distance']['route']:
+			query = sr.getInfoRoute(h)
+			query_result = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['sourceId'])				
+			res1 = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['destinationId'])				
+			res2 = sr.queryGraphDB(query, accessor, repo_name)
+			node = dict()
+			node['origin_air']=query_result[0]['sourceIdLabel']
+			node['destination_air']=query_result[0]['destinationIdLabel']
+			node['destination']=query_result[0]['destination']
+			node['source']=query_result[0]['source']
+			node['lat1']=float(res1[0]['airlat'])
+			node['lon1']=float(res1[0]['airlon'])
+			node['lat2']=float(res2[0]['airlat'])
+			node['lon2']=float(res2[0]['airlon'])
+			d['distance']['route'].append(node)
+		
+		d['distance']['price']=bestroute['distance']['price']
+		d['distance']['cost']=bestroute['distance']['cost']
+		d['distance']['distance']=bestroute['distance']['distance']
+		d['distance']['time']=bestroute['distance']['elapsedtimepretty']
+		
+		
+		d['time']=dict()	
+			
+		d['time']['route']=list()
+		for h in bestroute['time']['route']:
+			query = sr.getInfoRoute(h)
+			query_result = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['sourceId'])				
+			res1 = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['destinationId'])				
+			res2 = sr.queryGraphDB(query, accessor, repo_name)
+			node = dict()
+			node['origin_air']=query_result[0]['sourceIdLabel']
+			node['destination_air']=query_result[0]['destinationIdLabel']
+			node['destination']=query_result[0]['destination']
+			node['source']=query_result[0]['source']
+			node['lat1']=float(res1[0]['airlat'])
+			node['lon1']=float(res1[0]['airlon'])
+			node['lat2']=float(res2[0]['airlat'])
+			node['lon2']=float(res2[0]['airlon'])
+			d['time']['route'].append(node)
+		
+		d['time']['price']=bestroute['time']['price']
+		d['time']['cost']=bestroute['time']['cost']
+		d['time']['distance']=bestroute['time']['distance']
+		d['time']['time']=bestroute['time']['elapsedtimepretty']	
+	
+	
 	d = json.dumps(d)
+	print("d: ",d)
 	resp = "<html><body>{}</body></html>".format(d)
 	return HttpResponse(resp)
 
-def smartAirRoute(localA,localB):
+def smartAirRoute(localA,localB,date):
 	a,locala=findBestAirport(localA)	
 	b,localb=findBestAirport(localB)
 	if a!=None: 
@@ -314,8 +422,6 @@ def smartAirRoute(localA,localB):
 		_b=[localb,[float(b['lat']),float(b['lon'])]]
 	else: 
 		_b=[None,None]
-	bestroute=sr.routeFinderURI(a['airport'],b['airport']) if a!=None and b!=None else None
-	##TODO localA cidade do pais , localB cidade do outro pais, nao necessariamente a cidade do aeroporto
-	#return bestroute,[locala,[float(a['lat']),float(a['lon'])]],[localb,[float(b['lat']),float(b['lon'])]]
+	bestroute=sr.routeFinderURI(a['airport'],b['airport'],date) if a!=None and b!=None else None
 	return bestroute,_a,_b
 
