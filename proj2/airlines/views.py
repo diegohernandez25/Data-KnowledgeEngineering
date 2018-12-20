@@ -141,12 +141,6 @@ def getDestination(request, obj):
     resp = "<html><body>{}</body></html>".format(listDestinations(obj.replace("_", " ")))
     return HttpResponse(resp)
 
-
-def getAirports(request, country):
-    resp = "<html><body>{}</body></html>".format(listAirports(country))
-    return HttpResponse(resp)
-
-
 def getMonumentCoords(request, city):
     resp = "<html><body>{}</body></html>".format(listMonuments(city))
     return HttpResponse(resp)
@@ -155,11 +149,9 @@ def getMonumentCoords(request, city):
 def listCityCoords(city):
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
     query = qw.queryCityCoord(city)
-    print(query)
     sparql.setQuery(query)
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()['results']['bindings']
-    print("results", repr(results))
     coord = list()
     if results:
         coord = eval(results[0]['coord']['value'].replace("Point", "").replace(" ", ","))
@@ -209,7 +201,6 @@ def listMonuments(city):
 	if len(results)==0:
 		return ''
 	for c in results:
-		print(c)
 		monuments = dict()
 		monuments['label']= c['label']['value']
 		monuments['typelabel'] = c['typelabel']['value']
@@ -234,7 +225,6 @@ def listCountries(continent):
     results = qw.queryData(query)
     lst = []
     for c in results:
-        # print(c)
         lst.append(c['label']['value'])
     return lst
 
@@ -270,7 +260,6 @@ def listCitiesWD(country):
     results = qw.queryData(query)
     lst = []
     for c in results:
-        # print(c)
         if c['citylabel']['value'] not in lst:
             lst.append(c['citylabel']['value'])
     return lst
@@ -282,7 +271,6 @@ def listCountryAirports(country):
     results = qw.queryData(query)
     lst = []
     for c in results:
-        # print(c)
         lst.append(c['label']['value'])
     return lst
 
@@ -305,8 +293,6 @@ def getCityAirportsRdfa(city):
     airports = listCityAirports(city)
     elems = ""
     for a in airports:
-        print(" a is")
-        print(a)
         div = "<div about=\"" + a['airport'] + "\">"
         elem = div + getSingleAirportRdfa(a)
         elems += elem + "</div>\n<p>\n"
@@ -368,7 +354,6 @@ def getCityCoords(request, orig, dest, date):
     d = dict()
     d['orig'] = [origincoord[1], origincoord[0]]
     d['dest'] = [destinycoord[0], destinycoord[1]]
-    print("bestroute: ", repr(bestroute))
     if bestroute:
         d['hop'] = dict()
         d['hop']['route'] = list()
@@ -495,7 +480,6 @@ def getCityCoords(request, orig, dest, date):
         d['flighttime']['time'] = bestroute['flighttime']['elapsedtimepretty']
 
     d = json.dumps(d)
-    print("d: ", d)
     resp = "<html><body>{}</body></html>".format(d)
     return HttpResponse(resp)
 

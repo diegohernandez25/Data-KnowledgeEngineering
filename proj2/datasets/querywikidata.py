@@ -186,17 +186,14 @@ def citysWithAirport(country):
 sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 def queryData(query, ask=False):
 	try:
-		#print(query)
 		sparql.setQuery(query)
 		sparql.setReturnFormat(JSON)
 		results = sparql.query().convert()
-		#print("RESULTS:",str(results))
 	except:
 		print("Error on query")
 		return -1
 	if ask:
 		return results['boolean']
-	print(results["results"]["bindings"])
 	return results["results"]["bindings"]
 
 
@@ -327,7 +324,6 @@ if __name__=="__main__":
 			print("Wrong Option")
 			continue
 		try:
-			#print(query)
 			sparql.setQuery(query)
 			sparql.setReturnFormat(JSON)
 			results = sparql.query().convert()
@@ -335,11 +331,11 @@ if __name__=="__main__":
 			print("Error on query")
 			continue
 		if ask:
-			print(results)
 			continue
 		for result in results["results"]["bindings"]:
 			for k in keys:
-				if result.get(k) : print(result[k]["value"])
+				if result.get(k):
+					print(result[k]["value"])
 				#if result.get("coords") : 
 					#_tuple=eval(result["coords"]["value"].replace("Point","").replace(" ",","))
 					#print(_tuple[0])	

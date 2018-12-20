@@ -47,9 +47,6 @@ class routeFinder():
 			next_hops=self.possible_hops(node)	
 			next_hops=self.handle_dups(next_hops)
 
-			print('\r',len(self.visited_nodes),'\t',len(self.open_nodes),end='')
-
-
 			if node['uri']==self.dsturi:
 				return {'route':routeFinder.node_route(node),'cost':node['cost'],'price':routeFinder.sum_of_param(node,'price'),'distance':routeFinder.sum_of_param(node,'distance'),'nrhops':node['hop'],'elapsedtime':node['elapsedtime']}	
 
@@ -110,14 +107,7 @@ class routeFinder():
 			h['elapsedtime']=self.elapsedtime(node,hd) if self.optimize!='time' and self.optimize!='flighttime' else h['cost']
 			h['duration']=routeFinder._dt_to_rel_sec(datetime.strptime(hd['duration'],'%H:%M:%S'))
 			h['tod']=routeFinder._dt_to_rel_sec(datetime.strptime(hd['tod'],'%H:%M:%S'))
-	
-			#if h['elapsedtime']!=h['cost']:
-			#	print(h['elapsedtime'],' ',h['cost'])
-			#	import sys
-			#	sys.exit(0)
 
-			#print((h['duration']-datetime(1900,1,1)).total_seconds())
-			#print(h['duration'].date()+timedelta(days=1))
 			hops.append(h)
 		return hops
 
@@ -205,14 +195,10 @@ def queryGraphDB(query,accessor,repo_name):
 def routeFinderNAME(srcCity,dstCity,departdate):
 	repo_name,accessor = connectGraphDB()	
 	srcAirports=queryGraphDB(getAirportCity(srcCity),accessor,repo_name)	
-	dstAirports=queryGraphDB(getAirportCity(dstCity),accessor,repo_name)	
-
-	print('len(srcAirports)=',len(srcAirports))
-	print('len(dstAirports)=',len(dstAirports))
+	dstAirports=queryGraphDB(getAirportCity(dstCity),accessor,repo_name)
 
 	for src in srcAirports:
 		for dst in dstAirports:
-			#print(dst['airport'])
 			route=routeFinderURI(src['airport'],dst['airport'],departdate)
 			if route!=None:
 				return route
@@ -228,7 +214,6 @@ def routeFinderURI(srcuri,dsturi,departdate,rf=routeFinder()):
 
 	ret=dict()
 	for opt in ['price','distance','hop','time','flighttime']:
-		print('AAA')
 		rf.configure(srcuri,dsturi,opt)
 		ret[opt]=rf.get_route()
 		if ret[opt]==None:
@@ -240,7 +225,6 @@ def routeFinderURI(srcuri,dsturi,departdate,rf=routeFinder()):
 
 def calcarrivaldate(routes,dod):
 	dtdeparture=datetime.strptime(dod,'%Y-%m-%d')
-	print(dtdeparture)
 	basedt=routeFinder._dt_to_sec(dtdeparture)
 	for route in routes:
 		offset=0
@@ -257,7 +241,6 @@ def calcarrivaldate(routes,dod):
 			strdays=str(nrdays)+' days '
 		hours=datetime.strftime(routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])+offset),"%H:%M:%S")
 		routes[route]['elapsedtimepretty']=strdays+hours
-		print(routeFinder._sec_to_dt(float(routes[route]['elapsedtime'])))
 		
 
 def addroutestocache(routes,srcURI,dstURI):
