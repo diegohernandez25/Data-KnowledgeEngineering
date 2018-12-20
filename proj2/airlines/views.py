@@ -404,7 +404,31 @@ def getCityCoords(request,orig,dest,date):
 		d['time']['cost']=bestroute['time']['cost']
 		d['time']['distance']=bestroute['time']['distance']
 		d['time']['time']=bestroute['time']['elapsedtimepretty']	
-	
+		
+		d['flighttime']=dict()	
+		d['flighttime']['route']=list()
+		for h in bestroute['flighttime']['route']:
+			query = sr.getInfoRoute(h)
+			query_result = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['sourceId'])				
+			res1 = sr.queryGraphDB(query, accessor, repo_name)
+			query = sr.getAirportCoords(query_result[0]['destinationId'])				
+			res2 = sr.queryGraphDB(query, accessor, repo_name)
+			node = dict()
+			node['origin_air']=query_result[0]['sourceIdLabel']
+			node['destination_air']=query_result[0]['destinationIdLabel']
+			node['destination']=query_result[0]['destination']
+			node['source']=query_result[0]['source']
+			node['lat1']=float(res1[0]['airlat'])
+			node['lon1']=float(res1[0]['airlon'])
+			node['lat2']=float(res2[0]['airlat'])
+			node['lon2']=float(res2[0]['airlon'])
+			d['flighttime']['route'].append(node)
+		
+		d['flighttime']['price']=bestroute['flighttime']['price']
+		d['flighttime']['cost']=bestroute['flighttime']['cost']
+		d['flighttime']['distance']=bestroute['flighttime']['distance']
+		d['flighttime']['time']=bestroute['flighttime']['elapsedtimepretty']
 	
 	d = json.dumps(d)
 	print("d: ",d)

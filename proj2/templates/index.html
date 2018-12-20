@@ -393,9 +393,9 @@
                     console.log("lon2 "+obj.hop.route[i].lon2);
                     console.log("nameorig "+obj.hop.route[i].origin_air);
                     console.log("namedest "+obj.hop.route[i].destination_air);
-                    drawRoutes("Best Route", obj.hop.route[i].origin_air, obj.hop.route[i].destination_air,obj.hop.route[i].lat1,obj.hop.route[i].lon1, obj.hop.route[i].lat2,obj.hop.route[i].lon2, false);
-                    addPlacemark(obj.hop.route[i].lat1, obj.hop.route[i].lon1, obj.hop.route[i].source, obj.hop.route[i].origin_air, obj.hop.route[i].source, false);
-                    addPlacemark(obj.hop.route[i].lat2, obj.hop.route[i].lon2, obj.hop.route[i].destination, obj.hop.route[i].destination_air, obj.hop.route[i].destination, false);
+                    drawRoutesColor2("Best Route", obj.hop.route[i].origin_air, obj.hop.route[i].destination_air,obj.hop.route[i].lat1,obj.hop.route[i].lon1, obj.hop.route[i].lat2,obj.hop.route[i].lon2, false,'dot0');
+                    addPlacemarkColor2(obj.hop.route[i].lat1, obj.hop.route[i].lon1, obj.hop.route[i].source, obj.hop.route[i].origin_air, obj.hop.route[i].source, false,'aeroplane0');
+                    addPlacemarkColor2(obj.hop.route[i].lat2, obj.hop.route[i].lon2, obj.hop.route[i].destination, obj.hop.route[i].destination_air, obj.hop.route[i].destination, false,'aeroplane0');
                 }
                 for(i=0;i<obj.price.route.length;i++){
                     console.log("lat1 "+obj.price.route[i].lat1);
@@ -404,9 +404,9 @@
                     console.log("lon2 "+obj.price.route[i].lon2);
                     console.log("nameorig "+obj.price.route[i].origin_air);
                     console.log("namedest "+obj.price.route[i].destination_air);
-                    drawRoutes("Best Route", obj.price.route[i].origin_air, obj.price.route[i].destination_air,obj.price.route[i].lat1,obj.price.route[i].lon1, obj.price.route[i].lat2,obj.price.route[i].lon2, false);
-                    addPlacemark(obj.price.route[i].lat1, obj.price.route[i].lon1, obj.price.route[i].source, obj.price.route[i].origin_air, obj.price.route[i].source, false);
-                    addPlacemark(obj.price.route[i].lat2, obj.price.route[i].lon2, obj.price.route[i].destination, obj.price.route[i].destination_air, obj.price.route[i].destination, false);
+                    drawRoutesColor2("Best Route", obj.price.route[i].origin_air, obj.price.route[i].destination_air,obj.price.route[i].lat1,obj.price.route[i].lon1, obj.price.route[i].lat2,obj.price.route[i].lon2, false,'dot1');
+                    addPlacemarkColor2(obj.price.route[i].lat1, obj.price.route[i].lon1, obj.price.route[i].source, obj.price.route[i].origin_air, obj.price.route[i].source, false,'aeroplane1');
+                    addPlacemarkColor2(obj.price.route[i].lat2, obj.price.route[i].lon2, obj.price.route[i].destination, obj.price.route[i].destination_air, obj.price.route[i].destination, false,'aeroplane1');
                 }
                 for(i=0;i<obj.distance.route.length;i++){
                     console.log("lat1 "+obj.distance.route[i].lat1);
@@ -415,9 +415,9 @@
                     console.log("lon2 "+obj.distance.route[i].lon2);
                     console.log("nameorig "+obj.distance.route[i].origin_air);
                     console.log("namedest "+obj.distance.route[i].destination_air);
-                    drawRoutes("Best Route", obj.distance.route[i].origin_air, obj.distance.route[i].destination_air,obj.distance.route[i].lat1,obj.distance.route[i].lon1, obj.distance.route[i].lat2,obj.distance.route[i].lon2, false);
-                    addPlacemark(obj.distance.route[i].lat1, obj.distance.route[i].lon1, obj.distance.route[i].source, obj.distance.route[i].origin_air, obj.distance.route[i].source, false);
-                    addPlacemark(obj.distance.route[i].lat2, obj.distance.route[i].lon2, obj.distance.route[i].destination, obj.distance.route[i].destination_air, obj.distance.route[i].destination, false);
+                    drawRoutesColor2("Best Route", obj.distance.route[i].origin_air, obj.distance.route[i].destination_air,obj.distance.route[i].lat1,obj.distance.route[i].lon1, obj.distance.route[i].lat2,obj.distance.route[i].lon2, false,'dot2');
+                    addPlacemarkColor2(obj.distance.route[i].lat1, obj.distance.route[i].lon1, obj.distance.route[i].source, obj.distance.route[i].origin_air, obj.distance.route[i].source, false,'aeroplane2');
+                    addPlacemarkColor2(obj.distance.route[i].lat2, obj.distance.route[i].lon2, obj.distance.route[i].destination, obj.distance.route[i].destination_air, obj.distance.route[i].destination, false,'aeroplane2');
                 }
                 for(i=0;i<obj.time.route.length;i++){
                     console.log("lat1 "+obj.time.route[i].lat1);
@@ -426,9 +426,20 @@
                     console.log("lon2 "+obj.time.route[i].lon2);
                     console.log("nameorig "+obj.time.route[i].origin_air);
                     console.log("namedest "+obj.time.route[i].destination_air);
-                    drawRoutes("Best Route", obj.time.route[i].origin_air, obj.time.route[i].destination_air,obj.time.route[i].lat1,obj.time.route[i].lon1, obj.time.route[i].lat2,obj.time.route[i].lon2, false);
-                    addPlacemark(obj.time.route[i].lat1, obj.time.route[i].lon1, obj.time.route[i].source, obj.time.route[i].origin_air, obj.time.route[i].source, false);
-                    addPlacemark(obj.time.route[i].lat2, obj.time.route[i].lon2, obj.time.route[i].destination, obj.time.route[i].destination_air, obj.time.route[i].destination, false);
+                    drawRoutesColor2("Best Route", obj.time.route[i].origin_air, obj.time.route[i].destination_air,obj.time.route[i].lat1,obj.time.route[i].lon1, obj.time.route[i].lat2,obj.time.route[i].lon2, false,'dot3');
+                    addPlacemarkColor2(obj.time.route[i].lat1, obj.time.route[i].lon1, obj.time.route[i].source, obj.time.route[i].origin_air, obj.time.route[i].source, false,'aeroplane3');
+                    addPlacemarkColor2(obj.time.route[i].lat2, obj.time.route[i].lon2, obj.time.route[i].destination, obj.time.route[i].destination_air, obj.time.route[i].destination, false,'aeroplane3');
+                }
+                for(i=0;i<obj.flighttime.route.length;i++){
+                    console.log("lat1 "+obj.flighttime.route[i].lat1);
+                    console.log("lon1 "+obj.flighttime.route[i].lon1);
+                    console.log("lat2 "+obj.flighttime.route[i].lat2);
+                    console.log("lon2 "+obj.flighttime.route[i].lon2);
+                    console.log("nameorig "+obj.flighttime.route[i].origin_air);
+                    console.log("namedest "+obj.flighttime.route[i].destination_air);
+                    drawRoutesColor2("Best Route", obj.flighttime.route[i].origin_air, obj.flighttime.route[i].destination_air,obj.flighttime.route[i].lat1,obj.flighttime.route[i].lon1, obj.flighttime.route[i].lat2,obj.flighttime.route[i].lon2, false,'dot4');
+                    addPlacemarkColor2(obj.flighttime.route[i].lat1, obj.flighttime.route[i].lon1, obj.flighttime.route[i].source, obj.flighttime.route[i].origin_air, obj.flighttime.route[i].source, false,'aeroplane4');
+                    addPlacemarkColor2(obj.flighttime.route[i].lat2, obj.flighttime.route[i].lon2, obj.flighttime.route[i].destination, obj.flighttime.route[i].destination_air, obj.flighttime.route[i].destination, false,'aeroplane4');
                 }
 
             }

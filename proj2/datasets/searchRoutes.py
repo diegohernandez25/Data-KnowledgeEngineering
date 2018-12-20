@@ -200,7 +200,8 @@ def queryGraphDB(query,accessor,repo_name):
             tmp[k]=r[k]['value']
         ret.append(tmp)
     return ret
-		
+
+
 def routeFinderNAME(srcCity,dstCity,departdate):
 	repo_name,accessor = connectGraphDB()	
 	srcAirports=queryGraphDB(getAirportCity(srcCity),accessor,repo_name)	

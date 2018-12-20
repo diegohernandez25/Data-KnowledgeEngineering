@@ -34,7 +34,7 @@
                     center: [50, 20],
                     zoom: 4
                 });
-                 place();
+                 //place();
               /*  map.events.add('click', function (e) {
                     if (map.geoObjects.getLength()>0)
                         map.geoObjects.removeAll()
@@ -94,6 +94,38 @@
                         lstPMarks.push([lat, long, iata, airport, info]);
                 }
             }
+
+            function addPlacemarkColor2(lat, long, iata, airport, info, flag,color) {
+                console.log("addplacemark");
+                if (!lst.includes(iata) || !flag) {
+                    var placemark = new ymaps.Placemark([lat, long],
+                        {
+                            hintContent: airport,
+                            balloonContent: info
+                        }, {
+                            /**
+                             * Options.
+                             * You must specify this type of layout.
+                             */
+                            iconLayout: 'default#image',
+                            // Custom image for the placemark icon.
+
+                            iconImageHref: '/static/assets/'+color+'.png',
+                            // The size of the placemark.
+                            iconImageSize: [35, 42],
+                            /**
+                             * The offset of the upper left corner of the icon relative
+                             * to its "tail" (the anchor point).
+                             */
+                            iconImageOffset: [-17.5, -21]
+                        });
+                    map.geoObjects.add(placemark);
+                    lst.push(iata)
+                    if (flag)
+                        lstPMarks.push([lat, long, iata, airport, info]);
+                }
+            }
+
             function addPlacemarkTourist(lat, long, iata, airport, info, flag) {
                 console.log("addplacemark");
                 if (!lst.includes(iata) || !flag) {
@@ -133,6 +165,14 @@
                 if (flag)
                     lstRoutes.push([route, srcName, dstName, srcLat, srcLong, dstLat, dstLong]);
             }
+            function drawRoutesColor2(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, flag,color) {
+                var recLevel = Math.floor(Math.log2(distance(srcLat, srcLong, dstLat, dstLong))) + 1;
+                if (recLevel < 3)
+                    recLevel++;
+                rec2(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, recLevel,color);
+                if (flag)
+                    lstRoutes.push([route, srcName, dstName, srcLat, srcLong, dstLat, dstLong,color]);
+            }
 
             function rec(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level) {
                 var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
@@ -141,6 +181,15 @@
                 else {
                     rec(route, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1);
                     rec(route, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1);
+                }
+            }
+            function rec2(route, srcName, dstName, srcLat, srcLong, dstLat, dstLong, level,color) {
+                var midpoint = calcMidPoint(srcLat, srcLong, dstLat, dstLong);
+                if (level == 0)
+                    placeMidPointColor2(route, srcName, dstName, midpoint,color)
+                else {
+                    rec2(route, srcName, dstName, srcLat, srcLong, midpoint[0], midpoint[1], level - 1,color);
+                    rec2(route, srcName, dstName, midpoint[0], midpoint[1], dstLat, dstLong, level - 1,color);
                 }
             }
 
@@ -153,6 +202,21 @@
                     {
                         iconLayout: 'default#image',
                         iconImageHref: '/static/assets/red_dot.png',
+                        iconImageSize: [4, 4],
+                        iconImageOffset: [-2, -2]
+                    });
+                map.geoObjects.add(placemark);
+            }
+
+            function placeMidPointColor2(route, srcName, dstName, point,color) {
+                var placemark = new ymaps.Placemark(point,
+                    {
+                        hintContent: "Route " + route,
+                        balloonContent: "Route between " + srcName + " and " + dstName
+                    },
+                    {
+                        iconLayout: 'default#image',
+                        iconImageHref: '/static/assets/'+color+'.png',
                         iconImageSize: [4, 4],
                         iconImageOffset: [-2, -2]
                     });
