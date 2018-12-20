@@ -101,7 +101,7 @@
                 value="2018-12-01">
             <br>
             <br>
-            <button onclick="createRoute()">Create Route</button>
+            <button class="btn btn-default" id="createRoutebtn" onclick="createRoute()">Create Route</button>
             <br>
 
         </center>
@@ -123,6 +123,8 @@
             console.log(val_dest);
             var val = document.getElementById("city-destiny").value;
             console.log("val: "+val);
+			document.getElementById("createRoutebtn").innerText = "Searching...";
+			document.getElementById("createRoutebtn").disabled = true; 
             httpGetAsync("http://localhost:8000/api/city/orig/"+val_orig+"/dest/"+val_dest+"/"+date+"/coord", updateRoute, 0);
         }
 
@@ -258,6 +260,7 @@
                 alert("Source and destination cities must be different");
             else {
                 document.getElementById("search").innerText = "Searching...";
+				document.getElementById("search").disabled = true; 
                 removePlacemarks();
                 src = document.getElementById("src-city").value;
                 dst = document.getElementById("dst-city").value;
@@ -268,6 +271,7 @@
         }
 
         function showSearchInfo(response, arg) {
+			document.getElementById("search").disabled = false; 
             document.getElementById("search").innerText = "New search";
 			if(response=="No routes found"){
 				alert("No routes found for the given parameters.");
@@ -406,15 +410,22 @@
             console.log(orig);
             dst = obj.dest;
             console.log(dst);
+			document.getElementById("createRoutebtn").innerText = "Create Route";
+			document.getElementById("createRoutebtn").disabled = false; 
             if(orig[0] == null && dst[0]!=null){
                 console.log(1);
+				alert('Origin not found, drawing destination to nearest airport'); 
                 addTerritorialRoute(dst[0][0],dst[0][1],dst[1][0],dst[1][1]);
             }
             else if(orig[0] != null && dst[0]==null){
+				alert('Destination not found, drawing origin to nearest airport'); 
                 console.log(2);
                 addTerritorialRoute(orig[0][0],orig[0][1],orig[1][0],orig[1][1]);
             }
             else if(orig[0] != null && dst[0]!=null){
+				if(obj.hop==null){
+					alert('No route found, drawing origin and destination to nearest airports'); 
+				}
                 //There is an flight route
                 console.log(3);
                 addTerritorialRoute2(orig[0][0],orig[0][1],orig[1][0],orig[1][1],dst[0][0],dst[0][1],dst[1][0],dst[1][1]);
@@ -476,6 +487,9 @@
                 }
 
             }
+			else{
+				alert('Origin and Destination not found');
+			}
         }
 
         function httpGetAsync(theUrl, callback, arg) {
